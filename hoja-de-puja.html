@@ -1,0 +1,2779 @@
+<title>Hoja de Puja — V0</title>
+<style>
+  :root {
+    --ground:      #F1F3F5;
+    --surface:     #FFFFFF;
+    --surface-2:   #E7EAEE;
+    --line:        #D2D8DE;
+    --line-soft:   #E2E7EC;
+    --ink:         #12171C;
+    --ink-2:       #4A5560;
+    --ink-3:       #78838E;
+    --accent:      #2F6E92;
+    --accent-ink:  #FFFFFF;
+    --accent-soft: #E3EDF3;
+    --go:          #2E7D53;
+    --go-soft:     #E2F0E8;
+    --warn:        #A8791E;
+    --warn-soft:   #F6EEDB;
+    --stop:        #A94436;
+    --stop-soft:   #F7E5E2;
+    --shadow:      0 1px 2px rgba(18,23,28,.06), 0 4px 14px rgba(18,23,28,.05);
+
+    --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0E1216;
+      --surface:     #161C22;
+      --surface-2:   #1E262E;
+      --line:        #2B353E;
+      --line-soft:   #222B33;
+      --ink:         #E6EBEF;
+      --ink-2:       #A3B0BC;
+      --ink-3:       #74828F;
+      --accent:      #6FB3D6;
+      --accent-ink:  #0E1216;
+      --accent-soft: #17303E;
+      --go:          #62C08C;
+      --go-soft:     #14301F;
+      --warn:        #DCB24E;
+      --warn-soft:   #322813;
+      --stop:        #E58275;
+      --stop-soft:   #37201C;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0E1216; --surface:#161C22; --surface-2:#1E262E; --line:#2B353E; --line-soft:#222B33;
+    --ink:#E6EBEF; --ink-2:#A3B0BC; --ink-3:#74828F;
+    --accent:#6FB3D6; --accent-ink:#0E1216; --accent-soft:#17303E;
+    --go:#62C08C; --go-soft:#14301F; --warn:#DCB24E; --warn-soft:#322813; --stop:#E58275; --stop-soft:#37201C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  }
+  :root[data-theme="light"] {
+    --ground:#F1F3F5; --surface:#FFFFFF; --surface-2:#E7EAEE; --line:#D2D8DE; --line-soft:#E2E7EC;
+    --ink:#12171C; --ink-2:#4A5560; --ink-3:#78838E;
+    --accent:#2F6E92; --accent-ink:#FFFFFF; --accent-soft:#E3EDF3;
+    --go:#2E7D53; --go-soft:#E2F0E8; --warn:#A8791E; --warn-soft:#F6EEDB; --stop:#A94436; --stop-soft:#F7E5E2;
+    --shadow:0 1px 2px rgba(18,23,28,.06), 0 4px 14px rgba(18,23,28,.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  .page {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1rem; }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .masthead-in {
+    max-width: 1080px; margin: 0 auto; padding: .75rem 1rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: baseline; gap: .6rem; margin-right: auto; }
+  .brand h1 { font-size: 1.05rem; font-weight: 650; letter-spacing: -.01em; margin: 0; }
+  .brand .v {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .08em;
+    color: var(--ink-3); border: 1px solid var(--line); border-radius: 3px; padding: .1rem .35rem;
+  }
+  .tabs { display: flex; gap: .25rem; }
+  .tab {
+    font: inherit; font-size: .85rem; font-weight: 550;
+    background: none; border: 1px solid transparent; color: var(--ink-2);
+    padding: .4rem .8rem; border-radius: 6px; cursor: pointer;
+  }
+  .tab:hover { background: var(--surface-2); color: var(--ink); }
+  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- shared ---------- */
+  .eyebrow {
+    font-family: var(--mono); font-size: .68rem; text-transform: uppercase;
+    letter-spacing: .11em; color: var(--ink-3);
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; box-shadow: var(--shadow);
+  }
+  .card-h {
+    padding: .8rem 1rem; border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  }
+  .card-h h2 { margin: 0; font-size: .95rem; font-weight: 620; letter-spacing: -.005em; }
+  .card-b { padding: 1rem; }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  section { margin-top: 1.25rem; }
+
+  /* ---------- bid sheet ---------- */
+  .sheet { display: grid; gap: 1.25rem; grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 900px) { .sheet { grid-template-columns: 1fr 400px; } }
+
+  .field { display: grid; gap: .3rem; margin-bottom: .85rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label { font-size: .8rem; font-weight: 560; color: var(--ink-2); }
+  .field .hint { font-size: .72rem; color: var(--ink-3); }
+  .field input, .field select {
+    font: inherit; font-family: var(--mono); font-variant-numeric: tabular-nums;
+    padding: .55rem .65rem; border: 1px solid var(--line); border-radius: 7px;
+    background: var(--ground); color: var(--ink); width: 100%;
+  }
+  .field input:focus, .field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent); }
+  .field.text input { font-family: var(--sans); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 .8rem; }
+
+  .readout {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  @media (min-width: 900px) { .readout { position: sticky; top: 5rem; } }
+  .readout-top { padding: 1.1rem 1rem 1.2rem; border-bottom: 1px solid var(--line-soft); }
+  .ceiling {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: clamp(2.4rem, 9vw, 3.1rem); font-weight: 600; letter-spacing: -.03em;
+    line-height: 1; margin: .35rem 0 .15rem;
+  }
+  .ceiling.ok { color: var(--go); }
+  .ceiling.bad { color: var(--stop); }
+  .ceiling-note { font-size: .78rem; color: var(--ink-3); }
+
+  .breakdown { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .breakdown td { padding: .38rem 1rem; border-bottom: 1px solid var(--line-soft); }
+  .breakdown tr:last-child td { border-bottom: none; }
+  .breakdown td:last-child { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .breakdown .neg td:last-child { color: var(--ink-2); }
+  .breakdown .tot td { font-weight: 640; background: var(--surface-2); border-top: 1px solid var(--line); }
+  .breakdown .sub td { color: var(--ink-3); font-size: .76rem; padding-top: .1rem; padding-bottom: .38rem; }
+
+  .btn {
+    font: inherit; font-size: .85rem; font-weight: 560; cursor: pointer;
+    padding: .55rem .9rem; border-radius: 7px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink);
+  }
+  .btn:hover { background: var(--surface-2); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.wide { width: 100%; }
+  .btn.sm { font-size: .78rem; padding: .35rem .6rem; }
+
+  /* ---------- flags / callouts ---------- */
+  .flag {
+    display: flex; gap: .6rem; padding: .7rem .8rem; border-radius: 8px;
+    font-size: .8rem; line-height: 1.45; border: 1px solid;
+  }
+  .flag .mark { font-family: var(--mono); font-weight: 700; flex: none; }
+  .flag.warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 32%, transparent); color: var(--ink); }
+  .flag.stop { background: var(--stop-soft); border-color: color-mix(in srgb, var(--stop) 32%, transparent); color: var(--ink); }
+  .flag.warn .mark { color: var(--warn); }
+  .flag.stop .mark { color: var(--stop); }
+
+  /* ---------- stats ---------- */
+  .stats { display: grid; gap: .75rem; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: .8rem .85rem; box-shadow: var(--shadow); }
+  .stat .k { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-3); display: block; }
+  .stat .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; display: block; margin: .3rem 0 .1rem; }
+  .stat .d { font-size: .72rem; color: var(--ink-2); line-height: 1.35; }
+  .stat.go .v { color: var(--go); }
+  .stat.warn .v { color: var(--warn); }
+  .stat.stop .v { color: var(--stop); }
+
+  /* ---------- table ---------- */
+  .tscroll { overflow-x: auto; }
+  table.data { width: 100%; border-collapse: collapse; font-size: .8rem; min-width: 720px; }
+  table.data th {
+    text-align: left; font-family: var(--mono); font-size: .64rem; text-transform: uppercase;
+    letter-spacing: .09em; color: var(--ink-3); font-weight: 500;
+    padding: .5rem .7rem; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  table.data td { padding: .55rem .7rem; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+  table.data tr:last-child td { border-bottom: none; }
+  table.data td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  table.data tbody tr:hover { background: var(--surface-2); }
+
+  .pill {
+    display: inline-block; font-family: var(--mono); font-size: .66rem; font-weight: 600;
+    letter-spacing: .04em; padding: .16rem .42rem; border-radius: 4px; white-space: nowrap;
+  }
+  .pill.go { background: var(--go-soft); color: var(--go); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.stop { background: var(--stop-soft); color: var(--stop); }
+  .pill.idle { background: var(--surface-2); color: var(--ink-3); }
+
+  .delta { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .74rem; }
+  .delta.pos { color: var(--go); }
+  .delta.neg { color: var(--stop); }
+
+  /* ---------- bias bars ---------- */
+  .bias-row { display: grid; grid-template-columns: 1fr; gap: .3rem; padding: .7rem 0; border-bottom: 1px solid var(--line-soft); }
+  .bias-row:last-child { border-bottom: none; }
+  .bias-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .bias-head .name { font-size: .84rem; font-weight: 550; }
+  .bias-head .val { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .9rem; font-weight: 620; }
+  .bias-track { position: relative; height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+  .bias-mid { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--line); z-index: 2; }
+  .bias-fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+  .bias-note { font-size: .74rem; color: var(--ink-3); }
+
+  /* ---------- config ---------- */
+  details.cfg { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
+  details.cfg > summary {
+    padding: .75rem 1rem; cursor: pointer; font-size: .87rem; font-weight: 570;
+    display: flex; align-items: center; gap: .5rem; list-style: none;
+  }
+  details.cfg > summary::-webkit-details-marker { display: none; }
+  details.cfg > summary::before { content: "▸"; color: var(--ink-3); font-size: .8rem; }
+  details.cfg[open] > summary::before { content: "▾"; }
+  details.cfg > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+  .cfg-body { padding: 0 1rem 1rem; border-top: 1px solid var(--line-soft); }
+
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: .4rem; align-items: center; margin-top: .5rem; }
+  .tier-grid input { font-family: var(--mono); font-size: .8rem; padding: .35rem .45rem; border: 1px solid var(--line); border-radius: 5px; background: var(--ground); color: var(--ink); width: 100%; }
+  .tier-grid .lbl { font-family: var(--mono); font-size: .62rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
+
+  .modal-back {
+    position: fixed; inset: 0; background: rgba(8,11,14,.6); z-index: 50;
+    display: flex; align-items: flex-end; justify-content: center; padding: 0;
+  }
+  @media (min-width: 640px) { .modal-back { align-items: center; padding: 1rem; } }
+  .modal {
+    background: var(--surface); border: 1px solid var(--line); width: 100%; max-width: 460px;
+    border-radius: 12px 12px 0 0; max-height: 92vh; overflow-y: auto;
+  }
+  @media (min-width: 640px) { .modal { border-radius: 12px; } }
+  .modal-h { padding: .9rem 1rem; border-bottom: 1px solid var(--line-soft); display: flex; align-items: center; gap: .6rem; }
+  .modal-h h3 { margin: 0; font-size: .95rem; font-weight: 620; }
+  .modal-b { padding: 1rem; }
+  .modal-f { padding: .8rem 1rem; border-top: 1px solid var(--line-soft); display: flex; gap: .5rem; justify-content: flex-end; }
+
+  .prose { font-size: .84rem; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+  .prose p { margin: 0 0 .6rem; }
+  .prose p:last-child { margin-bottom: 0; }
+
+  .empty { padding: 2.5rem 1rem; text-align: center; color: var(--ink-3); font-size: .85rem; }
+
+  /* ---------- funnel ---------- */
+  .srcrow { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+  .srcrow .hint { font-size: .78rem; color: var(--ink-3); }
+
+  .funnel { display: grid; gap: .1rem; }
+  .fstage { display: grid; grid-template-columns: 1fr; gap: .25rem; padding: .55rem 0; border-bottom: 1px solid var(--line-soft); }
+  .fstage:last-child { border-bottom: none; }
+  .fhead { display: flex; align-items: baseline; gap: .75rem; }
+  .fhead .fname { font-size: .84rem; font-weight: 550; }
+  .fhead .fdrop { font-family: var(--mono); font-size: .74rem; color: var(--stop); margin-left: auto; white-space: nowrap; }
+  .fhead .fn { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .95rem; font-weight: 640; white-space: nowrap; }
+  .fbar { height: 22px; background: var(--surface-2); border-radius: 4px; position: relative; overflow: hidden; }
+  .fbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; display: block;
+            background: var(--accent); transition: width .5s cubic-bezier(.4,0,.2,1); }
+  .fstage.final .fbar i { background: var(--go); }
+  .fstage.final .fhead .fn { color: var(--go); }
+  .fnote { font-size: .74rem; color: var(--ink-3); }
+
+  .rank { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  @media (prefers-reduced-motion: reduce) { .fbar i { transition: none; } }
+
+  /* ---------- filters ---------- */
+  .livebar {
+    position: sticky; top: 3.6rem; z-index: 15;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: var(--shadow); padding: .8rem 1rem; margin-top: 1.25rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  }
+  .livenum { font-size: 2rem; font-weight: 620; letter-spacing: -.03em; line-height: 1.05; color: var(--go); }
+  .liveinfo { font-size: .78rem; color: var(--ink-2); line-height: 1.4; flex: 1 1 12rem; min-width: 0; }
+  .livebar .btn { margin-left: auto; }
+
+  .fgrid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  @media (min-width: 800px) { .fgrid { grid-template-columns: 1fr 1fr; } .fgrid .wide { grid-column: 1 / -1; } }
+
+  .fdrop { font-family: var(--mono); font-size: .72rem; color: var(--stop); margin-left: auto; white-space: nowrap; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .chip {
+    font: inherit; font-size: .78rem; font-weight: 520; cursor: pointer;
+    padding: .3rem .6rem; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--ground); color: var(--ink-3);
+    display: inline-flex; align-items: center; gap: .35rem;
+  }
+  .chip .cn { font-family: var(--mono); font-size: .68rem; opacity: .75; }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+  .chip[aria-pressed="true"]::before { content: "✓"; font-size: .7rem; color: var(--accent); }
+  .chip[aria-pressed="false"]::before { content: "×"; font-size: .8rem; color: var(--stop); }
+  .chip:hover { border-color: var(--accent); }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .chip.preset { border-radius: 7px; }
+  .chip.preset .x { color: var(--ink-3); font-weight: 700; padding: 0 .1rem; }
+  .chip.preset .x:hover { color: var(--stop); }
+  .chip.preset::before { content: none; }
+  .chip.preset[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .chip.preset[aria-pressed="true"] .x { color: var(--accent-ink); }
+
+  .chk { display: flex; align-items: center; gap: .5rem; font-size: .84rem; padding: .35rem 0; cursor: pointer; }
+  .chk input { width: auto; margin: 0; }
+
+  .foot { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .74rem; color: var(--ink-3); line-height: 1.55; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead-in">
+      <div class="brand">
+        <h1>Hoja de Puja</h1>
+        <span class="v">V0</span>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Secciones">
+        <button class="tab" role="tab" id="tab-list"   aria-selected="true"  aria-controls="p-list">Lista</button>
+        <button class="tab" role="tab" id="tab-filters" aria-selected="false" aria-controls="p-filters">Filtros</button>
+        <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet">Puja</button>
+        <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts">Piezas</button>
+        <button class="tab" role="tab" id="tab-book"   aria-selected="false" aria-controls="p-book">Libro</button>
+        <button class="tab" role="tab" id="tab-numbers"aria-selected="false" aria-controls="p-numbers">Tus números</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- ============ LISTA ============ -->
+    <div class="panel on" id="p-list" role="tabpanel" aria-labelledby="tab-list">
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>La venta del día</h2>
+            <span class="eyebrow" id="list-src" style="margin-left:auto"></span>
+          </div>
+          <div class="card-b">
+            <div class="srcrow">
+              <button class="btn primary" id="btn-gen">Cargar venta de muestra</button>
+              <label class="btn" for="csv-in" style="cursor:pointer">Subir tu CSV de Copart</label>
+              <input id="csv-in" type="file" accept=".csv,text/csv" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none">
+              <span class="hint" id="csv-msg"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pipe-wrap" style="display:none">
+        <div class="card">
+          <div class="card-h">
+            <h2>De la lista al shortlist</h2>
+            <span class="eyebrow" style="margin-left:auto">3 pasadas</span>
+          </div>
+          <div class="card-b">
+            <div class="funnel" id="funnel"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules-wrap" style="display:none">
+        <div class="card">
+          <div class="card-b" style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+            <span class="prose" style="margin:0">Filtros activos: <strong id="rules-sum"></strong></span>
+            <button class="btn sm" id="btn-go-filters" style="margin-left:auto">Ajustar filtros</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="calib-wrap" style="display:none">
+        <div class="card">
+          <div class="card-h">
+            <h2>Con qué está estimando</h2>
+            <span class="eyebrow" style="margin-left:auto" id="calib-src"></span>
+          </div>
+          <div class="card-b" id="calib-body"></div>
+        </div>
+      </section>
+
+      <section id="short-wrap" style="display:none">
+        <div class="card">
+          <div class="card-h">
+            <h2>Tu shortlist</h2>
+            <span class="eyebrow" id="short-count" style="margin-left:auto"></span>
+          </div>
+          <div class="tscroll">
+            <table class="data" id="short-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Lote</th><th>Vehículo</th>
+                  <th style="text-align:right">Millas</th>
+                  <th>Daño</th>
+                  <th style="text-align:right">Preoferta</th>
+                  <th style="text-align:right">Tu techo</th>
+                  <th style="text-align:right">Margen disponible</th>
+                  <th>Corre</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="short-rows"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="prose" style="margin-top:.8rem">
+          <strong>Estos techos son estimados</strong>, calculados con los factores de arriba sobre los campos que
+          publica Copart. Sirven para ordenar, no para pujar. El número con el que pujas sale de la Hoja de Puja,
+          con tus datos reales de Manheim y de piezas.
+        </p>
+      </section>
+
+      <section id="drop-wrap" style="display:none">
+        <details class="cfg">
+          <summary>Qué se cayó y por qué <span class="eyebrow" style="margin-left:auto" id="drop-sum"></span></summary>
+          <div class="cfg-body">
+            <p class="prose" style="margin:.8rem 0">Nada se descarta en silencio. Cada lote muestra la regla que lo sacó.</p>
+            <div class="tscroll">
+              <table class="data" style="min-width:600px">
+                <thead><tr><th>Lote</th><th>Vehículo</th><th style="text-align:right">Millas</th><th>Motivo</th></tr></thead>
+                <tbody id="drop-rows"></tbody>
+              </table>
+            </div>
+            <p class="prose" style="margin-top:.8rem" id="drop-more"></p>
+          </div>
+        </details>
+      </section>
+
+    </div>
+
+    <!-- ============ FILTROS ============ -->
+    <div class="panel" id="p-filters" role="tabpanel" aria-labelledby="tab-filters">
+
+      <div class="livebar">
+        <div>
+          <span class="eyebrow">Pasan tus filtros</span>
+          <div class="livenum num" id="live-n">—</div>
+        </div>
+        <div class="liveinfo" id="live-info"></div>
+        <button class="btn primary" id="btn-see-short">Ver shortlist</button>
+      </div>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Perfiles guardados</h2>
+            <button class="btn sm" id="btn-save-preset" style="margin-left:auto">Guardar el actual</button>
+          </div>
+          <div class="card-b">
+            <div class="chips" id="presets"></div>
+            <p class="prose" style="margin-top:.7rem">
+              Guarda combinaciones distintas y cámbialas de un clic. Los lunes y los miércoles no siempre traen
+              la misma venta, y un filtro que sirve para sedanes no sirve para SUVs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="fgrid">
+
+        <div class="card">
+          <div class="card-h"><h2>Lo básico</h2><span class="fdrop" id="d-basic"></span></div>
+          <div class="card-b">
+            <div class="grid2">
+              <div class="field">
+                <label for="r-miles">Millaje máximo</label>
+                <input id="r-miles" type="number" value="85000" step="1000" min="0">
+              </div>
+              <div class="field">
+                <label for="r-yearmin">Año desde</label>
+                <input id="r-yearmin" type="number" value="0" step="1" min="0">
+                <span class="hint">0 = sin límite</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="r-margin">Margen objetivo por unidad</label>
+              <input id="r-margin" type="number" value="6000" step="100" min="0">
+              <span class="hint">Entra en el cálculo del techo de cada lote.</span>
+            </div>
+            <div class="field">
+              <label for="r-dist">Distancia máxima al yard (millas)</label>
+              <input id="r-dist" type="number" value="0" step="10" min="0">
+              <span class="hint">0 = sin límite. Afecta el costo de grúa.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Dinero</h2><span class="fdrop" id="d-money"></span></div>
+          <div class="card-b">
+            <div class="grid2">
+              <div class="field">
+                <label for="r-retmin">Valor retail mínimo</label>
+                <input id="r-retmin" type="number" value="0" step="500" min="0">
+              </div>
+              <div class="field">
+                <label for="r-retmax">Valor retail máximo</label>
+                <input id="r-retmax" type="number" value="0" step="500" min="0">
+              </div>
+            </div>
+            <div class="field">
+              <label for="r-repmax">Costo de reparación máximo (est. Copart)</label>
+              <input id="r-repmax" type="number" value="0" step="250" min="0">
+              <span class="hint">0 = sin límite. Útil para no meterte en trabajos grandes.</span>
+            </div>
+            <div class="field">
+              <label for="r-roommin">Margen disponible mínimo</label>
+              <input id="r-roommin" type="number" value="0" step="250" min="0">
+              <span class="hint">Descarta lotes donde queda poco espacio sobre la preoferta.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Condición</h2><span class="fdrop" id="d-cond"></span></div>
+          <div class="card-b">
+            <label class="chk"><input type="checkbox" id="r-rental" checked> Solo categoría Rental Vehicles</label>
+            <label class="chk"><input type="checkbox" id="r-runs"> Solo run &amp; drive</label>
+            <label class="chk"><input type="checkbox" id="r-keys"> Solo con llaves</label>
+            <label class="chk"><input type="checkbox" id="r-sec"> Descartar si trae daño secundario</label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-h"><h2>Título</h2><span class="fdrop" id="d-title"></span></div>
+          <div class="card-b"><div class="chips" id="c-titles"></div></div>
+        </div>
+
+        <div class="card wide">
+          <div class="card-h">
+            <h2>Marcas</h2>
+            <button class="btn sm" data-all="makes">Todas</button>
+            <button class="btn sm" data-none="makes">Ninguna</button>
+            <span class="fdrop" id="d-make"></span>
+          </div>
+          <div class="card-b"><div class="chips" id="c-makes"></div></div>
+        </div>
+
+        <div class="card wide">
+          <div class="card-h">
+            <h2>Tipo de daño</h2>
+            <button class="btn sm" data-all="damages">Todos</button>
+            <button class="btn sm" data-none="damages">Ninguno</button>
+            <span class="fdrop" id="d-dmg"></span>
+          </div>
+          <div class="card-b">
+            <div class="chips" id="c-damages"></div>
+            <p class="prose" style="margin-top:.7rem">Se aplica al daño primario y al secundario. Apagar uno descarta el lote si aparece en cualquiera de los dos.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <section>
+        <button class="btn sm" id="btn-reset-filters">Volver a los filtros de Juan</button>
+      </section>
+    </div>
+
+    <!-- ============ PUJA ============ -->
+    <div class="panel" id="p-sheet" role="tabpanel" aria-labelledby="tab-sheet">
+      <section class="sheet">
+
+        <div>
+          <div class="card">
+            <div class="card-h">
+              <h2>Datos del lote</h2>
+              <span class="eyebrow" style="margin-left:auto">Copart · lunes y miércoles</span>
+            </div>
+            <div class="card-b">
+              <div class="grid2">
+                <div class="field text">
+                  <label for="f-lot">Lote</label>
+                  <input id="f-lot" type="text" value="58291447" autocomplete="off">
+                </div>
+                <div class="field text">
+                  <label for="f-vin">VIN</label>
+                  <input id="f-vin" type="text" value="5NPE24AF8FH012345" autocomplete="off">
+                </div>
+              </div>
+              <div class="field text">
+                <label for="f-desc">Vehículo</label>
+                <input id="f-desc" type="text" value="2015 Hyundai Sonata SE" autocomplete="off">
+              </div>
+
+              <div class="field">
+                <label for="f-sale">Venta proyectada (Manheim, grado 4.5)</label>
+                <input id="f-sale" type="number" inputmode="decimal" value="13800" min="0" step="100">
+                <span class="hint">Lo que esperas cobrar ya reparado y vendido.</span>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label for="f-parts">Piezas <button class="btn sm" id="btn-to-parts" type="button" style="padding:.1rem .35rem;font-size:.68rem;margin-left:.3rem">estimar</button></label>
+                  <input id="f-parts" type="number" inputmode="decimal" value="2400" min="0" step="50">
+                </div>
+                <div class="field">
+                  <label for="f-labor">Mano de obra</label>
+                  <input id="f-labor" type="number" inputmode="decimal" value="1500" min="0" step="50">
+                </div>
+              </div>
+
+              <div class="grid2">
+                <div class="field">
+                  <label for="f-tow">Grúa</label>
+                  <input id="f-tow" type="number" inputmode="decimal" value="350" min="0" step="25">
+                </div>
+                <div class="field">
+                  <label for="f-margin">Margen objetivo</label>
+                  <input id="f-margin" type="number" inputmode="decimal" value="6000" min="0" step="100">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="f-cont">Reserva por daño estructural oculto</label>
+                <input id="f-cont" type="number" inputmode="decimal" value="0" min="0" step="50">
+                <span class="hint" id="cont-hint">Empieza en 0. El Libro calcula tu número real cuando tengas historia.</span>
+              </div>
+            </div>
+          </div>
+
+          <section>
+            <details class="cfg" id="cfg">
+              <summary>Tabla de fees de Copart <span class="pill warn" style="margin-left:auto">sin confirmar</span></summary>
+              <div class="cfg-body">
+                <div class="flag warn" style="margin:.9rem 0">
+                  <span class="mark">!</span>
+                  <span>Copart no publica esta tabla en ningún sitio legible, y las calculadoras de terceros se contradicen entre sí. Estos números son un punto de partida. <strong>Reemplázalos con los de una factura real tuya y quedan clavados para siempre.</strong></span>
+                </div>
+
+                <div class="field">
+                  <label for="f-membership">Tipo de cuenta</label>
+                  <select id="f-membership">
+                    <option value="public">Público / no licenciado — tabla escalonada</option>
+                    <option value="licensed">Licenciado / dealer — porcentaje fijo</option>
+                  </select>
+                </div>
+
+                <div id="pct-box" style="display:none">
+                  <div class="grid2">
+                    <div class="field">
+                      <label for="f-pct">Buyer fee %</label>
+                      <input id="f-pct" type="number" inputmode="decimal" value="6" min="0" step="0.5">
+                    </div>
+                    <div class="field">
+                      <label for="f-pctmin">Mínimo $</label>
+                      <input id="f-pctmin" type="number" inputmode="decimal" value="150" min="0" step="10">
+                    </div>
+                  </div>
+                </div>
+
+                <div id="tier-box">
+                  <span class="eyebrow">Buyer fee por tramo de martillo</span>
+                  <div class="tier-grid">
+                    <span class="lbl">Martillo hasta</span><span class="lbl">Fee</span><span></span>
+                  </div>
+                  <div class="tier-grid" id="tiers"></div>
+                  <div class="field" style="margin-top:.7rem">
+                    <label for="f-toppct">Sobre el último tramo, cobra % del martillo</label>
+                    <input id="f-toppct" type="number" inputmode="decimal" value="10" min="0" step="0.5">
+                  </div>
+                </div>
+
+                <hr style="border:none;border-top:1px solid var(--line-soft);margin:1rem 0">
+                <span class="eyebrow">Cargos fijos por unidad</span>
+                <div class="grid2" style="margin-top:.5rem">
+                  <div class="field">
+                    <label for="f-gate">Gate fee</label>
+                    <input id="f-gate" type="number" inputmode="decimal" value="95" min="0" step="5">
+                  </div>
+                  <div class="field">
+                    <label for="f-vbid">Virtual bid fee</label>
+                    <input id="f-vbid" type="number" inputmode="decimal" value="99" min="0" step="5">
+                  </div>
+                </div>
+                <div class="grid2">
+                  <div class="field">
+                    <label for="f-env">Cargo ambiental</label>
+                    <input id="f-env" type="number" inputmode="decimal" value="15" min="0" step="5">
+                  </div>
+                  <div class="field">
+                    <label for="f-other">Otros fijos</label>
+                    <input id="f-other" type="number" inputmode="decimal" value="0" min="0" step="5">
+                  </div>
+                </div>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <!-- readout -->
+        <div>
+          <div class="readout">
+            <div class="readout-top">
+              <span class="eyebrow">Techo de puja</span>
+              <div class="ceiling num ok" id="out-ceiling">$0</div>
+              <div class="ceiling-note" id="out-note">Lo máximo que puedes martillar sin comerte tu margen.</div>
+            </div>
+
+            <table class="breakdown">
+              <tbody id="out-rows"></tbody>
+            </table>
+
+            <div style="padding:.9rem 1rem;border-top:1px solid var(--line-soft);display:grid;gap:.5rem">
+              <button class="btn primary wide" id="btn-buy">Compré este lote</button>
+              <button class="btn wide" id="btn-pass">Lo dejé pasar</button>
+            </div>
+          </div>
+
+          <section>
+            <div class="flag stop">
+              <span class="mark">×</span>
+              <span><strong>Esto no evalúa daño estructural oculto.</strong> No está en ningún dato que exista. La reserva de arriba lo cubre en promedio, no en este carro. Ese sigue siendo tu ojo.</span>
+            </div>
+          </section>
+
+          <section>
+            <div class="card">
+              <div class="card-h"><h2>El error que esto corrige</h2></div>
+              <div class="card-b prose" id="fee-explainer"></div>
+            </div>
+          </section>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- ============ PIEZAS ============ -->
+    <div class="panel" id="p-parts" role="tabpanel" aria-labelledby="tab-parts">
+
+      <div class="livebar">
+        <div>
+          <span class="eyebrow">Piezas estimadas</span>
+          <div class="livenum num" id="parts-total">$0</div>
+        </div>
+        <div class="liveinfo" id="parts-info"></div>
+        <button class="btn primary" id="btn-parts-apply">Llevar a la puja</button>
+      </div>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Qué se rompió</h2>
+            <span class="eyebrow" id="parts-veh" style="margin-left:auto"></span>
+          </div>
+          <div class="card-b">
+            <div class="grid2">
+              <div class="field">
+                <label for="pa-damage">Daño primario</label>
+                <select id="pa-damage"></select>
+              </div>
+              <div class="field">
+                <label for="pa-damage2">Daño secundario</label>
+                <select id="pa-damage2"></select>
+              </div>
+            </div>
+            <div class="flag warn" style="margin-top:.4rem">
+              <span class="mark">!</span>
+              <span><strong>Copart no publica qué piezas necesita el carro.</strong> Su vocabulario
+              de daño son 22 palabras: "FRONT END" y nada más. La lista de abajo no es dato de ellos
+              — es una plantilla de oficio, escrita por nosotros, de lo que ese golpe normalmente
+              se lleva. Arranca mal a propósito y se corrige con tu uso.</span>
+            </div>
+            <p class="prose" style="margin-top:.8rem">
+              Úsalo como <strong>checklist, no como cotización</strong>. El error que cuesta plata no es
+              equivocarse en el precio de un bumper: es olvidar el soporte de radiador. La lista está para
+              que no se te pase, y para que lo que se te pasó una vez te salga marcado la próxima.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Lista de piezas</h2>
+            <span class="eyebrow" id="parts-count" style="margin-left:auto"></span>
+          </div>
+          <div class="tscroll">
+            <table class="data" id="parts-table" style="min-width:760px">
+              <thead>
+                <tr>
+                  <th></th><th>Pieza</th><th style="text-align:right">Cant.</th>
+                  <th style="text-align:right">Precio unit.</th>
+                  <th>De dónde salió</th>
+                  <th style="text-align:right">Subtotal</th>
+                  <th>Buscar</th>
+                </tr>
+              </thead>
+              <tbody id="parts-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Lo que se te suele escapar</h2>
+            <span class="eyebrow" id="miss-count" style="margin-left:auto"></span></div>
+          <div class="card-b" id="miss-body"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Precios que ya le enseñaste</h2>
+            <span class="eyebrow" id="mem-count" style="margin-left:auto"></span></div>
+          <div class="card-b" id="mem-body"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Grúa</h2></div>
+          <div class="card-b">
+            <div class="grid2">
+              <div class="field">
+                <label for="tw-shop">Tu taller está en</label>
+                <select id="tw-shop"></select>
+              </div>
+              <div class="field">
+                <label for="tw-yard">Yard del lote</label>
+                <select id="tw-yard"></select>
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label for="tw-base">Cargo base</label>
+                <input id="tw-base" type="number" value="120" step="10" min="0">
+              </div>
+              <div class="field">
+                <label for="tw-mile">Por milla</label>
+                <input id="tw-mile" type="number" value="1.85" step="0.05" min="0">
+              </div>
+            </div>
+            <div id="tow-out"></div>
+            <p class="prose" style="margin-top:.8rem">
+              Distancia real entre códigos postales, sobre los 45 yards que aparecieron en los datos.
+              El cargo base y el precio por milla salen de tus facturas de grúa, no de un promedio nacional.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ LIBRO ============ -->
+    <div class="panel" id="p-book" role="tabpanel" aria-labelledby="tab-book">
+      <section>
+        <div class="stats" id="book-stats"></div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Unidades</h2>
+            <span class="eyebrow" id="book-count" style="margin-left:auto"></span>
+          </div>
+          <div class="tscroll">
+            <table class="data" id="book-table">
+              <thead>
+                <tr>
+                  <th>Lote</th><th>Vehículo</th><th>Estado</th>
+                  <th style="text-align:right">Martillo</th>
+                  <th style="text-align:right">Costo real</th>
+                  <th style="text-align:right">Venta</th>
+                  <th style="text-align:right">Margen real</th>
+                  <th style="text-align:right">vs objetivo</th>
+                  <th style="text-align:right">Días</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="book-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <button class="btn sm" id="btn-reset">Restaurar datos de demostración</button>
+      </section>
+    </div>
+
+    <!-- ============ TUS NÚMEROS ============ -->
+    <div class="panel" id="p-numbers" role="tabpanel" aria-labelledby="tab-numbers">
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Qué tan bien estimas</h2></div>
+          <div class="card-b">
+            <p class="prose" style="margin-bottom:1rem">Sobre las unidades ya vendidas: la diferencia entre lo que proyectaste el lunes en la mañana y lo que pasó de verdad. A la derecha significa que te quedaste corto.</p>
+            <div id="bias-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Tu fórmula, recalibrada</h2></div>
+          <div class="card-b" id="recal"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Dónde te está pagando</h2></div>
+          <div class="tscroll">
+            <table class="data" id="seg-table" style="min-width:520px">
+              <thead>
+                <tr><th>Daño primario</th><th style="text-align:right">Unidades</th><th style="text-align:right">Margen real prom.</th><th style="text-align:right">Error en piezas</th></tr>
+              </thead>
+              <tbody id="seg-rows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="foot" id="foot"></div>
+  </div>
+
+  <div id="modal-host"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "hoja-de-puja-v0";
+
+  /* ---------------- fee model ---------------- */
+
+  var DEFAULT_TIERS = [
+    { upTo: 399,  fee: 75  },
+    { upTo: 899,  fee: 135 },
+    { upTo: 1399, fee: 185 },
+    { upTo: 1999, fee: 235 },
+    { upTo: 2499, fee: 285 },
+    { upTo: 2999, fee: 335 },
+    { upTo: 3499, fee: 385 },
+    { upTo: 3999, fee: 435 },
+    { upTo: 4499, fee: 485 },
+    { upTo: 4999, fee: 535 }
+  ];
+
+  var cfg = {
+    membership: "public",
+    tiers: DEFAULT_TIERS.map(function (t) { return { upTo: t.upTo, fee: t.fee }; }),
+    topPct: 10,
+    pct: 6,
+    pctMin: 150,
+    gate: 95, vbid: 99, env: 15, other: 0
+  };
+
+  function buyerFee(hammer) {
+    if (hammer <= 0) return 0;
+    if (cfg.membership === "licensed") {
+      return Math.max(cfg.pctMin, hammer * (cfg.pct / 100));
+    }
+    for (var i = 0; i < cfg.tiers.length; i++) {
+      if (hammer <= cfg.tiers[i].upTo) return cfg.tiers[i].fee;
+    }
+    return hammer * (cfg.topPct / 100);
+  }
+
+  function fixedFees() { return cfg.gate + cfg.vbid + cfg.env + cfg.other; }
+
+  function totalFees(hammer) { return buyerFee(hammer) + fixedFees(); }
+
+  /* Solve the circular reference: hammer + fees(hammer) <= budget.
+     buyerFee is NOT monotonic — it dips at the step-to-percentage boundary
+     (at $4,999 the flat fee is $535; at $5,000 the 10% cut is $500), so a
+     binary search silently loses up to ~$35 of ceiling. Instead: take the best
+     candidate within each fee regime, then repair locally for float error.
+     Verified exact against brute force across every budget to $30,000. */
+  function solveCeiling(budget) {
+    var F = fixedFees();
+    if (budget <= F) return 0;
+
+    function ok(h) { return h > 0 && h + totalFees(h) <= budget + 1e-6; }
+
+    function fit(c, lo, hi) {
+      c = Math.min(Math.floor(c), hi);
+      while (c + 1 <= hi && ok(c + 1)) c++;
+      while (c >= lo && !ok(c)) c--;
+      return c >= lo ? c : -1;
+    }
+
+    var best = 0, c;
+
+    if (cfg.membership === "licensed") {
+      var brk = cfg.pct > 0 ? Math.floor(cfg.pctMin * 100 / cfg.pct) : Infinity;
+      c = fit(budget - F - cfg.pctMin, 1, isFinite(brk) ? brk : Math.ceil(budget));
+      if (c > best) best = c;
+      if (isFinite(brk)) {
+        c = fit((budget - F) / (1 + cfg.pct / 100), brk + 1, Math.ceil(budget));
+        if (c > best) best = c;
+      }
+    } else {
+      var prev = 0;
+      for (var i = 0; i < cfg.tiers.length; i++) {
+        c = fit(budget - F - cfg.tiers[i].fee, prev + 1, cfg.tiers[i].upTo);
+        if (c > best) best = c;
+        prev = cfg.tiers[i].upTo;
+      }
+      c = fit((budget - F) / (1 + cfg.topPct / 100), prev + 1, Math.ceil(budget));
+      if (c > best) best = c;
+    }
+    return Math.max(0, best);
+  }
+
+  /* ---------------- money ---------------- */
+
+  function money(n) {
+    var neg = n < 0;
+    var s = "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+    return neg ? "−" + s : s;
+  }
+  function signed(n) { return (n >= 0 ? "+" : "−") + "$" + Math.round(Math.abs(n)).toLocaleString("en-US"); }
+  function pct(n) { return (n >= 0 ? "+" : "−") + Math.abs(n).toFixed(1) + "%"; }
+
+  /* ---------------- demo data ----------------
+     Realistic shape: parts consistently underestimated, projected sale
+     consistently optimistic (the grade-4.5 problem), so realized margin
+     lands well under the 6,000 target. */
+
+  function demoUnits() {
+    return [
+      { id:"u1", missed:["rsup","cond"], lot:"57118203", desc:"2016 Toyota Camry LE", damage:"FRONT END",
+        cpRepair:2150, estRetail:16200,
+        projSale:14200, projParts:2100, projLabor:1400, tow:300, margin:6000,
+        hammer:3950, realParts:2680, realLabor:1550, realSale:13400, days:11, status:"sold" },
+      { id:"u2", missed:["rrei"], lot:"57204411", desc:"2017 Kia Optima LX", damage:"REAR END",
+        cpRepair:1720, estRetail:14500,
+        projSale:12600, projParts:1800, projLabor:1200, tow:275, margin:6000,
+        hammer:3320, realParts:1950, realLabor:1300, realSale:12100, days:8, status:"sold" },
+      { id:"u3", missed:["rsup","rad","ffL"], lot:"57339875", desc:"2016 Hyundai Elantra SE", damage:"FRONT END",
+        cpRepair:1800, estRetail:12400,
+        projSale:10900, projParts:1650, projLabor:1100, tow:250, margin:6000,
+        hammer:1980, realParts:2340, realLabor:1450, realSale:10200, days:16, status:"sold" },
+      { id:"u4", missed:["dgls"], lot:"57451266", desc:"2018 Honda Civic LX", damage:"SIDE",
+        cpRepair:2400, estRetail:18100,
+        projSale:15400, projParts:2600, projLabor:1700, tow:325, margin:6000,
+        hammer:4640, realParts:2810, realLabor:1800, realSale:15100, days:7, status:"sold" },
+      { id:"u5", missed:["rsup","cond","rad","frei"], lot:"57588044", desc:"2015 Nissan Altima S", damage:"FRONT END",
+        cpRepair:2050, estRetail:11300,
+        projSale:9800, projParts:1900, projLabor:1250, tow:280, margin:6000,
+        hammer:1180, realParts:3450, realLabor:2100, realSale:9300, days:24, status:"sold",
+        note:"Daño estructural no detectado. Piso de maletero." },
+      { id:"u6", missed:[], lot:"57662190", desc:"2017 Toyota Corolla LE", damage:"REAR END",
+        cpRepair:1500, estRetail:15400,
+        projSale:13100, projParts:1550, projLabor:1050, tow:290, margin:6000,
+        hammer:4010, realParts:1720, realLabor:1150, realSale:12850, days:9, status:"sold" },
+      { id:"u7", lot:"57703558", desc:"2018 Kia Forte S", damage:"FRONT END",
+        projSale:13900, projParts:2250, projLabor:1500, tow:310, margin:6000,
+        hammer:3730, status:"open" },
+      { id:"u8", lot:"57741902", desc:"2016 Mazda 6 Sport", damage:"SIDE",
+        projSale:12400, projParts:2000, projLabor:1350, tow:295, margin:6000,
+        hammer:2860, status:"open" }
+    ];
+  }
+
+  var units = [];
+
+  /* ---------------- persistence ---------------- */
+
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        units: units, cfg: cfg, rules: rules, presets: presets, priceMemory: priceMemory
+      }));
+    } catch (e) {}
+  }
+  function load() {
+    var raw = null;
+    try { raw = localStorage.getItem(KEY); } catch (e) {}
+    if (raw) {
+      try {
+        var d = JSON.parse(raw);
+        if (d && d.units) units = d.units;
+        if (d && d.cfg) { for (var k in d.cfg) if (d.cfg.hasOwnProperty(k)) cfg[k] = d.cfg[k]; }
+        if (d && d.rules) { for (var j in d.rules) if (d.rules.hasOwnProperty(j)) rules[j] = d.rules[j]; }
+        if (d && d.presets) presets = d.presets;
+        if (d && d.priceMemory) priceMemory = d.priceMemory;
+        return;
+      } catch (e) {}
+    }
+    units = demoUnits();
+  }
+
+  /* ---------------- unit math ---------------- */
+
+  function realCost(u) {
+    return u.hammer + totalFees(u.hammer) + u.tow + (u.realParts || 0) + (u.realLabor || 0);
+  }
+  function realMargin(u) { return (u.realSale || 0) - realCost(u); }
+
+  function projCost(u) {
+    return u.hammer + totalFees(u.hammer) + u.tow + u.projParts + u.projLabor;
+  }
+  function projMargin(u) { return u.projSale - projCost(u); }
+
+  function sold() { return units.filter(function (u) { return u.status === "sold"; }); }
+
+  function avg(arr) { return arr.length ? arr.reduce(function (a, b) { return a + b; }, 0) / arr.length : 0; }
+
+  function biases() {
+    var s = sold();
+    if (!s.length) return null;
+    return {
+      parts: avg(s.map(function (u) { return (u.realParts - u.projParts) / u.projParts * 100; })),
+      labor: avg(s.map(function (u) { return (u.realLabor - u.projLabor) / u.projLabor * 100; })),
+      sale:  avg(s.map(function (u) { return (u.realSale  - u.projSale)  / u.projSale  * 100; })),
+      partsAbs: avg(s.map(function (u) { return u.realParts - u.projParts; })),
+      laborAbs: avg(s.map(function (u) { return u.realLabor - u.projLabor; })),
+      saleAbs:  avg(s.map(function (u) { return u.realSale  - u.projSale;  })),
+      margin:   avg(s.map(realMargin)),
+      target:   avg(s.map(function (u) { return u.margin; })),
+      days:     avg(s.map(function (u) { return u.days; })),
+      n: s.length
+    };
+  }
+
+  /* ---------------- DOM helpers ---------------- */
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, html) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function val(id) { var v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+
+  /* ---------------- config UI ---------------- */
+
+  function renderTiers() {
+    var host = $("tiers");
+    host.innerHTML = "";
+    cfg.tiers.forEach(function (t, i) {
+      var a = el("input"); a.type = "number"; a.value = t.upTo; a.step = "1";
+      a.setAttribute("aria-label", "Tramo " + (i + 1) + " hasta");
+      var b = el("input"); b.type = "number"; b.value = t.fee; b.step = "1";
+      b.setAttribute("aria-label", "Tramo " + (i + 1) + " fee");
+      a.addEventListener("input", function () { cfg.tiers[i].upTo = parseFloat(a.value) || 0; recompute(); save(); });
+      b.addEventListener("input", function () { cfg.tiers[i].fee  = parseFloat(b.value) || 0; recompute(); save(); });
+      var x = el("button", "btn sm", "×");
+      x.title = "Quitar tramo";
+      x.addEventListener("click", function () { cfg.tiers.splice(i, 1); renderTiers(); recompute(); save(); });
+      host.appendChild(a); host.appendChild(b); host.appendChild(x);
+    });
+    var add = el("button", "btn sm", "+ tramo");
+    add.style.gridColumn = "1 / -1";
+    add.addEventListener("click", function () {
+      var last = cfg.tiers[cfg.tiers.length - 1];
+      cfg.tiers.push({ upTo: last ? last.upTo + 500 : 500, fee: last ? last.fee + 50 : 75 });
+      renderTiers(); recompute(); save();
+    });
+    host.appendChild(add);
+  }
+
+  function bindCfg() {
+    $("f-membership").value = cfg.membership;
+    $("f-pct").value = cfg.pct; $("f-pctmin").value = cfg.pctMin;
+    $("f-toppct").value = cfg.topPct;
+    $("f-gate").value = cfg.gate; $("f-vbid").value = cfg.vbid;
+    $("f-env").value = cfg.env; $("f-other").value = cfg.other;
+
+    function syncMode() {
+      var lic = $("f-membership").value === "licensed";
+      $("pct-box").style.display = lic ? "block" : "none";
+      $("tier-box").style.display = lic ? "none" : "block";
+    }
+    syncMode();
+
+    $("f-membership").addEventListener("change", function () {
+      cfg.membership = $("f-membership").value; syncMode(); recompute(); save();
+    });
+    [["f-pct","pct"],["f-pctmin","pctMin"],["f-toppct","topPct"],
+     ["f-gate","gate"],["f-vbid","vbid"],["f-env","env"],["f-other","other"]]
+    .forEach(function (p) {
+      $(p[0]).addEventListener("input", function () { cfg[p[1]] = val(p[0]); recompute(); save(); });
+    });
+  }
+
+  /* ---------------- bid sheet ---------------- */
+
+  var lastCalc = null;
+
+  function recompute() {
+    var sale   = val("f-sale");
+    var parts  = val("f-parts");
+    var labor  = val("f-labor");
+    var tow    = val("f-tow");
+    var margin = val("f-margin");
+    var cont   = val("f-cont");
+
+    var budget = sale - margin - tow - parts - labor - cont;
+    var ceiling = solveCeiling(budget);
+    var fees = ceiling > 0 ? totalFees(ceiling) : 0;
+    var allIn = ceiling + fees + tow + parts + labor;
+
+    lastCalc = { sale:sale, parts:parts, labor:labor, tow:tow, margin:margin, cont:cont,
+                 ceiling:ceiling, fees:fees, allIn:allIn };
+
+    var out = $("out-ceiling");
+    out.textContent = money(ceiling);
+    out.className = "ceiling num " + (ceiling > 0 ? "ok" : "bad");
+    $("out-note").textContent = ceiling > 0
+      ? "Todo lo de abajo ya está descontado, fees incluidos."
+      : "A este precio de venta no queda espacio. Déjalo pasar.";
+
+    var rows = [
+      ["Venta proyectada", sale, ""],
+      ["Margen objetivo", -margin, "neg"],
+      ["Piezas", -parts, "neg"],
+      ["Mano de obra", -labor, "neg"],
+      ["Grúa", -tow, "neg"]
+    ];
+    if (cont > 0) rows.push(["Reserva estructural", -cont, "neg"]);
+    rows.push(["Fees de Copart", -fees, "neg"]);
+
+    var tb = $("out-rows");
+    tb.innerHTML = "";
+    rows.forEach(function (r) {
+      var tr = el("tr", r[2]);
+      tr.appendChild(el("td", null, r[0]));
+      tr.appendChild(el("td", null, money(r[1])));
+      tb.appendChild(tr);
+    });
+
+    var trTot = el("tr", "tot");
+    trTot.appendChild(el("td", null, "Techo de puja"));
+    trTot.appendChild(el("td", null, money(ceiling)));
+    tb.appendChild(trTot);
+
+    var trSub = el("tr", "sub");
+    trSub.appendChild(el("td", null, "Te sale del bolsillo, todo incluido"));
+    trSub.appendChild(el("td", null, money(allIn)));
+    tb.appendChild(trSub);
+
+    renderExplainer(ceiling, fees);
+  }
+
+  function renderExplainer(ceiling, fees) {
+    var host = $("fee-explainer");
+    if (ceiling <= 0) { host.innerHTML = "<p>Sin techo válido no hay nada que comparar.</p>"; return; }
+
+    // What a flat mental estimate would have produced.
+    var FLAT = 600;
+    var budget = lastCalc.sale - lastCalc.margin - lastCalc.tow - lastCalc.parts - lastCalc.labor - lastCalc.cont;
+    var naive = Math.max(0, budget - FLAT);
+    var diff = naive - ceiling;
+    var realFeesAtNaive = totalFees(naive);
+    var overpay = (naive + realFeesAtNaive) - (ceiling + fees);
+
+    var txt = "";
+    txt += "<p>Los fees de Copart <strong>dependen del martillo</strong>, y el martillo depende de los fees. " +
+           "Es una referencia circular: por eso a mano se resuelve con un número redondo en la cabeza.</p>";
+    txt += "<p>Si aquí hubieras restado <span class=\"num\">" + money(FLAT) + "</span> fijos, tu techo daría " +
+           "<span class=\"num\">" + money(naive) + "</span>. El techo correcto es <span class=\"num\">" + money(ceiling) + "</span>.</p>";
+
+    if (Math.abs(overpay) >= 20) {
+      var cls = overpay > 0 ? "stop" : "warn";
+      var word = overpay > 0
+        ? "De más. Ese es margen que regalaste en este carro."
+        : "De menos. Ese es margen que dejaste sobre la mesa, y probablemente el carro se lo llevó otro.";
+      txt += "<div class=\"flag " + cls + "\" style=\"margin-top:.8rem\"><span class=\"mark\">" +
+             (overpay > 0 ? "▲" : "▼") + "</span><span><strong class=\"num\">" +
+             money(Math.abs(overpay)) + "</strong> " + word + "</span></div>";
+    }
+    host.innerHTML = txt;
+  }
+
+  /* ---------------- book ---------------- */
+
+  function renderBook() {
+    var b = biases();
+    var st = $("book-stats");
+    st.innerHTML = "";
+
+    function stat(k, v, d, cls) {
+      var e = el("div", "stat" + (cls ? " " + cls : ""));
+      e.appendChild(el("span", "k", k));
+      e.appendChild(el("span", "v", v));
+      e.appendChild(el("span", "d", d));
+      return e;
+    }
+
+    if (!b) {
+      st.appendChild(stat("Unidades", "0", "Registra tu primera compra desde la Hoja de Puja."));
+    } else {
+      var gap = b.margin - b.target;
+      st.appendChild(stat("Vendidas", String(b.n), "Unidades cerradas con venta registrada."));
+      st.appendChild(stat("Margen real prom.", money(b.margin),
+        "Tu objetivo es " + money(b.target) + ".", gap < -500 ? "stop" : (gap < 0 ? "warn" : "go")));
+      st.appendChild(stat("Brecha vs objetivo", signed(gap),
+        gap < 0 ? "Por unidad. En " + b.n + " unidades son " + money(Math.abs(gap * b.n)) + "." : "Por encima del objetivo.",
+        gap < 0 ? "stop" : "go"));
+      st.appendChild(stat("Días en inventario", b.days.toFixed(1),
+        "Promedio de compra a venta.", b.days > 14 ? "warn" : "go"));
+    }
+
+    var open = units.filter(function (u) { return u.status === "open"; }).length;
+    $("book-count").textContent = units.length + " en total · " + open + " en inventario";
+
+    var tb = $("book-rows");
+    tb.innerHTML = "";
+
+    if (!units.length) {
+      var tr0 = el("tr");
+      var td0 = el("td", "", "<div class=\"empty\">Todavía no hay unidades.</div>");
+      td0.colSpan = 10; tr0.appendChild(td0); tb.appendChild(tr0);
+      return;
+    }
+
+    units.slice().reverse().forEach(function (u) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "num", u.lot));
+
+      var d = el("td");
+      d.innerHTML = u.desc + (u.note ? "<div style=\"font-size:.72rem;color:var(--stop);margin-top:.15rem\">" + u.note + "</div>" : "");
+      tr.appendChild(d);
+
+      var stTd = el("td");
+      if (u.status === "sold") stTd.innerHTML = "<span class=\"pill go\">VENDIDO</span>";
+      else stTd.innerHTML = "<span class=\"pill idle\">EN TALLER</span>";
+      tr.appendChild(stTd);
+
+      tr.appendChild(el("td", "n", money(u.hammer)));
+
+      if (u.status === "sold") {
+        var m = realMargin(u), tgt = u.margin, gap = m - tgt;
+        tr.appendChild(el("td", "n", money(realCost(u))));
+        tr.appendChild(el("td", "n", money(u.realSale)));
+        var mt = el("td", "n", money(m));
+        mt.style.color = m < tgt ? "var(--stop)" : "var(--go)";
+        mt.style.fontWeight = "600";
+        tr.appendChild(mt);
+        tr.appendChild(el("td", "n", "<span class=\"delta " + (gap >= 0 ? "pos" : "neg") + "\">" + signed(gap) + "</span>"));
+        tr.appendChild(el("td", "n", String(u.days)));
+        tr.appendChild(el("td"));
+      } else {
+        tr.appendChild(el("td", "n", "—"));
+        tr.appendChild(el("td", "n", "—"));
+        tr.appendChild(el("td", "n", "—"));
+        tr.appendChild(el("td", "n", "—"));
+        tr.appendChild(el("td", "n", "—"));
+        var act = el("td");
+        var btn = el("button", "btn sm", "Cerrar venta");
+        btn.addEventListener("click", function () { openClose(u); });
+        act.appendChild(btn);
+        tr.appendChild(act);
+      }
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---------------- numbers ---------------- */
+
+  function renderNumbers() {
+    var b = biases();
+    var host = $("bias-list");
+    host.innerHTML = "";
+
+    if (!b) {
+      host.innerHTML = "<div class=\"empty\">Necesitas al menos una unidad vendida.</div>";
+      $("recal").innerHTML = "<div class=\"empty\">Sin historia todavía.</div>";
+      $("seg-rows").innerHTML = "";
+      return;
+    }
+
+    var items = [
+      { name: "Piezas",             p: b.parts, a: b.partsAbs, bad: b.parts > 0,
+        good: "Estimas las piezas por encima de lo que gastas.",
+        warn: "Estimas las piezas por debajo. Cada carro te cuesta más de lo que pusiste en la hoja." },
+      { name: "Mano de obra",       p: b.labor, a: b.laborAbs, bad: b.labor > 0,
+        good: "Estimas la mano de obra con holgura.",
+        warn: "Los trabajos te toman más de lo que calculas." },
+      { name: "Precio de venta",    p: b.sale,  a: b.saleAbs,  bad: b.sale < 0,
+        good: "Vendes por encima de lo que proyectas.",
+        warn: "Proyectas la venta más alta de lo que cobras. Revisa si el grado 4.5 es realista para lo que entregas." }
+    ];
+
+    items.forEach(function (it) {
+      var row = el("div", "bias-row");
+      var head = el("div", "bias-head");
+      head.appendChild(el("span", "name", it.name));
+      var v = el("span", "val", pct(it.p) + "  ·  " + signed(it.a));
+      v.style.color = it.bad ? "var(--stop)" : "var(--go)";
+      head.appendChild(v);
+      row.appendChild(head);
+
+      var track = el("div", "bias-track");
+      track.appendChild(el("div", "bias-mid"));
+      var fill = el("div", "bias-fill");
+      var w = Math.min(50, Math.abs(it.p) * 1.6);
+      fill.style.width = w + "%";
+      fill.style.background = it.bad ? "var(--stop)" : "var(--go)";
+      if (it.p >= 0) { fill.style.left = "50%"; } else { fill.style.right = "50%"; }
+      track.appendChild(fill);
+      row.appendChild(track);
+
+      row.appendChild(el("div", "bias-note", it.bad ? it.warn : it.good));
+      host.appendChild(row);
+    });
+
+    // Recalibration
+    var gap = b.margin - b.target;
+    var suggestedMargin = Math.round((b.target + Math.abs(Math.min(0, gap))) / 50) * 50;
+    var structural = sold().filter(function (u) { return u.note; });
+    var contPer = structural.length
+      ? Math.round(avg(structural.map(function (u) {
+          return (u.realParts - u.projParts) + (u.realLabor - u.projLabor);
+        })) * (structural.length / b.n) / 25) * 25
+      : 0;
+
+    var html = "";
+    html += "<p class=\"prose\">Tu fórmula hoy es <span class=\"num\">venta − " + money(b.target) +
+            " − grúa − piezas − mano de obra</span>. " +
+            "Con " + b.n + " unidades cerradas, estos son los números que te está pidiendo la realidad.</p>";
+    html += "<div class=\"stats\" style=\"grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:1rem\">";
+    html += "<div class=\"stat\"><span class=\"k\">Margen a usar</span><span class=\"v\">" + money(suggestedMargin) +
+            "</span><span class=\"d\">Para terminar cobrando los " + money(b.target) + " que quieres.</span></div>";
+    html += "<div class=\"stat\"><span class=\"k\">Ajuste a piezas</span><span class=\"v\">" + pct(b.parts) +
+            "</span><span class=\"d\">Súbele esto a tu estimado antes de meterlo.</span></div>";
+    html += "<div class=\"stat\"><span class=\"k\">Ajuste a la venta</span><span class=\"v\">" + pct(b.sale) +
+            "</span><span class=\"d\">Aplica esto a lo que te dice Manheim.</span></div>";
+    html += "<div class=\"stat\"><span class=\"k\">Reserva estructural</span><span class=\"v\">" + money(contPer) +
+            "</span><span class=\"d\">" + (structural.length
+              ? structural.length + " de " + b.n + " unidades con daño oculto, prorrateado."
+              : "Sin casos registrados todavía.") + "</span></div>";
+    html += "</div>";
+
+    if (contPer > 0) {
+      html += "<div class=\"flag warn\" style=\"margin-top:1rem\"><span class=\"mark\">!</span><span>" +
+              "Esta reserva es un promedio. <strong>No predice cuál carro trae el daño</strong> — ninguna base de datos lo hace. " +
+              "Lo que hace es que cuando aparezca, ya esté pagado." +
+              "</span></div>";
+    }
+    $("recal").innerHTML = html;
+
+    // Segments
+    var bySeg = {};
+    sold().forEach(function (u) {
+      var k = u.damage || "Sin dato";
+      if (!bySeg[k]) bySeg[k] = [];
+      bySeg[k].push(u);
+    });
+    var sr = $("seg-rows");
+    sr.innerHTML = "";
+    Object.keys(bySeg).sort(function (a, c) {
+      return avg(bySeg[c].map(realMargin)) - avg(bySeg[a].map(realMargin));
+    }).forEach(function (k) {
+      var g = bySeg[k];
+      var m = avg(g.map(realMargin));
+      var pe = avg(g.map(function (u) { return (u.realParts - u.projParts) / u.projParts * 100; }));
+      var tr = el("tr");
+      tr.appendChild(el("td", null, k));
+      tr.appendChild(el("td", "n", String(g.length)));
+      var mt = el("td", "n", money(m));
+      mt.style.color = m < g[0].margin ? "var(--stop)" : "var(--go)";
+      tr.appendChild(mt);
+      tr.appendChild(el("td", "n", pct(pe)));
+      sr.appendChild(tr);
+    });
+  }
+
+  /* ---------------- modals ---------------- */
+
+  function closeModal() { $("modal-host").innerHTML = ""; }
+
+  function modal(title, bodyHTML, onSave, saveLabel) {
+    var back = el("div", "modal-back");
+    var m = el("div", "modal");
+    var h = el("div", "modal-h");
+    h.appendChild(el("h3", null, title));
+    var b = el("div", "modal-b", bodyHTML);
+    var f = el("div", "modal-f");
+    var cancel = el("button", "btn", "Cancelar");
+    cancel.addEventListener("click", closeModal);
+    var ok = el("button", "btn primary", saveLabel || "Guardar");
+    ok.addEventListener("click", function () { if (onSave() !== false) closeModal(); });
+    f.appendChild(cancel); f.appendChild(ok);
+    m.appendChild(h); m.appendChild(b); m.appendChild(f);
+    back.appendChild(m);
+    back.addEventListener("click", function (e) { if (e.target === back) closeModal(); });
+    $("modal-host").appendChild(back);
+    var first = m.querySelector("input");
+    if (first) first.focus();
+  }
+
+  function openBuy() {
+    if (!lastCalc || lastCalc.ceiling <= 0) return;
+    var body =
+      "<div class=\"field\"><label for=\"m-hammer\">¿En cuánto lo martillaste?</label>" +
+      "<input id=\"m-hammer\" type=\"number\" inputmode=\"decimal\" value=\"" + lastCalc.ceiling + "\" step=\"10\"></div>" +
+      "<div class=\"field\"><label for=\"m-damage\">Daño primario</label>" +
+      "<select id=\"m-damage\">" +
+      ["FRONT END","REAR END","SIDE","MECHANICAL","UNDERCARRIAGE","ALL OVER"]
+        .map(function (d) { return "<option>" + d + "</option>"; }).join("") +
+      "</select></div>" +
+      "<p class=\"prose\">Se guarda con todo lo que proyectaste. Cuando lo vendas, comparamos.</p>";
+
+    modal("Registrar compra", body, function () {
+      var hammer = parseFloat(document.getElementById("m-hammer").value);
+      if (isNaN(hammer) || hammer <= 0) return false;
+      units.push({
+        id: "u" + Date.now(),
+        lot: $("f-lot").value || "—",
+        desc: $("f-desc").value || "Sin descripción",
+        vin: $("f-vin").value || "",
+        damage: document.getElementById("m-damage").value,
+        projSale: lastCalc.sale, projParts: lastCalc.parts, projLabor: lastCalc.labor,
+        tow: lastCalc.tow, margin: lastCalc.margin,
+        hammer: hammer, status: "open"
+      });
+      save(); renderBook(); renderNumbers(); go("book");
+    }, "Guardar compra");
+  }
+
+  function openClose(u) {
+    var body =
+      "<div class=\"field\"><label for=\"c-sale\">Precio real de venta</label>" +
+      "<input id=\"c-sale\" type=\"number\" inputmode=\"decimal\" value=\"" + u.projSale + "\" step=\"50\"></div>" +
+      "<div class=\"grid2\">" +
+      "<div class=\"field\"><label for=\"c-parts\">Piezas reales</label>" +
+      "<input id=\"c-parts\" type=\"number\" inputmode=\"decimal\" value=\"" + u.projParts + "\" step=\"25\"></div>" +
+      "<div class=\"field\"><label for=\"c-labor\">Mano de obra real</label>" +
+      "<input id=\"c-labor\" type=\"number\" inputmode=\"decimal\" value=\"" + u.projLabor + "\" step=\"25\"></div></div>" +
+      "<div class=\"field\"><label for=\"c-days\">Días de compra a venta</label>" +
+      "<input id=\"c-days\" type=\"number\" inputmode=\"numeric\" value=\"10\" step=\"1\"></div>" +
+      "<div class=\"field\"><label for=\"c-missed\">¿Qué piezas aparecieron que no habías contado?</label>" +
+      "<select id=\"c-missed\" multiple size=\"6\" style=\"height:auto\">" +
+      Object.keys(PART_TEMPLATES).map(function (d) {
+        return PART_TEMPLATES[d].map(function (p) {
+          return "<option value=\"" + p.id + "\">" + p.es + " · " + d + "</option>"; }).join("");
+      }).join("") + "</select>" +
+      "<span class=\"hint\">Ctrl o Cmd para marcar varias. Esto es lo que alimenta tu checklist.</span></div>" +
+      "<div class=\"field text\"><label for=\"c-note\">¿Apareció algo más que no viste? (opcional)</label>" +
+      "<input id=\"c-note\" type=\"text\" placeholder=\"Ej: daño estructural en el piso del maletero\"></div>";
+
+    modal("Cerrar " + u.lot, body, function () {
+      var g = function (id) { return parseFloat(document.getElementById(id).value) || 0; };
+      u.realSale = g("c-sale"); u.realParts = g("c-parts");
+      u.realLabor = g("c-labor"); u.days = g("c-days");
+      var sel = document.getElementById("c-missed");
+      u.missed = Array.prototype.slice.call(sel.selectedOptions).map(function (o) { return o.value; });
+      var n = document.getElementById("c-note").value.trim();
+      if (n) u.note = n;
+      u.status = "sold";
+      save(); renderBook(); renderNumbers();
+    }, "Cerrar unidad");
+  }
+
+  /* ================= PASADA 1 Y 2 · LA LISTA ================= */
+
+  var saleList = [];   // raw lots
+  var pipeline = null; // last run
+
+  /* Deterministic PRNG so the demo shows the same sale every time. */
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  /* Shaped after the real Copart schema and the mix a rental-fleet sale
+     actually carries: newer mainstream sedans and small SUVs, front-end heavy,
+     and a real share of the brands he refuses on parts cost. */
+  var FLEET = [
+    ["Toyota","Camry",1.00],["Toyota","Corolla",0.86],["Toyota","RAV4",1.18],
+    ["Nissan","Altima",0.80],["Nissan","Sentra",0.70],["Nissan","Rogue",0.98],
+    ["Hyundai","Elantra",0.74],["Hyundai","Sonata",0.86],["Hyundai","Tucson",1.02],
+    ["Kia","Forte",0.72],["Kia","Optima",0.84],["Kia","Sportage",1.00],
+    ["Chevrolet","Malibu",0.82],["Chevrolet","Equinox",1.00],["Chevrolet","Trax",0.78],
+    ["Honda","Civic",0.92],["Honda","Accord",1.06],["Honda","CR-V",1.22],
+    ["Mazda","Mazda3",0.86],["Mazda","CX-5",1.10],
+    ["Volkswagen","Jetta",0.80],["Mitsubishi","Outlander",0.76],
+    ["Ford","Fusion",0.80],["Ford","Escape",0.92],["Ford","Explorer",1.24],
+    ["Dodge","Charger",1.02],["Dodge","Journey",0.72],["Chrysler","300",0.94],
+    ["Chrysler","Pacifica",1.08],["Jeep","Compass",0.90],["Jeep","Cherokee",1.06],
+    ["Ram","1500",1.30]
+  ];
+  /* Distributions measured on the 73 lots carrying rentals=true in a 5,000-lot
+     sample of live Copart data, 13–17 July 2026. Damage and title values use
+     the exact casing and codes the real export carries. */
+  var DAMAGES = [
+    ["FRONT END",.52],["REAR END",.19],["SIDE",.11],["MECHANICAL",.10],
+    ["UNDERCARRIAGE",.03],["ALL OVER",.03],["BURN - INTERIOR",.01],["VANDALISM",.01]
+  ];
+  var TITLES = [["CT",.726],["ST",.123],["CZ",.068],["SC",.055],["DC",.014],["SV",.014]];
+  var YARDS = [
+    ["342","MD - BALTIMORE EAST","21225",39.2259,-76.6153], ["385","MI - WAYLAND","49348",42.6643,-85.6191],
+    ["855","WHOLESALE AUCTION","94503",38.1668,-122.2553], ["369","KS - KANSAS CITY","66111",39.0803,-94.7806],
+    ["362","AZ - PHOENIX NORTH","85085",33.7529,-112.0893], ["394","TX - NORTH AUSTIN","76574",30.5807,-97.4401],
+    ["361","MA - FREETOWN","02702",41.7975,-71.0607], ["370","IN - DYER","46311",41.4920,-87.5108],
+    ["376","OH - AKRON","44203",41.0197,-81.6212], ["838","RENTAL VEHICLE SALE","75172",32.5981,-96.6838],
+    ["360","IN - FORT WAYNE","46803",41.0695,-85.1074], ["345","KY - EARLINGTON","42410",37.2743,-87.5131],
+    ["344","NY - BUFFALO","14006",42.6366,-79.0497], ["350","CT - HARTFORD SPRINGFIELD","06026",41.9322,-72.7459],
+    ["368","NC - RALEIGH NORTH","27545",35.7789,-78.4898], ["373","NC - LAGRANGE","28551",35.3054,-77.7686],
+    ["371","WI - MILWAUKEE SOUTH","53132",42.9017,-88.0086], ["398","IA - CEDAR RAPIDS","52404",41.9521,-91.6853],
+    ["197","SC - NORTH CHARLESTON","29448",33.2205,-80.4501], ["384","ME - WINDHAM","04062",43.7958,-70.4143],
+    ["367","CA - MENTONE","92359",34.0774,-117.1126], ["340","NC - GASTONIA","28052",35.2449,-81.2194],
+    ["199","RI - EXETER","02822",41.5740,-71.6076], ["338","NC - LUMBERTON","28360",34.6697,-79.1084],
+    ["395","VT - RUTLAND","05736",43.6023,-73.0170], ["916","AL - CUSSETA","36852",32.7831,-85.2756],
+    ["357","TX - HOUSTON EAST","77049",29.8235,-95.1848], ["836","HEAVY TRUCK SPECIALTY SALE","31008",32.6181,-83.7890],
+    ["194","VA - FREDERICKSBURG","22408",38.2481,-77.4681], ["341","AL - DOTHAN","36352",31.3311,-85.5992],
+    ["835","MEDIUM DUTY SPECIALTY SALE","79714",32.3201,-102.5409], ["386","LA - VINTON","70663",30.2190,-93.3639],
+    ["359","GA - AUGUSTA","30906",33.3589,-82.0099], ["166","OH - DAYTON","45439",39.7010,-84.2187],
+    ["880","*NCS - EASTERN REGION","27028",35.9220,-80.5370], ["343","CA - REDDING","96007",40.4574,-122.3282],
+    ["841","CRASHEDTOYS POWERSPORT AUCTION","21225",39.2259,-76.6153], ["337","WA - SPANAWAY","98387",47.0732,-122.3943],
+    ["111","OH - CLEVELAND EAST","44067",41.3208,-81.5429], ["366","FL - CLEWISTON","33440",26.7172,-80.9492],
+    ["356","NC - CONCORD","28025",35.3716,-80.5300], ["339","WI - MILWAUKEE NORTH","53224",43.1594,-88.0327],
+    ["396","SD - RAPID CITY","57701",44.1415,-103.2052], ["832","MEDIUM DUTY CLEAN TITLE SALE","75172",32.5981,-96.6838],
+    ["363","ND - BISMARCK","58504",46.7231,-100.6780],
+  ];
+
+  /* 45 real Copart yards with real ZIPs, geocoded. Yard 838 "RENTAL VEHICLE SALE"
+     runs Monday and Wednesday only — which is the sale Juan described. */
+  function haversine(a, b, c, d) {
+    var R = 3958.8, rad = function (x) { return x * Math.PI / 180; };
+    var x = Math.pow(Math.sin(rad(c - a) / 2), 2) +
+            Math.cos(rad(a)) * Math.cos(rad(c)) * Math.pow(Math.sin(rad(d - b) / 2), 2);
+    return 2 * R * Math.asin(Math.sqrt(x));
+  }
+  var YARD_BY_NUM = {};
+  YARDS.forEach(function (y) { YARD_BY_NUM[y[0]] = y; });
+
+  function pick(r, weighted) {
+    var tot = weighted.reduce(function (a, x) { return a + x[x.length - 1]; }, 0);
+    var v = r() * tot;
+    for (var i = 0; i < weighted.length; i++) {
+      v -= weighted[i][weighted[i].length - 1];
+      if (v <= 0) return weighted[i];
+    }
+    return weighted[weighted.length - 1];
+  }
+
+  function generateSale(n, seed) {
+    var r = rng(seed || 20260803);
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var f = FLEET[Math.floor(r() * FLEET.length)];
+      var dmg = pick(r, DAMAGES)[0];
+      var dmg2 = r() < 0.44 ? pick(r, DAMAGES)[0] : "";
+      var ttl = pick(r, TITLES)[0];
+      var yard = YARDS[Math.floor(r() * YARDS.length)];
+      // Measured on real rental lots: median year 2024, range 2020–2026;
+      // median mileage 72,043 with only 57% under 85,000.
+      var year = 2020 + Math.floor(r() * 7);
+      var age = Math.max(0, 2026 - year);
+      var miles = Math.round((18000 + Math.pow(r(), 0.9) * 108000) / 100) * 100;
+
+      // base retail scales with segment factor and depreciates with age
+      var base = 27500 * f[2] * Math.pow(0.885, age) * (0.92 + r() * 0.18);
+      base -= Math.min(base * 0.26, miles * 0.030);
+      var estRetail = Math.max(3200, Math.round(base / 50) * 50);
+
+      // Copart's own repair estimate as a share of retail. Light collision on a
+      // late-model fleet unit is a fraction of the car — that is the whole trade.
+      var sev = { "VANDALISM":0.09, "MECHANICAL":0.10, "REAR END":0.13, "SIDE":0.15,
+                  "FRONT END":0.17, "UNDERCARRIAGE":0.26, "BURN - INTERIOR":0.40,
+                  "ALL OVER":0.45 }[dmg] || 0.15;
+      var cpRepair = Math.round(estRetail * sev * (0.72 + r() * 0.62) / 25) * 25;
+
+      // Real exports carry gaps: mileage absent on 12.4% of lots, repair cost on 30.3%.
+      var noMiles  = r() < 0.124;
+      var noRepair = r() < 0.303;
+
+      var lot = String(58100000 + Math.floor(r() * 899999));
+      out.push({
+        lotId: lot,
+        vin: "DEMO" + lot + String(Math.floor(r() * 90) + 10),
+        year: year, make: f[0].toUpperCase(), modelGroup: f[1].toUpperCase(),
+        mileage: noMiles ? 0 : miles, _noMileage: noMiles,
+        damageDescription: dmg, secondaryDamage: dmg2,
+        yardNumber: yard[0], yardName: yard[1],
+        saleTitleType: ttl, saleTitleState: yard[1].slice(0, 2),
+        estRetailValue: estRetail,
+        repairCost: noRepair ? 0 : cpRepair, _noRepair: noRepair,
+        // Screening happens 9:00–12:00, before bidding opens, so most lots
+        // carry only a low pre-bid at this hour.
+        highBid: Math.round(Math.max(150, estRetail * (0.06 + r() * 0.26) - cpRepair * 0.55) / 25) * 25,
+        runsDrives: r() < 0.72, hasKeys: r() < 0.81,
+        rental: r() < 0.88,
+        locationZip: yard[2],
+        saleTime: (9 + Math.floor(r() * 7)) + ":" + (r() < .5 ? "00" : "30")
+      });
+    }
+    return out;
+  }
+
+  /* ---- CSV ---- */
+  function parseCSV(text) {
+    var rows = [], row = [], cur = "", q = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (q) {
+        if (c === '"' && text[i + 1] === '"') { cur += '"'; i++; }
+        else if (c === '"') q = false;
+        else cur += c;
+      } else if (c === '"') q = true;
+      else if (c === ",") { row.push(cur); cur = ""; }
+      else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
+      else if (c !== "\r") cur += c;
+    }
+    if (cur.length || row.length) { row.push(cur); rows.push(row); }
+    if (!rows.length) return [];
+    var head = rows[0].map(function (h) { return h.trim(); });
+    return rows.slice(1).filter(function (r) { return r.length > 1; }).map(function (r) {
+      var o = {};
+      head.forEach(function (h, i) { o[h] = (r[i] || "").trim(); });
+      return o;
+    });
+  }
+
+  var ALIASES = {
+    lotId: ["lotId","Lot number","Lot Number","lot_number","LotNumber","Lot #"],
+    vin: ["vin","VIN","Vehicle Identification Number"],
+    year: ["year","Year"],
+    make: ["make","Make"],
+    modelGroup: ["modelGroup","Model","model","Model Group"],
+    mileage: ["mileage","Odometer","odometer","Mileage"],
+    damageDescription: ["damageDescription","Damage Description","Primary Damage","damage"],
+    secondaryDamage: ["secondaryDamage","Secondary Damage"],
+    saleTitleType: ["saleTitleType","Title Type","Sale Title Type","Title"],
+    saleTitleState: ["saleTitleState","Title State","Sale Title State"],
+    estRetailValue: ["estRetailValue","Est. Retail Value","Estimated Retail Value","ACV"],
+    repairCost: ["repairCost","Repair Cost","Est Repair Cost","Estimated Repair Cost"],
+    highBid: ["highBid","High Bid","Current Bid","High Bid =non-vix,Sealed"],
+    runsDrives: ["runsDrives","Runs/Drives","Run & Drive"],
+    hasKeys: ["hasKeys","Has Keys","Keys"],
+    rental: ["rentals","rental","Rental","Rentals"],
+    yardName: ["yardName","Yard name","Location","Yard Name"],
+    locationZip: ["locationZip","Location Zip","Zip"]
+  };
+
+  /* Real Copart exports do not use booleans or plain words. Measured against
+     5,000 live lots (13–17 July 2026):
+       runsDrives  -> "Run & Drive Verified" | "Vehicle Starts" | "DEFAULT"
+       hasKeys     -> "YES" | "NO" | "EXM"
+       rentals     -> "true" | "false"
+       mileage     -> 0 on 12.4% of lots, meaning absent, not zero miles
+       repairCost  -> 0 on 30.3% of lots, meaning absent
+       locationZip -> may carry ZIP+4 with a space, e.g. "66111 2629"
+       damage      -> UPPERCASE
+       titleType   -> 2-letter state-specific code; 83 distinct codes seen */
+  function mapRow(raw) {
+    var o = {};
+    Object.keys(ALIASES).forEach(function (k) {
+      for (var i = 0; i < ALIASES[k].length; i++) {
+        var v = raw[ALIASES[k][i]];
+        if (v !== undefined && v !== "" && v !== "[PREMIUM]") { o[k] = v; return; }
+      }
+    });
+
+    ["year","mileage","estRetailValue","repairCost","highBid"].forEach(function (k) {
+      var v = String(o[k] === undefined ? "" : o[k]).replace(/[^0-9.\-]/g, "");
+      o[k] = v === "" ? 0 : parseFloat(v) || 0;
+    });
+
+    // 0 means "not reported", so keep it distinguishable from a real zero
+    o._noMileage = !(o.mileage > 0);
+    o._noRepair  = !(o.repairCost > 0);
+    o._noRetail  = !(o.estRetailValue > 0);
+
+    var rd = String(o.runsDrives || "").toUpperCase();
+    o.runsDrives = /RUN|START/.test(rd);
+
+    var hk = String(o.hasKeys || "").toUpperCase();
+    o.hasKeys = hk === "YES";
+
+    o.rental = /^true$|^y|^1$/i.test(String(o.rental || ""));
+
+    o.damageDescription = String(o.damageDescription || "").toUpperCase().trim();
+    o.secondaryDamage   = String(o.secondaryDamage || "").toUpperCase().trim();
+    o.saleTitleType     = String(o.saleTitleType || "").toUpperCase().trim();
+    o.make              = String(o.make || "").toUpperCase().trim();
+    o.locationZip       = String(o.locationZip || "").replace(/\s+/g, "").slice(0, 5);
+
+    o._miles = 60;
+    return o;
+  }
+
+  /* ---- calibration from the ledger ---- */
+  function calibration() {
+    var s = sold().filter(function (u) { return u.cpRepair && u.estRetail; });
+    if (s.length >= 3) {
+      return {
+        n: s.length, source: "ledger",
+        saleF:  avg(s.map(function (u) { return u.realSale / u.estRetail; })),
+        partsF: avg(s.map(function (u) { return u.realParts / u.cpRepair; })),
+        laborF: avg(s.map(function (u) { return u.realLabor / u.realParts; }))
+      };
+    }
+    return { n: s.length, source: "default", saleF: 0.82, partsF: 1.15, laborF: 0.60 };
+  }
+
+  /* ---- tow: real distance, his real rate ---- */
+  var shop = { name: "TX - DALLAS", lat: 32.7767, lon: -96.7970,
+               base: 120, perMile: 1.85, minCharge: 175 };
+
+  function milesToYard(lot) {
+    var y = YARD_BY_NUM[lot.yardNumber];
+    if (!y) {
+      // fall back to matching by yard name when the export carries no number
+      for (var i = 0; i < YARDS.length; i++) {
+        if (YARDS[i][1] === lot.yardName || YARDS[i][2] === lot.locationZip) { y = YARDS[i]; break; }
+      }
+    }
+    if (!y) return null;
+    return haversine(shop.lat, shop.lon, y[3], y[4]);
+  }
+
+  function towFor(lot) {
+    var mi = milesToYard(lot);
+    if (mi === null) return Math.round((shop.base + 60 * shop.perMile) / 5) * 5;
+    lot._towMiles = Math.round(mi);
+    return Math.max(shop.minCharge, Math.round((shop.base + mi * shop.perMile) / 5) * 5);
+  }
+
+  function estimateLot(lot, cal) {
+    var sale  = lot.estRetailValue * cal.saleF;
+    var parts = lot.repairCost * cal.partsF;
+    var labor = parts * cal.laborF;
+    var tow   = towFor(lot);
+    return { sale: sale, parts: parts, labor: labor, tow: tow };
+  }
+
+  /* ================= FILTROS ================= */
+
+  var JUAN_BAD_MAKES = ["chrysler","jeep","ford","dodge","ram"];
+  var JUAN_BAD_DAMAGE = ["all over","burn","flood","rollover","undercarriage","water/flood"];
+
+  /* Copart title codes are two letters, state-specific, and there are many:
+     83 distinct codes over 258 state+code combinations in a 5,000-lot sample.
+     Only the ones below are treated as clean by default. Every other code
+     shows up as a chip he can switch on himself, because guessing at 83 codes
+     on his behalf is exactly how a filter quietly drops good cars. */
+  var CLEAN_TITLE_CODES = ["CT","CZ","CJ","CD","CQ"];
+
+  function defaultRules() {
+    return {
+      miles: 85000, yearMin: 0, margin: 6000, distMax: 0,
+      retMin: 0, retMax: 0, repMax: 0, roomMin: 0,
+      rental: true, runs: false, keys: false, noSecondary: false,
+      makes: {}, damages: {}, titles: {}
+    };
+  }
+  var rules = defaultRules();
+  var presets = [];
+  var activePreset = null;
+
+  var FACETS = [
+    { key: "makes",   field: function (l) { return l.make; },
+      bad: function (v) { return JUAN_BAD_MAKES.indexOf(String(v).toLowerCase()) > -1; } },
+    { key: "damages", field: function (l) { return l.damageDescription; },
+      bad: function (v) { return JUAN_BAD_DAMAGE.some(function (b) { return String(v).toLowerCase().indexOf(b) > -1; }); } },
+    { key: "titles",  field: function (l) { return l.saleTitleType; },
+      bad: function (v) { return CLEAN_TITLE_CODES.indexOf(String(v).toUpperCase()) === -1; } }
+  ];
+
+  /* Any value present in the loaded sale but absent from the rules gets a
+     sensible default — allowed, unless it is one Juan already refuses. */
+  function ensureFacets() {
+    FACETS.forEach(function (f) {
+      var seen = {};
+      saleList.forEach(function (l) {
+        var v = f.field(l);
+        if (v === undefined || v === null || v === "") return;
+        seen[v] = true;
+        if (rules[f.key][v] === undefined) rules[f.key][v] = !f.bad(v);
+      });
+      // also fold in secondary damage values
+      if (f.key === "damages") {
+        saleList.forEach(function (l) {
+          var v = l.secondaryDamage;
+          if (!v) return;
+          seen[v] = true;
+          if (rules[f.key][v] === undefined) rules[f.key][v] = !f.bad(v);
+        });
+      }
+      Object.keys(rules[f.key]).forEach(function (k) { if (!seen[k]) delete rules[f.key][k]; });
+    });
+  }
+
+  function syncDOMFromRules() {
+    $("r-miles").value = rules.miles; $("r-yearmin").value = rules.yearMin;
+    $("r-margin").value = rules.margin; $("r-dist").value = rules.distMax;
+    $("r-retmin").value = rules.retMin; $("r-retmax").value = rules.retMax;
+    $("r-repmax").value = rules.repMax; $("r-roommin").value = rules.roomMin;
+    $("r-rental").checked = rules.rental; $("r-runs").checked = rules.runs;
+    $("r-keys").checked = rules.keys; $("r-sec").checked = rules.noSecondary;
+  }
+
+  function syncRulesFromDOM() {
+    rules.miles = val("r-miles"); rules.yearMin = val("r-yearmin");
+    rules.margin = val("r-margin"); rules.distMax = val("r-dist");
+    rules.retMin = val("r-retmin"); rules.retMax = val("r-retmax");
+    rules.repMax = val("r-repmax"); rules.roomMin = val("r-roommin");
+    rules.rental = $("r-rental").checked; rules.runs = $("r-runs").checked;
+    rules.keys = $("r-keys").checked; rules.noSecondary = $("r-sec").checked;
+  }
+
+  function renderFilters() {
+    if (!saleList.length) return;
+    ensureFacets();
+
+    // counts per facet value across the whole sale
+    var counts = { makes: {}, damages: {}, titles: {} };
+    saleList.forEach(function (l) {
+      counts.makes[l.make] = (counts.makes[l.make] || 0) + 1;
+      counts.titles[l.saleTitleType] = (counts.titles[l.saleTitleType] || 0) + 1;
+      counts.damages[l.damageDescription] = (counts.damages[l.damageDescription] || 0) + 1;
+    });
+
+    [["makes","c-makes"],["damages","c-damages"],["titles","c-titles"]].forEach(function (p) {
+      var host = $(p[1]);
+      host.innerHTML = "";
+      Object.keys(rules[p[0]]).sort(function (a, b) {
+        return (counts[p[0]][b] || 0) - (counts[p[0]][a] || 0) || a.localeCompare(b);
+      }).forEach(function (k) {
+        var c = el("button", "chip");
+        c.type = "button";
+        c.setAttribute("aria-pressed", rules[p[0]][k] ? "true" : "false");
+        c.innerHTML = k + (counts[p[0]][k] ? " <span class=\"cn\">" + counts[p[0]][k] + "</span>" : "");
+        c.addEventListener("click", function () {
+          rules[p[0]][k] = !rules[p[0]][k];
+          c.setAttribute("aria-pressed", rules[p[0]][k] ? "true" : "false");
+          activePreset = null;
+          runPipeline();
+        });
+        host.appendChild(c);
+      });
+    });
+
+    renderPresets();
+  }
+
+  function renderPresets() {
+    var host = $("presets");
+    host.innerHTML = "";
+    if (!presets.length) {
+      host.innerHTML = "<span class=\"prose\" style=\"margin:0\">Todavía no has guardado ninguno.</span>";
+      return;
+    }
+    presets.forEach(function (p, i) {
+      var c = el("button", "chip preset");
+      c.type = "button";
+      c.setAttribute("aria-pressed", activePreset === i ? "true" : "false");
+      c.appendChild(document.createTextNode(p.name));
+      var x = el("span", "x", "×");
+      x.title = "Borrar";
+      x.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        presets.splice(i, 1);
+        if (activePreset === i) activePreset = null;
+        save(); renderPresets();
+      });
+      c.appendChild(x);
+      c.addEventListener("click", function () {
+        rules = JSON.parse(JSON.stringify(p.rules));
+        activePreset = i;
+        syncDOMFromRules(); renderFilters(); runPipeline();
+      });
+      host.appendChild(c);
+    });
+  }
+
+  function updateLiveBar() {
+    if (!pipeline) return;
+    $("live-n").textContent = pipeline.afterHard.toLocaleString("en-US");
+    $("live-info").innerHTML =
+      "de <span class=\"num\">" + pipeline.total.toLocaleString("en-US") + "</span> lotes en la venta. " +
+      "Tras estimar margen y comparar contra la preoferta quedan <strong class=\"num\">" +
+      pipeline.short.length + "</strong> en el shortlist.";
+  }
+
+  /* ---- the pipeline ---- */
+  function runPipeline() {
+    if (!saleList.length) return;
+    syncRulesFromDOM();
+    ensureFacets();
+    var cal = calibration();
+
+    var stages = [], drops = [];
+    var cur = saleList.slice();
+    var total = cur.length;
+
+    function stage(name, note, test) {
+      var kept = [], before = cur.length;
+      cur.forEach(function (l) {
+        var why = test(l);
+        if (why) drops.push({ lot: l, why: why });
+        else kept.push(l);
+      });
+      cur = kept;
+      stages.push({ name: name, note: note, n: cur.length, dropped: before - cur.length, total: total });
+    }
+
+    stages.push({ name: "Lotes en la venta", note: "Lo que salió publicado hoy.", n: total, dropped: 0, total: total, head: true });
+
+    if (rules.rental) stage("Categoría Rental Vehicles", "Campo rental del propio Copart.",
+      function (l) { return l.rental ? null : "No es rental"; });
+
+    // A lot with no odometer reported is not a zero-mile lot. Copart leaves this
+    // blank on 12.4% of listings, so it gets its own line instead of sliding
+    // through the mileage filter unnoticed.
+    stage("Millaje reportado", "Copart lo deja vacío en 12% de los lotes.",
+      function (l) { return l._noMileage ? "Sin millaje reportado" : null; });
+
+    if (rules.miles > 0) stage("Millaje hasta " + rules.miles.toLocaleString("en-US"), "Filtro duro suyo.",
+      function (l) { return l.mileage <= rules.miles ? null : "Millaje " + l.mileage.toLocaleString("en-US"); });
+
+    if (rules.yearMin > 0) stage("Año desde " + rules.yearMin, "Antigüedad máxima.",
+      function (l) { return l.year >= rules.yearMin ? null : "Año " + l.year; });
+
+    stage("Título aceptado", "Los tipos que dejaste encendidos.",
+      function (l) { return rules.titles[l.saleTitleType] !== false ? null : "Título: " + l.saleTitleType; });
+
+    stage("Marca aceptada", "Su política por costo de repuestos.",
+      function (l) { return rules.makes[l.make] !== false ? null : "Marca: " + l.make; });
+
+    stage("Tipo de daño aceptado", "Sobre daño primario y secundario.", function (l) {
+      if (rules.damages[l.damageDescription] === false) return "Daño: " + l.damageDescription;
+      if (l.secondaryDamage && rules.damages[l.secondaryDamage] === false) return "Daño 2°: " + l.secondaryDamage;
+      return null;
+    });
+
+    if (rules.noSecondary) stage("Sin daño secundario", "Solo un punto de impacto.",
+      function (l) { return l.secondaryDamage ? "Trae daño secundario" : null; });
+
+    if (rules.runs) stage("Run & drive", "Arranca y se mueve.",
+      function (l) { return l.runsDrives ? null : "No run & drive"; });
+
+    if (rules.keys) stage("Con llaves", "Opcional.",
+      function (l) { return l.hasKeys ? null : "Sin llaves"; });
+
+    if (rules.retMin > 0 || rules.retMax > 0) stage("Rango de valor retail", "Acota el tamaño del negocio.",
+      function (l) {
+        if (rules.retMin > 0 && l.estRetailValue < rules.retMin) return "Retail " + money(l.estRetailValue) + " bajo el mínimo";
+        if (rules.retMax > 0 && l.estRetailValue > rules.retMax) return "Retail " + money(l.estRetailValue) + " sobre el máximo";
+        return null;
+      });
+
+    if (rules.repMax > 0) stage("Reparación hasta " + money(rules.repMax), "Estimado de Copart.",
+      function (l) { return l.repairCost <= rules.repMax ? null : "Reparación " + money(l.repairCost); });
+
+    if (rules.distMax > 0) stage("Yard a " + rules.distMax + " millas o menos", "Acota el costo de grúa.",
+      function (l) { return (l._miles || 0) <= rules.distMax ? null : (l._miles || 0) + " millas al yard"; });
+
+    var afterHard = cur.length;
+
+    // Without a repair estimate or a retail value there is nothing to compute a
+    // ceiling from. Copart omits repair cost on 30% of lots. These are not bad
+    // cars — they are cars the machine cannot rank, and they go to him by hand.
+    var manual = [];
+    stage("Datos para estimar", "Copart omite el costo de reparación en 30% de los lotes.",
+      function (l) {
+        if (l._noRepair || !(l.repairCost > 0)) { manual.push(l); return "Sin costo de reparación"; }
+        if (!(l.estRetailValue > 0)) { manual.push(l); return "Sin valor retail"; }
+        return null;
+      });
+
+    // ---- pass 2 ----
+    cur.forEach(function (l) {
+      var e = estimateLot(l, cal);
+      l._est = e;
+      l._budget = e.sale - rules.margin - e.tow - e.parts - e.labor;
+      l._ceiling = solveCeiling(l._budget);
+      l._room = l._ceiling - (l.highBid || 0);
+    });
+
+    stage("Deja margen a algún precio", "Techo mayor que cero tras piezas, mano de obra y grúa.",
+      function (l) { return l._ceiling > 0 ? null : "Techo $0 — no hay negocio"; });
+
+    stage("La preoferta no lo pasó", "Ya está por encima de su techo.",
+      function (l) { return l._room > 0 ? null : "Preoferta " + money(l.highBid) + " sobre techo " + money(l._ceiling); });
+
+    if (rules.roomMin > 0) stage("Margen disponible sobre " + money(rules.roomMin), "Descarta lo apretado.",
+      function (l) { return l._room >= rules.roomMin ? null : "Solo " + money(l._room) + " de margen"; });
+
+    cur.sort(function (a, b) { return b._room - a._room; });
+    stages[stages.length - 1].final = true;
+
+    pipeline = { stages: stages, short: cur, drops: drops, cal: cal,
+                 total: total, rules: rules, afterHard: afterHard, manual: manual };
+    save();
+    renderPipeline();
+  }
+
+  function renderPipeline() {
+    if (!pipeline) return;
+    $("pipe-wrap").style.display = "";
+    $("rules-wrap").style.display = "";
+    $("calib-wrap").style.display = "";
+    $("short-wrap").style.display = "";
+    $("drop-wrap").style.display = "";
+
+    // funnel
+    var f = $("funnel");
+    f.innerHTML = "";
+    pipeline.stages.forEach(function (s) {
+      var d = el("div", "fstage" + (s.final ? " final" : ""));
+      var h = el("div", "fhead");
+      h.appendChild(el("span", "fname", s.name));
+      if (s.dropped > 0) h.appendChild(el("span", "fdrop", "−" + s.dropped.toLocaleString("en-US")));
+      h.appendChild(el("span", "fn", s.n.toLocaleString("en-US")));
+      d.appendChild(h);
+      var bar = el("div", "fbar");
+      var fill = el("i");
+      fill.style.width = (s.total ? (s.n / s.total * 100) : 0) + "%";
+      bar.appendChild(fill);
+      d.appendChild(bar);
+      if (s.note) d.appendChild(el("div", "fnote", s.note));
+      f.appendChild(d);
+    });
+
+    var mark = el("div", "flag warn");
+    mark.style.marginTop = ".9rem";
+    mark.innerHTML = "<span class=\"mark\">→</span><span>Tus filtros duros solos dejan <strong class=\"num\">" +
+      pipeline.afterHard.toLocaleString("en-US") + "</strong> de " + pipeline.total.toLocaleString("en-US") +
+      ". <strong>Este es el número que hay que comparar contra los 200 que analizas hoy.</strong> " +
+      "Si se parecen, ya estás viendo todo lo que califica y el valor está en el orden, no en la cobertura. " +
+      "Si es mucho mayor, cada lunes se te están quedando carros sin abrir.</span>";
+    f.appendChild(mark);
+
+    if (pipeline.manual && pipeline.manual.length) {
+      var man = el("div", "flag stop");
+      man.style.marginTop = ".6rem";
+      man.innerHTML = "<span class=\"mark\">?</span><span><strong class=\"num\">" +
+        pipeline.manual.length + "</strong> lotes pasaron tus reglas pero <strong>Copart no publicó " +
+        "el dato para estimarlos</strong>. No son malos carros: son carros que la máquina no puede ordenar. " +
+        "Van a tu revisión a mano, y por eso salen contados aquí en vez de desaparecer.</span>";
+      f.appendChild(man);
+    }
+
+    $("rules-sum").textContent = pipeline.total.toLocaleString("en-US") + " lotes → " +
+      pipeline.afterHard + " pasan tus reglas → " + pipeline.short.length + " en el shortlist";
+
+    // drops attributed back to the filter section that caused them
+    var SEC = {
+      "d-basic": /^(Millaje|Año)/, "d-money": /^(Retail|Reparación|Solo )/,
+      "d-cond": /^(No es rental|No run|Sin llaves|Trae daño secundario)/,
+      "d-title": /^Título/, "d-make": /^Marca/, "d-dmg": /^Daño/
+    };
+    Object.keys(SEC).forEach(function (id) {
+      var n = pipeline.drops.filter(function (d) { return SEC[id].test(d.why); }).length;
+      var e = $(id);
+      if (e) e.textContent = n ? "−" + n.toLocaleString("en-US") : "";
+    });
+
+    updateLiveBar();
+
+    // calibration
+    var c = pipeline.cal;
+    $("calib-src").textContent = c.source === "ledger"
+      ? "medido sobre " + c.n + " unidades tuyas"
+      : "valores por defecto — sin historia todavía";
+    var ch = "";
+    ch += "<div class=\"stats\" style=\"grid-template-columns:repeat(auto-fit,minmax(150px,1fr))\">";
+    ch += "<div class=\"stat\"><span class=\"k\">Venta ÷ est. retail</span><span class=\"v\">" + c.saleF.toFixed(2) +
+          "</span><span class=\"d\">De cada dólar que Copart estima como retail, tú cobras esto.</span></div>";
+    ch += "<div class=\"stat\"><span class=\"k\">Piezas ÷ est. Copart</span><span class=\"v\">" + c.partsF.toFixed(2) +
+          "</span><span class=\"d\">Tu gasto real contra el estimado de reparación de ellos.</span></div>";
+    ch += "<div class=\"stat\"><span class=\"k\">M. obra ÷ piezas</span><span class=\"v\">" + c.laborF.toFixed(2) +
+          "</span><span class=\"d\">Lo que la mano de obra suma sobre las piezas.</span></div>";
+    ch += "</div>";
+    if (c.source === "ledger") {
+      ch += "<div class=\"flag warn\" style=\"margin-top:.9rem\"><span class=\"mark\">i</span><span>" +
+            "Estos tres factores <strong>salen del Libro</strong>, no de una suposición nuestra. " +
+            "Con " + c.n + " unidades ya sirven para ordenar. Con cincuenta sirven para confiar. " +
+            "Sin el Libro, esta pantalla sería adivinanza con buena presentación.</span></div>";
+    } else {
+      ch += "<div class=\"flag stop\" style=\"margin-top:.9rem\"><span class=\"mark\">!</span><span>" +
+            "Sin unidades cerradas en el Libro, esto usa factores genéricos. " +
+            "<strong>El orden no es confiable todavía.</strong> Se vuelve confiable a medida que registras ventas.</span></div>";
+    }
+    $("calib-body").innerHTML = ch;
+
+    // shortlist
+    var top = pipeline.short.slice(0, 40);
+    $("short-count").textContent = pipeline.short.length + " con margen · mostrando " + top.length;
+    var tb = $("short-rows");
+    tb.innerHTML = "";
+    top.forEach(function (l, i) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "rank", String(i + 1)));
+      tr.appendChild(el("td", "num", l.lotId));
+      tr.appendChild(el("td", null, l.year + " " + l.make + " " + l.modelGroup));
+      tr.appendChild(el("td", "n", (l.mileage || 0).toLocaleString("en-US")));
+      var dt = el("td");
+      dt.innerHTML = l.damageDescription + (l.secondaryDamage ? "<div style=\"font-size:.7rem;color:var(--ink-3)\">+ " + l.secondaryDamage + "</div>" : "");
+      tr.appendChild(dt);
+      tr.appendChild(el("td", "n", money(l.highBid)));
+      tr.appendChild(el("td", "n", money(l._ceiling)));
+      var rm = el("td", "n", money(l._room));
+      rm.style.color = "var(--go)"; rm.style.fontWeight = "600";
+      tr.appendChild(rm);
+      tr.appendChild(el("td", "num", l.saleTime));
+      var a = el("td");
+      var b = el("button", "btn sm", "Abrir");
+      b.addEventListener("click", function () { toSheet(l); });
+      a.appendChild(b);
+      tr.appendChild(a);
+      tb.appendChild(tr);
+    });
+
+    // drops
+    $("drop-sum").textContent = pipeline.drops.length.toLocaleString("en-US") + " descartados";
+    var dr = $("drop-rows");
+    dr.innerHTML = "";
+    pipeline.drops.slice(0, 60).forEach(function (d) {
+      var tr = el("tr");
+      tr.appendChild(el("td", "num", d.lot.lotId));
+      tr.appendChild(el("td", null, d.lot.year + " " + d.lot.make + " " + d.lot.modelGroup));
+      tr.appendChild(el("td", "n", (d.lot.mileage || 0).toLocaleString("en-US")));
+      tr.appendChild(el("td", null, d.why));
+      dr.appendChild(tr);
+    });
+    $("drop-more").textContent = pipeline.drops.length > 60
+      ? "Mostrando 60 de " + pipeline.drops.length.toLocaleString("en-US") + ". Ninguno se descartó sin motivo registrado."
+      : "";
+  }
+
+  /* pass 3 handoff */
+  function toSheet(l) {
+    $("f-lot").value = l.lotId;
+    $("f-vin").value = l.vin || "";
+    $("f-desc").value = l.year + " " + l.make + " " + l.modelGroup;
+    $("f-sale").value  = Math.round(l._est.sale);
+    $("f-parts").value = Math.round(l._est.parts);
+    $("f-labor").value = Math.round(l._est.labor);
+    $("f-tow").value   = Math.round(l._est.tow);
+    $("f-margin").value = pipeline.rules.margin;
+    recompute();
+    go("sheet");
+  }
+
+  function bindList() {
+    $("btn-gen").addEventListener("click", function () {
+      saleList = generateSale(800, 20260803);
+      $("list-src").textContent = "venta de muestra · 800 lotes";
+      $("csv-msg").textContent = "";
+      ensureFacets(); renderFilters(); runPipeline();
+    });
+
+    $("csv-in").addEventListener("change", function (ev) {
+      var file = ev.target.files && ev.target.files[0];
+      if (!file) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var raw = parseCSV(String(rd.result));
+          var mapped = raw.map(mapRow).filter(function (o) { return o.lotId || o.vin; });
+          if (!mapped.length) {
+            $("csv-msg").textContent = "No reconocí las columnas. Necesito al menos lote, millaje, título y daño.";
+            return;
+          }
+          saleList = mapped;
+          $("list-src").textContent = file.name + " · " + mapped.length.toLocaleString("en-US") + " lotes";
+          $("csv-msg").textContent = "";
+          ensureFacets(); renderFilters(); runPipeline();
+        } catch (e) {
+          $("csv-msg").textContent = "No pude leer el archivo.";
+        }
+      };
+      rd.readAsText(file);
+    });
+
+    ["r-miles","r-yearmin","r-margin","r-dist","r-retmin","r-retmax","r-repmax","r-roommin"]
+    .forEach(function (id) {
+      $(id).addEventListener("input", function () { activePreset = null; runPipeline(); });
+    });
+    ["r-rental","r-runs","r-keys","r-sec"].forEach(function (id) {
+      $(id).addEventListener("change", function () { activePreset = null; runPipeline(); });
+    });
+
+    document.querySelectorAll("[data-all]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-all");
+        Object.keys(rules[k]).forEach(function (v) { rules[k][v] = true; });
+        activePreset = null; renderFilters(); runPipeline();
+      });
+    });
+    document.querySelectorAll("[data-none]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.getAttribute("data-none");
+        Object.keys(rules[k]).forEach(function (v) { rules[k][v] = false; });
+        activePreset = null; renderFilters(); runPipeline();
+      });
+    });
+
+    $("btn-save-preset").addEventListener("click", function () {
+      var body = "<div class=\"field text\"><label for=\"p-name\">Nombre del perfil</label>" +
+                 "<input id=\"p-name\" type=\"text\" placeholder=\"Ej: Lunes sedanes\" maxlength=\"32\"></div>" +
+                 "<p class=\"prose\">Guarda los filtros tal como están ahora mismo.</p>";
+      modal("Guardar perfil", body, function () {
+        var n = document.getElementById("p-name").value.trim();
+        if (!n) return false;
+        presets.push({ name: n, rules: JSON.parse(JSON.stringify(rules)) });
+        activePreset = presets.length - 1;
+        save(); renderPresets();
+      }, "Guardar");
+    });
+
+    $("btn-reset-filters").addEventListener("click", function () {
+      rules = defaultRules();
+      activePreset = null;
+      syncDOMFromRules(); ensureFacets(); renderFilters(); runPipeline();
+    });
+
+    $("btn-see-short").addEventListener("click", function () { go("list"); });
+    $("btn-go-filters").addEventListener("click", function () { go("filters"); renderFilters(); });
+  }
+
+  /* ================= PIEZAS ================= */
+
+  /* Damage code -> the parts that job normally eats. `p` is how often the part
+     is actually involved, so the list opens with the likely ones checked.
+     `en` is what the part is called on eBay, because that is where he shops. */
+  var PART_TEMPLATES = {
+    "FRONT END": [
+      { id:"fbc",  es:"Bumper delantero",      en:"front bumper cover",     base:320, p:1.00 },
+      { id:"fabs", es:"Absorbedor delantero",  en:"front bumper absorber",  base:95,  p:0.70 },
+      { id:"grl",  es:"Parrilla",              en:"front grille",           base:210, p:0.80 },
+      { id:"hlL",  es:"Faro izquierdo",        en:"left headlight",         base:480, p:0.60 },
+      { id:"hlR",  es:"Faro derecho",          en:"right headlight",        base:480, p:0.60 },
+      { id:"hood", es:"Capó",                  en:"hood",                   base:400, p:0.65 },
+      { id:"rsup", es:"Soporte de radiador",   en:"radiator support",       base:260, p:0.50 },
+      { id:"rad",  es:"Radiador",              en:"radiator",               base:230, p:0.45 },
+      { id:"cond", es:"Condensador A/C",       en:"ac condenser",           base:210, p:0.40 },
+      { id:"ffL",  es:"Guardafango izq.",      en:"left front fender",      base:200, p:0.45 },
+      { id:"ffR",  es:"Guardafango der.",      en:"right front fender",     base:200, p:0.45 },
+      { id:"frei", es:"Refuerzo de bumper",    en:"front bumper reinforcement", base:180, p:0.35 }
+    ],
+    "REAR END": [
+      { id:"rbc",  es:"Bumper trasero",        en:"rear bumper cover",      base:300, p:1.00 },
+      { id:"rabs", es:"Absorbedor trasero",    en:"rear bumper absorber",   base:95,  p:0.65 },
+      { id:"trnk", es:"Tapa de maletero",      en:"trunk lid",              base:390, p:0.60 },
+      { id:"tlL",  es:"Calavera izquierda",    en:"left tail light",        base:290, p:0.60 },
+      { id:"tlR",  es:"Calavera derecha",      en:"right tail light",       base:290, p:0.60 },
+      { id:"rpan", es:"Panel trasero",         en:"rear body panel",        base:350, p:0.35 },
+      { id:"rrei", es:"Refuerzo trasero",      en:"rear bumper reinforcement", base:175, p:0.40 }
+    ],
+    "SIDE": [
+      { id:"drF",  es:"Puerta delantera",      en:"front door shell",       base:460, p:0.70 },
+      { id:"drR",  es:"Puerta trasera",        en:"rear door shell",        base:440, p:0.50 },
+      { id:"mir",  es:"Espejo lateral",        en:"side mirror",            base:245, p:0.65 },
+      { id:"sfen", es:"Guardafango",           en:"fender",                 base:200, p:0.55 },
+      { id:"rock", es:"Estribo / moldura",     en:"rocker panel molding",   base:175, p:0.40 },
+      { id:"dgls", es:"Vidrio de puerta",      en:"door glass",             base:160, p:0.35 }
+    ],
+    "UNDERCARRIAGE": [
+      { id:"opan", es:"Cárter de aceite",      en:"oil pan",                base:120, p:0.50 },
+      { id:"exh",  es:"Escape / catalizador",  en:"catalytic converter",    base:420, p:0.50 },
+      { id:"carm", es:"Brazo de suspensión",   en:"control arm",            base:145, p:0.55 },
+      { id:"ball", es:"Rótula",                en:"ball joint",             base:75,  p:0.40 }
+    ],
+    "VANDALISM": [
+      { id:"wsld", es:"Parabrisas",            en:"windshield",             base:220, p:0.60 },
+      { id:"dgls2",es:"Vidrio de puerta",      en:"door glass",             base:120, p:0.50 },
+      { id:"seat", es:"Tapicería / asiento",   en:"seat",                   base:260, p:0.35 }
+    ]
+  };
+
+  var TIERS_PRICE = [
+    { max: 12000, k: 0.75, name: "económico" },
+    { max: 22000, k: 1.00, name: "medio" },
+    { max: Infinity, k: 1.55, name: "premium" }
+  ];
+  function tierFor(retail) {
+    for (var i = 0; i < TIERS_PRICE.length; i++) if (retail <= TIERS_PRICE[i].max) return TIERS_PRICE[i];
+    return TIERS_PRICE[TIERS_PRICE.length - 1];
+  }
+
+  var priceMemory = {};   // "partId|MAKE" and "partId" -> { sum, n }
+  var partsState = null;  // current draft
+
+  function rememberPrice(partId, make, price) {
+    [partId + "|" + make, partId].forEach(function (k) {
+      if (!priceMemory[k]) priceMemory[k] = { sum: 0, n: 0 };
+      priceMemory[k].sum += price; priceMemory[k].n += 1;
+    });
+    save();
+  }
+
+  /* Price resolution, best source first. What matters is not the number but
+     that he can see where it came from. */
+  function priceFor(part, make, retail) {
+    var exact = priceMemory[part.id + "|" + make];
+    if (exact && exact.n > 0)
+      return { v: exact.sum / exact.n, src: "tuyo", note: "tus " + exact.n + " compras en " + make };
+    var any = priceMemory[part.id];
+    if (any && any.n > 0)
+      return { v: any.sum / any.n, src: "tuyo", note: "tus " + any.n + " compras, otras marcas" };
+    var t = tierFor(retail);
+    return { v: part.base * t.k, src: "plantilla", note: "banda " + t.name + ", sin compra tuya" };
+  }
+
+  function ebayUrl(part, veh) {
+    var q = [veh.year, veh.make, veh.model, part.en].filter(Boolean).join(" ");
+    return "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(q) + "&_sacat=6028&LH_ItemCondition=3000";
+  }
+
+  /* Expected value of a damage template: every part weighted by how often that
+     job actually involves it. Used only to calibrate against the ledger. */
+  function templateEstimate(damage, retail) {
+    var t = tierFor(retail), sum = 0;
+    (PART_TEMPLATES[damage] || []).forEach(function (p) { sum += p.base * t.k * p.p; });
+    return sum;
+  }
+
+  /* The template is a guess. The ledger is the truth. This is the ratio between
+     them, measured on his own closed units — the same trick pass 2 uses. */
+  function templateFactor() {
+    var s = sold().filter(function (u) { return u.estRetail && u.damage && PART_TEMPLATES[u.damage]; });
+    var rs = [];
+    s.forEach(function (u) {
+      var e = templateEstimate(u.damage, u.estRetail);
+      if (e > 0) rs.push(u.realParts / e);
+    });
+    if (rs.length < 3) return { f: 1, n: rs.length, src: "sin calibrar" };
+    return { f: avg(rs), n: rs.length, src: "medido" };
+  }
+
+  function buildParts(d1, d2, veh) {
+    var seen = {}, list = [];
+    [d1, d2].filter(Boolean).forEach(function (d) {
+      (PART_TEMPLATES[d] || []).forEach(function (p) {
+        if (seen[p.id]) return;
+        seen[p.id] = true;
+        var pr = priceFor(p, veh.make, veh.retail);
+        list.push({ t: p, on: p.p >= 0.55, qty: 1, price: Math.round(pr.v), src: pr.src, note: pr.note });
+      });
+    });
+    return list;
+  }
+
+  function currentVeh() {
+    var d = ($("f-desc").value || "").trim().split(/\s+/);
+    return { year: d[0] || "", make: (d[1] || "").toUpperCase(), model: d[2] || "",
+             retail: val("f-sale") / 0.829 || 15000 };
+  }
+
+  function renderParts() {
+    var veh = currentVeh();
+    $("parts-veh").textContent = veh.year + " " + veh.make + " " + veh.model + " · banda " + tierFor(veh.retail).name;
+
+    var sel1 = $("pa-damage"), sel2 = $("pa-damage2");
+    if (!sel1.options.length) {
+      var keys = Object.keys(PART_TEMPLATES);
+      sel1.innerHTML = keys.map(function (k) { return "<option>" + k + "</option>"; }).join("");
+      sel2.innerHTML = "<option value=\"\">— ninguno —</option>" +
+        keys.map(function (k) { return "<option>" + k + "</option>"; }).join("");
+    }
+    if (!partsState || partsState.d1 !== sel1.value || partsState.d2 !== sel2.value) {
+      partsState = { d1: sel1.value, d2: sel2.value, list: buildParts(sel1.value, sel2.value, veh) };
+    }
+
+    var tb = $("parts-rows");
+    tb.innerHTML = "";
+    var total = 0, fromHim = 0;
+    var missMap = missedStats().map;
+
+    partsState.list.forEach(function (row, i) {
+      var tr = el("tr");
+
+      var c = el("td");
+      var cb = el("input"); cb.type = "checkbox"; cb.checked = row.on;
+      cb.setAttribute("aria-label", "Incluir " + row.t.es);
+      cb.addEventListener("change", function () { row.on = cb.checked; renderParts(); });
+      c.appendChild(cb); tr.appendChild(c);
+
+      var nm = el("td");
+      var mrate = (missMap[row.t.id] || {}).rate || 0;
+      nm.innerHTML = row.t.es + (mrate >= 0.2
+        ? " <span class=\"pill " + (mrate >= 0.4 ? "stop" : "warn") + "\">SE TE ESCAPA</span>"
+        : "");
+      tr.appendChild(nm);
+
+      var q = el("td", "n");
+      var qi = el("input"); qi.type = "number"; qi.value = row.qty; qi.min = "1"; qi.step = "1";
+      qi.style.width = "3.6rem"; qi.style.textAlign = "right";
+      qi.setAttribute("aria-label", "Cantidad de " + row.t.es);
+      qi.addEventListener("input", function () { row.qty = Math.max(1, parseInt(qi.value) || 1); renderParts(); });
+      q.appendChild(qi); tr.appendChild(q);
+
+      var p = el("td", "n");
+      var pi = el("input"); pi.type = "number"; pi.value = row.price; pi.min = "0"; pi.step = "5";
+      pi.style.width = "5.4rem"; pi.style.textAlign = "right";
+      pi.setAttribute("aria-label", "Precio de " + row.t.es);
+      pi.addEventListener("change", function () {
+        var v = parseFloat(pi.value) || 0;
+        if (v > 0 && v !== row.price) {
+          row.price = v; row.src = "tuyo"; row.note = "lo escribiste tú";
+          rememberPrice(row.t.id, veh.make, v);
+        }
+        renderParts();
+      });
+      p.appendChild(pi); tr.appendChild(p);
+
+      var s = el("td");
+      s.innerHTML = "<span class=\"pill " + (row.src === "tuyo" ? "go" : "idle") + "\">" +
+                    (row.src === "tuyo" ? "TUYO" : "ESTIMADO") + "</span>" +
+                    "<div style=\"font-size:.7rem;color:var(--ink-3);margin-top:.15rem\">" + row.note + "</div>";
+      tr.appendChild(s);
+
+      var sub = row.on ? row.price * row.qty : 0;
+      total += sub;
+      if (row.on && row.src === "tuyo") fromHim += sub;
+      var st = el("td", "n", row.on ? money(sub) : "—");
+      if (!row.on) st.style.color = "var(--ink-3)";
+      tr.appendChild(st);
+
+      var b = el("td");
+      var a = el("a", "btn sm", "eBay");
+      a.href = ebayUrl(row.t, veh); a.target = "_blank"; a.rel = "noopener noreferrer";
+      a.title = "Abre la búsqueda en eBay. No traemos ni guardamos nada de su sitio.";
+      b.appendChild(a); tr.appendChild(b);
+
+      tb.appendChild(tr);
+    });
+
+    var on = partsState.list.filter(function (r) { return r.on; }).length;
+    $("parts-count").textContent = on + " de " + partsState.list.length + " encendidas";
+
+    // Raw template totals run low against what he actually spends, so the
+    // ledger-measured factor is applied instead of shipping a number we know is wrong.
+    var tf = templateFactor();
+    var adjusted = Math.round(total * tf.f);
+    $("parts-total").textContent = money(adjusted);
+    partsState.total = adjusted;
+    partsState.raw = total;
+
+    var pctHim = total > 0 ? Math.round(fromHim / total * 100) : 0;
+    var info = "";
+    if (tf.src === "medido") {
+      info += "Suma de la lista <span class=\"num\">" + money(total) + "</span>, ajustada por <strong class=\"num\">×" +
+              tf.f.toFixed(2) + "</strong> — el factor que salió de tus " + tf.n + " unidades cerradas. ";
+      if (tf.f > 1.15) info += "Tu gasto real viene corriendo por encima de la plantilla. ";
+    } else {
+      info += "Sin calibrar todavía: hacen falta 3 unidades cerradas para medir el factor. ";
+    }
+    info += pctHim > 0
+      ? "<strong>" + pctHim + "%</strong> de la suma sale de precios que ya pagaste."
+      : "Ningún precio es tuyo todavía — escribe uno real y queda guardado.";
+    $("parts-info").innerHTML = info;
+
+    renderMissed();
+    renderMemory();
+    renderTow();
+  }
+
+  /* Parts he had to buy AFTER the car was already his. These are the blind
+     spots: not mispriced, simply not counted. The checklist marks them. */
+  function missedStats() {
+    var m = {};
+    sold().forEach(function (u) {
+      (u.missed || []).forEach(function (id) {
+        if (!m[id]) m[id] = { n: 0, cost: 0 };
+        m[id].n += 1;
+      });
+    });
+    var s = sold().length;
+    Object.keys(m).forEach(function (k) { m[k].rate = s ? m[k].n / s : 0; });
+    return { map: m, units: s };
+  }
+
+  function partById(id) {
+    var found = null;
+    Object.keys(PART_TEMPLATES).forEach(function (d) {
+      PART_TEMPLATES[d].forEach(function (p) { if (p.id === id) found = p; });
+    });
+    return found;
+  }
+
+  function renderMissed() {
+    var ms = missedStats();
+    var keys = Object.keys(ms.map).sort(function (a, b) { return ms.map[b].n - ms.map[a].n; });
+    $("miss-count").textContent = keys.length
+      ? keys.length + " piezas · " + ms.units + " unidades cerradas" : "sin datos todavía";
+    if (!keys.length) {
+      $("miss-body").innerHTML = "<div class=\"empty\">Cuando cierres una unidad, anota qué piezas " +
+        "aparecieron que no habías contado. Eso es lo que el checklist te va a marcar después.</div>";
+      return;
+    }
+    var html = "<p class=\"prose\" style=\"margin-bottom:.9rem\">Piezas que compraste <strong>después</strong> " +
+      "de que el carro ya era tuyo. No las cotizaste mal: no las contaste. Arriba salen marcadas.</p>";
+    html += "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:440px\"><thead><tr>" +
+      "<th>Pieza</th><th style=\"text-align:right\">Veces</th><th style=\"text-align:right\">De cada 10 carros</th>" +
+      "<th>Riesgo</th></tr></thead><tbody>";
+    keys.forEach(function (k) {
+      var p = partById(k), r = ms.map[k];
+      var lvl = r.rate >= 0.4 ? "stop" : r.rate >= 0.2 ? "warn" : "idle";
+      var lbl = r.rate >= 0.4 ? "ALTO" : r.rate >= 0.2 ? "MEDIO" : "BAJO";
+      html += "<tr><td>" + (p ? p.es : k) + "</td><td class=\"n\">" + r.n + "</td>" +
+              "<td class=\"n\">" + (r.rate * 10).toFixed(1) + "</td>" +
+              "<td><span class=\"pill " + lvl + "\">" + lbl + "</span></td></tr>";
+    });
+    html += "</tbody></table></div>";
+    $("miss-body").innerHTML = html;
+  }
+
+  function renderMemory() {
+    var keys = Object.keys(priceMemory).filter(function (k) { return k.indexOf("|") > -1; });
+    $("mem-count").textContent = keys.length ? keys.length + " precios aprendidos" : "vacío";
+    if (!keys.length) {
+      $("mem-body").innerHTML = "<div class=\"empty\">Todavía no le has enseñado ningún precio. " +
+        "Cada vez que escribas uno real, aparece aquí y se usa solo la próxima vez.</div>";
+      return;
+    }
+    var html = "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:420px\"><thead><tr>" +
+               "<th>Pieza</th><th>Marca</th><th style=\"text-align:right\">Compras</th>" +
+               "<th style=\"text-align:right\">Tu precio</th></tr></thead><tbody>";
+    keys.sort().forEach(function (k) {
+      var parts = k.split("|"), m = priceMemory[k];
+      var name = k;
+      Object.keys(PART_TEMPLATES).forEach(function (d) {
+        PART_TEMPLATES[d].forEach(function (p) { if (p.id === parts[0]) name = p.es; });
+      });
+      html += "<tr><td>" + name + "</td><td>" + parts[1] + "</td>" +
+              "<td class=\"n\">" + m.n + "</td><td class=\"n\">" + money(m.sum / m.n) + "</td></tr>";
+    });
+    html += "</tbody></table></div>";
+    $("mem-body").innerHTML = html;
+  }
+
+  function renderTow() {
+    var ss = $("tw-shop"), ys = $("tw-yard");
+    if (!ss.options.length) {
+      var opts = YARDS.map(function (y, i) { return "<option value=\"" + i + "\">" + y[1] + " · " + y[2] + "</option>"; }).join("");
+      ss.innerHTML = opts; ys.innerHTML = opts;
+      var di = 0, ri = 0;
+      YARDS.forEach(function (y, i) {
+        if (y[1].indexOf("DALLAS") > -1) di = i;
+        if (y[0] === "838") ri = i;
+      });
+      ss.value = di; ys.value = ri;
+    }
+    var a = YARDS[parseInt(ss.value) || 0], b = YARDS[parseInt(ys.value) || 0];
+    shop.lat = a[3]; shop.lon = a[4];
+    shop.base = val("tw-base"); shop.perMile = val("tw-mile");
+    var mi = haversine(a[3], a[4], b[3], b[4]);
+    var cost = Math.max(shop.minCharge, Math.round((shop.base + mi * shop.perMile) / 5) * 5);
+    $("tow-out").innerHTML =
+      "<div class=\"stats\" style=\"grid-template-columns:repeat(auto-fit,minmax(140px,1fr))\">" +
+      "<div class=\"stat\"><span class=\"k\">Distancia</span><span class=\"v\">" + Math.round(mi) +
+      "</span><span class=\"d\">millas entre " + a[2] + " y " + b[2] + "</span></div>" +
+      "<div class=\"stat go\"><span class=\"k\">Grúa</span><span class=\"v\">" + money(cost) +
+      "</span><span class=\"d\">base " + money(shop.base) + " + " + Math.round(mi) + " × " +
+      shop.perMile.toFixed(2) + "</span></div></div>";
+    partsState && (partsState.tow = cost);
+  }
+
+  function bindParts() {
+    ["pa-damage","pa-damage2"].forEach(function (id) {
+      $(id).addEventListener("change", function () { partsState = null; renderParts(); });
+    });
+    ["tw-shop","tw-yard"].forEach(function (id) {
+      $(id).addEventListener("change", renderTow);
+    });
+    ["tw-base","tw-mile"].forEach(function (id) {
+      $(id).addEventListener("input", renderTow);
+    });
+    $("btn-parts-apply").addEventListener("click", function () {
+      if (partsState) {
+        $("f-parts").value = Math.round(partsState.total);
+        if (partsState.tow) $("f-tow").value = Math.round(partsState.tow);
+        recompute();
+      }
+      go("sheet");
+    });
+  }
+
+  /* ---------------- tabs ---------------- */
+
+  function go(which) {
+    [["list","p-list","tab-list"],["filters","p-filters","tab-filters"],
+     ["sheet","p-sheet","tab-sheet"],["parts","p-parts","tab-parts"],
+     ["book","p-book","tab-book"],["numbers","p-numbers","tab-numbers"]]
+    .forEach(function (t) {
+      var on = t[0] === which;
+      $(t[1]).classList.toggle("on", on);
+      $(t[2]).setAttribute("aria-selected", on ? "true" : "false");
+    });
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  /* ---------------- footer ---------------- */
+
+  function renderFoot() {
+    $("foot").innerHTML =
+      "<strong>V0 · demostración.</strong> Las seis unidades del Libro son <strong>inventadas para mostrar cómo se ve</strong> " +
+      "el sistema con historia adentro. No son datos de nadie y no describen ningún negocio real. " +
+      "Los fees de Copart son valores públicos sin confirmar: sus páginas oficiales no son legibles y las " +
+      "calculadoras de terceros se contradicen entre sí, así que se reemplazan con una factura real y quedan fijos. " +
+      "Todo vive en este navegador y no sale a ningún lado. " +
+      "El decode de VIN y los recalls (NHTSA, gratis, sin llave y sin límite — 800 VINs en menos de un minuto) " +
+      "entran en la siguiente versión.";
+  }
+
+  /* ---------------- init ---------------- */
+
+  load();
+  bindCfg();
+  renderTiers();
+
+  ["f-sale","f-parts","f-labor","f-tow","f-margin","f-cont"].forEach(function (id) {
+    $(id).addEventListener("input", recompute);
+  });
+
+  $("btn-to-parts").addEventListener("click", function () { partsState = null; go("parts"); renderParts(); });
+  $("btn-buy").addEventListener("click", openBuy);
+  $("btn-pass").addEventListener("click", function () {
+    $("f-lot").value = ""; $("f-vin").value = ""; $("f-desc").value = "";
+    $("f-sale").value = 0; $("f-parts").value = 0; $("f-labor").value = 0;
+    recompute(); $("f-lot").focus();
+  });
+  $("btn-reset").addEventListener("click", function () {
+    units = demoUnits(); save(); renderBook(); renderNumbers();
+  });
+
+  $("tab-list").addEventListener("click", function () { go("list"); });
+  $("tab-filters").addEventListener("click", function () { go("filters"); renderFilters(); });
+  $("tab-sheet").addEventListener("click", function () { go("sheet"); });
+  $("tab-parts").addEventListener("click", function () { go("parts"); renderParts(); });
+  $("tab-book").addEventListener("click", function () { go("book"); renderBook(); });
+  $("tab-numbers").addEventListener("click", function () {
+    go("numbers"); renderNumbers();
+    if (saleList.length) runPipeline();   // recalibrate the list against the ledger
+  });
+
+  bindList();
+  bindParts();
+  syncDOMFromRules();     // saved filters must reach the inputs before the first run
+  $("btn-gen").click();   // land on a working pipeline, not an empty screen
+
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+
+  recompute();
+  renderBook();
+  renderNumbers();
+  renderFoot();
+})();
+</script>
