@@ -1,132 +1,165 @@
-# Caso 004 · Juan Azuaje · Hoja de Puja V0
+# Case 006 · Juan Azuaje · Bid Sheet
 
-Prototipo funcional para un comprador de vehículos siniestrados en Copart que repara y revende.
-Estado: **V0 demostrable, sin cliente firmado.** Nada de esto se le ha mostrado a Juan todavía.
+Working demo for a one-man operator who buys damaged rental vehicles at Copart
+on Mondays and Wednesdays, repairs them, and resells them.
 
-Demo publicada (privada): https://claude.ai/code/artifact/d0a1519f-fff2-4c1d-bf77-db1dafa9adb0
+**Status: V1 demo, no client signed. Nothing here has been shown to Juan yet.**
 
----
+`hoja-de-puja.html` is **one file, no dependencies, no build**. Double click and
+it runs. All state lives in `localStorage` — nothing leaves the browser.
 
-## Cómo se abre
-
-`hoja-de-puja.html` es **un solo archivo, sin dependencias, sin build**. Doble clic y corre.
-Los datos se guardan en `localStorage` del navegador — no hay servidor ni base de datos.
-
-Para servirlo local si hace falta: `python3 -m http.server 8000`
+To serve locally if needed: `python3 -m http.server 8000`
 
 ---
 
-## Qué hace, en el orden en que se usa
+## The seven screens, in the order they get used
 
-| Pestaña | Qué resuelve |
+| Tab | What it solves |
 |---|---|
-| **Lista** | Carga 800 lotes y los baja a shortlist por etapas, mostrando qué mató cada regla |
-| **Filtros** | Reglas personalizables con conteo en vivo y perfiles guardables |
-| **Puja** | Techo de puja con los fees de Copart **resueltos**, no estimados |
-| **Piezas** | Checklist de piezas por tipo de daño + memoria de precios + grúa por distancia real |
-| **Libro** | Proyectado contra real por unidad |
-| **Tus números** | Sesgo de estimación y fórmula recalibrada |
+| **00 Start here** | Onboarding panel and a guided tour of the other six |
+| **01 List** | Loads a sale and narrows it to a shortlist, showing which rule killed each lot |
+| **02 Filters** | His exclusion rules as editable code, with live counts and savable profiles |
+| **03 Bid** | Bid ceiling with Copart's fees **solved**, not estimated, plus the lot photo |
+| **04 Parts** | Damage map, parts checklist by damage type, learned price memory, tow by real distance |
+| **05 Ledger** | Projected against real, unit by unit |
+| **06 Your numbers** | Estimation bias, recalibrated formula, and six charts |
+
+Plus: dark mode, a command palette (`Ctrl`/`Cmd`+`K`), CSV export of the
+shortlist, and a lightbox for the lot photos.
 
 ---
 
-## LO IMPORTANTE: qué es real y qué está inventado
+## LO IMPORTANTE: what is real and what is invented
 
-Esto no se puede confundir al enseñarlo. Separado sin ambigüedad:
+This cannot be blurred when showing it. Stated without ambiguity:
 
-### Real y verificado
+### Real and verified
 
-- **El esquema de 61 columnas de Copart.** Medido sobre 5,000 lotes reales (13–17 jul 2026).
-  Muestra en `data/muestra-copart-2026-07-17.csv`.
-- **Los 45 yards con sus códigos postales, geocodificados.** `data/yards-copart-geocoded.json`.
-  La grúa calcula distancia real entre ellos.
-- **Las tasas de población de campos** (ver Hallazgos abajo).
-- **NHTSA vPIC**: probado en vivo. 41 campos por VIN, batch de 50, 5 VINs en 0.70s.
-  Gratis, sin llave, sin tope. Aún no integrado en el HTML porque el CSP de la página publicada
-  bloquea llamadas externas — entra al montarlo sobre servidor.
-- **El solver del techo de puja.** Verificado exacto contra fuerza bruta.
+- **The 61-column Copart schema.** Measured over 5,000 live lots (13–17 Jul 2026).
+  Sample in `data/muestra-copart-2026-07-17.csv`.
+- **The 45 yards with their ZIP codes, geocoded.** `data/yards-copart-geocoded.json`.
+  The tow cost is a real distance between them.
+- **Field population rates** (see Findings below).
+- **NHTSA vPIC**: tested live. 41 fields per VIN, batches of 50, 5 VINs in 0.70s.
+  Free, no key, no cap. Not yet wired in — it lands when this moves to a server.
+- **The bid-ceiling solver.** Verified exact against brute force.
 
-### Inventado
+### Invented
 
-- **Los 800 lotes de la demo.** Generados por código con semilla fija. Ninguno existe.
-  Las *distribuciones* sí están calibradas contra los datos reales; los *lotes* no.
-- **Las 6 unidades del Libro** y sus factores de calibración derivados.
-- **Las plantillas de piezas.** Copart NO publica qué piezas necesita un carro — su vocabulario
-  de daño son 22 palabras. Las plantillas son conocimiento de oficio escrito por nosotros.
-- **Los precios base de piezas** y los factores de severidad.
-- **La tabla de fees de Copart.** Ver abajo.
+- **The 800 demo lots.** Generated from a fixed seed. None exist. The
+  *distributions* are calibrated against the real data; the *lots* are not.
+- **The 6 Ledger units** and every calibration factor derived from them.
+- **The parts templates.** Copart does not publish which parts a car needs — its
+  damage vocabulary is 22 words. The templates are trade knowledge, written by us.
+- **The base parts prices** and the severity factors.
+- **The Copart fee table.** Editable on purpose: replace it with a real invoice
+  from Juan and it stays calibrated.
+- **The four vehicle photographs.** Generated examples, labelled `EXAMPLE`
+  on screen. Not Copart images — see the architecture rules below.
 
 ---
 
-## Hallazgos medidos (5,000 lotes, 13–17 jul 2026)
+## Findings measured on 5,000 lots (13–17 Jul 2026)
 
-**El yard 838 "RENTAL VEHICLE SALE" es la venta de Juan.** Corre lunes (83) y miércoles (39),
-ningún otro día — coincide exactamente con lo que él describió. Concentra el 90.4% de los lotes
-con `rentals=true`. Perfil: título limpio 74.6% · FRONT END 51.6% · millaje mediana 41,428 ·
-año mediana 2025 · marcas Nissan 28, Kia 23, Toyota 15.
+**Yard 838 "RENTAL VEHICLE SALE" is Juan's sale.** It runs Mondays (83) and
+Wednesdays (39), no other day — exactly matching his description. It holds 90.4%
+of lots flagged `rentals=true`. Profile: clean title 74.6% · FRONT END 51.6% ·
+median mileage 41,428 · median year 2025 · Nissan 28, Kia 23, Toyota 15.
 
-**Tasas de población:**
-
-| Campo | Poblado | Nota |
+| Field | Populated | Note |
 |---|---|---|
-| `damageDescription` | 100% | Solo 22 valores distintos en todo el universo |
-| `saleTitleType` | 100% | **83 códigos distintos, 258 combinaciones estado+código** |
-| `estRetailValue` | — | **Redactado como `[PREMIUM]` en la muestra gratuita** |
-| `repairCost` | 69.7% | Número en dólares, sin desglose. Mediana $10,944 |
-| `mileage` | 87.6% | El 12.4% viene en 0 = ausente, no cero millas |
+| `damageDescription` | 100% | Only 22 distinct values in the whole universe |
+| `saleTitleType` | 100% | **83 distinct codes, 258 state+code combinations** |
+| `estRetailValue` | — | **Redacted as `[PREMIUM]` in the free sample** |
+| `repairCost` | 69.7% | Dollar figure, no breakdown. Median $10,944 |
+| `mileage` | 87.6% | 12.4% arrive as 0, meaning absent, not zero miles |
 | `secondaryDamage` | 48.3% | |
-| `autoGrade` | 4.6% | Cualquier score que lo pese imputa en el 95% |
-| `FRAME DAMAGE` | 0.1% | 6 de 5,000. Por eso el daño estructural es su mayor riesgo |
+| `autoGrade` | 4.6% | Any score weighting it is imputing on 95% of lots |
+| `FRAME DAMAGE` | 0.1% | 6 of 5,000. This is why structural damage is his biggest risk |
 
-**Formatos que rompen el código ingenuo:**
-`rentals` (plural, no `rental`) · `runsDrives` = "Run & Drive Verified"/"Vehicle Starts"/"DEFAULT" ·
-`hasKeys` = YES/NO/EXM · daños en MAYÚSCULAS · `locationZip` a veces trae ZIP+4 con espacio.
+**Formats that break naive code:** `rentals` (plural) · `runsDrives` =
+"Run & Drive Verified" / "Vehicle Starts" / "DEFAULT" · `hasKeys` = YES/NO/EXM ·
+damage in UPPERCASE · `locationZip` sometimes carries ZIP+4 with a space.
 
-**Los fees de Copart no están disponibles públicamente.** Sus páginas oficiales devuelven shells
-vacíos (JS detrás de Imperva) y las calculadoras de terceros se contradicen entre sí. La tabla en
-la app es editable a propósito: **se reemplaza con una factura real de Juan y queda calibrada.**
-
----
-
-## Decisiones de arquitectura que no se negocian
-
-1. **Nunca automatizar una sesión logueada** en Copart, Manheim, Carfax ni eBay.
-2. **Nunca pujar automáticamente.** Es lo único que le puede costar la cuenta de Copart.
-3. **Nunca descargar ni rehospedar fotos.** Guardar la URL, renderizar desde origen.
-4. **Carfax se queda manual**, bajo su login, solo sobre el shortlist. No se deriva nada de él.
-5. **eBay por enlaces, no por ingesta.** El botón arma la búsqueda; el precio se ve en eBay.
-6. **La lista de venta la aporta él**, exportada con su membresía. Cero agregador, cero contrato.
+**Copart's fees are not publicly available.** Their official pages return empty
+shells (JavaScript behind Imperva) and third-party calculators contradict each
+other. The table in the app is editable deliberately.
 
 ---
 
-## Abierto — lo que bloquea la siguiente fase
+## Architecture decisions that are not negotiable
 
-1. **¿Qué columnas trae el CSV de miembro de Copart?** Sabemos qué *muestra* el sitio; no sabemos
-   qué trae el *export*. Si no trae `estRetailValue`, la estimación automática hay que rediseñarla.
-   **Se resuelve con un archivo suyo, de cualquier lunes viejo.**
-2. **¿Sus 200 son pre o post filtro?** Decide si hay cobertura que ganar. La primera corrida sobre
-   una lista real lo responde sin preguntárselo.
-3. **¿La categoría "Rental Vehicles" del sitio es el mismo universo que el flag `rentals`?**
-4. **Las fotos.** Son la única fuente real de qué piezas están rotas, y son la línea que dijimos
-   que no cruzamos. Es decisión de Juan, por escrito, no nuestra en silencio.
+1. **Never automate a logged-in session** on Copart, Manheim, Carfax or eBay.
+2. **Never bid automatically.** It is the one thing that can cost him his Copart account.
+3. **Never download or rehost photographs.** Store the URL, render from origin.
+   The demo's four images are generated examples, labelled as such.
+4. **Carfax stays manual**, under his login, shortlist only. Nothing is derived from it.
+5. **eBay by links, not ingestion.** The button builds the search; the price is read on eBay.
+6. **The sale list is his**, exported under his own membership. No aggregator, no contract.
 
----
-
-## Comercial (interno)
-
-Piloto **$3,000 / 3 semanas** = Puja + Libro. Mensualidad **$500** desde el mes 2.
-Fase 1 **$5,000** condicional al resultado del piloto. Cero pass-throughs en fase 1.
-Propuesta: firmarlo como **design partner**, no como cliente de un build a medida —
-los módulos sirven igual para cualquier comprador de subasta.
+Never promise the tool catches structural damage. It says the opposite, on screen,
+before he asks.
 
 ---
 
-## Pruebas
+## Known defects
+
+Carried openly rather than discovered in a demo:
+
+- **`cpRepair` / `estRetail` are only ever set on the six seeded demo units.**
+  `openBuy()` does not write them, but `calibration()` and `templateFactor()`
+  filter on them — so a unit bought through the real flow never enters the
+  calibration, and the three factors that rank next Monday's list stay on
+  defaults forever. **Fix before any pilot: the compounding loop is what the
+  monthly fee is sold on.**
+- **The structural reserve (`cont`) never persists onto the unit.** It lowers the
+  ceiling at bid time but the ledger cannot distinguish a $0-reserve unit from a
+  $500 one.
+- **Segment table colouring compares group average margin against the first
+  unit's target** rather than the group's average target.
+
+---
+
+## Open — what blocks the next phase
+
+1. **What columns does Juan's member CSV export carry?** We know what the site
+   *shows*; we do not know what the *export* contains. If it lacks
+   `estRetailValue`, the automatic estimate must be redesigned. **Resolved by one
+   file of his, from any old Monday.**
+2. **Are his ~200 pre- or post-filter?** Decides whether there is coverage to win.
+   The first run on a real list answers it without asking him.
+3. **Is the site's "Rental Vehicles" category the same universe as the `rentals` flag?**
+4. **The photographs.** They are the only real source of which parts are broken,
+   and the line we said we do not cross. Juan's decision, in writing, not ours in silence.
+
+---
+
+## Tests
 
 ```bash
-node tests/solver-techo-puja.test.js     # exactitud del techo vs fuerza bruta
-node tests/calibracion-piezas.test.js    # plantilla de piezas contra el libro
+node tests/solver-techo-puja.test.js     # ceiling accuracy vs brute force
+node tests/calibracion-piezas.test.js    # parts template against the ledger
 ```
 
-El solver tiene una trampa: la función de fees **no es monótona** — a $4,999 el fee escalonado es
-$535 y a $5,000 el 10% son $500, o sea baja. Una búsqueda binaria pierde hasta $35 de techo.
-Se resuelve por régimen de fee con reparación local. **No cambiar sin correr el test.**
+The solver has a trap: the fee function **is not monotonic** — at $4,999 the
+stepped fee is $535, and at $5,000 the 10% is $500, so it falls. A binary search
+silently loses up to $35 of ceiling. It is solved per fee regime with local
+repair. **Do not change it without running the test.**
+
+---
+
+## Design system
+
+Minimalist console derived from a Stitch "Auction Auto Lifecycle Manager" study,
+adapted to Arqentia's Instrument system: Hanken Grotesk, JetBrains Mono numerals,
+warm neutral ground, zero border-radius, gapless hairline bento grids, one
+inverted cell per view, blue `#2D5BFF` as the single accent.
+
+Three-state theming — bare `:root` is light, `@media (prefers-color-scheme: dark)`
+covers an un-stamped system-dark viewer, and `:root[data-theme="dark"]` lets the
+toggle win in both directions. Chart palettes were validated with a
+colour-vision checker rather than by eye; the light pair (`#2D5BFF` / `#A6342A`)
+and the dark pair (`#3987E5` / `#E66767`) each clear every gate on their own surface.
+
+Motion runs on three duration tiers (140 / 280 / 420ms), exits capped at 180ms,
+and the whole layer is behind `prefers-reduced-motion`.
