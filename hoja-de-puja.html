@@ -4,16 +4,109 @@
 <script>try{var t=localStorage.getItem("bidsheet-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ================================================================
-     BID SHEET · Stitch "Minimalist Color" system, Arqentia-adapted
-     Tokens from Auction Auto Lifecycle Manager (Stitch project
-     15529382711780532209). Warm neutral canvas, ink type, hairline
-     bento grids, one inverted cell, zero radius.
+     BID SHEET · V4 shadcn visual system, Arqentia-adapted
+     Palette matched to the Azuaje operations dashboard (shadcn dark
+     tokens): near-black ground #0A0A0A (--background), #171717 cards
+     (--card), white/10 hairlines (--border), #FAFAFA foreground,
+     near-white primary #E5E5E5. Hairline bento grids, one inverted
+     cell, soft radii (see the V4 RADIUS LAYER at the end).
+     DARK IS THE DEFAULT: bare :root carries the dark set; the
+     prefers-color-scheme:light media block and [data-theme="light"]
+     carry the previous warm-light system; [data-theme="dark"]
+     restates the default for the forced toggle state.
      Custom property NAMES are load-bearing: the JS reads them inline.
      ================================================================ */
   :root {
+    /* dark by default — mirrors the shadcn app's .dark tokens */
+    --ground:      #0A0A0A;   /* shadcn --background  */
+    --surface:     #171717;   /* shadcn --card        */
+    --surface-2:   #262626;   /* shadcn --secondary / hover */
+    --well:        #212121;   /* inset tracks + wells */
+    --line:        #292929;   /* shadcn --border (white/10 on card) */
+    --line-soft:   #202020;
+    --ink:         #FAFAFA;   /* shadcn --foreground  */
+    --ink-2:       #A3A3A3;   /* shadcn --muted-foreground */
+    --ink-3:       #7C7C7C;
+    --accent:      #E5E5E5;   /* shadcn --primary (near-white) */
+    --accent-ink:  #171717;   /* shadcn --primary-foreground */
+    --accent-soft: #2A2A2A;   /* selected/tinted surface */
+    --accent-hi:   #FFFFFF;
+    --go:          #45C08A;
+    --go-soft:     #122A1D;
+    --warn:        #D9B45B;
+    --warn-soft:   #2A230F;
+    --stop:        #E4776B;
+    --stop-soft:   #2E1713;
+    --shadow:      none;
+    --grid:        transparent;
+
+    /* inverted surface — the black tile, and the instrument readout */
+    --con-ground:  #0A0A0A;
+    --con-surface: #101010;
+    --con-raise:   #171717;
+    --con-line:    #2C2C2C;
+    --con-line-2:  #212121;
+    --con-ink:     #FAFAFA;
+    --con-ink-2:   #B4B4B4;
+    --con-ink-3:   #8A8A8A;
+    --con-accent:  #9DB8FF;
+
+    --sans: "Geist", ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --display: var(--sans);
+
+    --inv:         #0A0A0A;   /* text on inverted (ink) surfaces */
+    --ink-hi:      #FFFFFF;   /* one step past --ink (hero hover) */
+    --scrim:       rgba(0,0,0,.65);
+    --shadow-pop:  rgba(0,0,0,.55);   /* elevation shadow (toast, tip, tour) */
+    /* select chevron follows the effective theme (light stroke on dark) */
+    --chev: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%23FAFAFA' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    /* chart tokens (dark pair validated on #171717) */
+    --c-pos: #3987E5; --c-neg: #E66767; --c-ctx: #8A8A8A;
+    --c-mark: #FAFAFA; --c-grid: #262626; --c-axis: #343434; --c-conn: #303030;
+
+    --sidew: 256px;
+    color-scheme: dark;
+  }
+
+  /* Light theme — the previous warm-neutral system, kept verbatim as
+     the secondary state (system preference or forced via the toggle). */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --ground:      #FBF9F9;
+      --surface:     #FFFFFF;
+      --surface-2:   #F2F0F0;
+      --well:        #EFEDED;
+      --line:        #E3E2E2;
+      --line-soft:   #ECEAEA;
+      --ink:         #1B1C1C;
+      --ink-2:       #474747;
+      --ink-3:       #848484;
+      --accent:      #2D5BFF;
+      --accent-ink:  #FFFFFF;
+      --accent-soft: #EDF1FF;
+      --accent-hi:   #2D5BFF;
+      --go:          #17663F;
+      --go-soft:     #E4F0E9;
+      --warn:        #7A5600;
+      --warn-soft:   #F5EEDB;
+      --stop:        #A6342A;
+      --stop-soft:   #F7E4E1;
+      --inv:         #FFFFFF;
+      --ink-hi:      #000000;
+      --scrim:       rgba(27,28,28,.42);
+      --shadow-pop:  rgba(12,12,12,.28);
+      --chev: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%231B1C1C' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      --c-pos: #2D5BFF; --c-neg: #A6342A; --c-ctx: #848484;
+      --c-mark: #1B1C1C; --c-grid: #E3E2E2; --c-axis: #C9C7C7; --c-conn: #D8D6D6;
+      color-scheme: light;
+    }
+  }
+
+  :root[data-theme="light"] {
     --ground:      #FBF9F9;
     --surface:     #FFFFFF;
     --surface-2:   #F2F0F0;
@@ -33,90 +126,45 @@
     --warn-soft:   #F5EEDB;
     --stop:        #A6342A;
     --stop-soft:   #F7E4E1;
-    --shadow:      none;
-    --grid:        transparent;
-
-    /* inverted surface — the black tile, and the instrument readout */
-    --con-ground:  #0A0A0A;
-    --con-surface: #101010;
-    --con-raise:   #171717;
-    --con-line:    #2C2C2C;
-    --con-line-2:  #212121;
-    --con-ink:     #FAFAFA;
-    --con-ink-2:   #B4B4B4;
-    --con-ink-3:   #8A8A8A;
-    --con-accent:  #9DB8FF;
-
-    --sans: "Hanken Grotesk", ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --display: var(--sans);
-
-    --inv:         #FFFFFF;   /* text on inverted (ink) surfaces */
-    --ink-hi:      #000000;   /* one step past --ink (hero hover) */
+    --inv:         #FFFFFF;
+    --ink-hi:      #000000;
     --scrim:       rgba(27,28,28,.42);
-    /* chart tokens (light pair validated on #FFFFFF) */
+    --shadow-pop:  rgba(12,12,12,.28);
+    --chev: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%231B1C1C' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --c-pos: #2D5BFF; --c-neg: #A6342A; --c-ctx: #848484;
     --c-mark: #1B1C1C; --c-grid: #E3E2E2; --c-axis: #C9C7C7; --c-conn: #D8D6D6;
-
-    --sidew: 256px;
     color-scheme: light;
   }
 
-  /* Dark theme — its own set, tested on its own surface, never an
-     inversion. Chart pair #3987E5/#E66767 validated against #1B1B1A. */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --ground:      #131312;
-      --surface:     #1B1B1A;
-      --surface-2:   #242422;
-      --well:        #212120;
-      --line:        #333331;
-      --line-soft:   #2A2A29;
-      --ink:         #F2F1EF;
-      --ink-2:       #B8B6B0;
-      --ink-3:       #8E8C86;
-      --accent:      #4694F1;
-      --accent-ink:  #10233B;
-      --accent-soft: #16283E;
-      --go:          #45C08A;
-      --go-soft:     #14281E;
-      --warn:        #D9B45B;
-      --warn-soft:   #2A2312;
-      --stop:        #E4776B;
-      --stop-soft:   #301A16;
-      --inv:         #131312;
-      --ink-hi:      #FFFFFF;
-      --scrim:       rgba(0,0,0,.6);
-      --c-pos: #3987E5; --c-neg: #E66767; --c-ctx: #8E8C86;
-      --c-mark: #F2F1EF; --c-grid: #333331; --c-axis: #3E3E3C; --c-conn: #3A3A38;
-      color-scheme: dark;
-    }
-  }
-
+  /* Forced dark (toggle) — restates the bare-:root default so it wins
+     over the system-light media block in every combination. */
   :root[data-theme="dark"] {
-    --ground:      #131312;
-    --surface:     #1B1B1A;
-    --surface-2:   #242422;
-    --well:        #212120;
-    --line:        #333331;
-    --line-soft:   #2A2A29;
-    --ink:         #F2F1EF;
-    --ink-2:       #B8B6B0;
-    --ink-3:       #8E8C86;
-    --accent:      #4694F1;
-    --accent-ink:  #10233B;
-    --accent-soft: #16283E;
+    --ground:      #0A0A0A;
+    --surface:     #171717;
+    --surface-2:   #262626;
+    --well:        #212121;
+    --line:        #292929;
+    --line-soft:   #202020;
+    --ink:         #FAFAFA;
+    --ink-2:       #A3A3A3;
+    --ink-3:       #7C7C7C;
+    --accent:      #E5E5E5;
+    --accent-ink:  #171717;
+    --accent-soft: #2A2A2A;
+    --accent-hi:   #FFFFFF;
     --go:          #45C08A;
-    --go-soft:     #14281E;
+    --go-soft:     #122A1D;
     --warn:        #D9B45B;
-    --warn-soft:   #2A2312;
+    --warn-soft:   #2A230F;
     --stop:        #E4776B;
-    --stop-soft:   #301A16;
-    --inv:         #131312;
+    --stop-soft:   #2E1713;
+    --inv:         #0A0A0A;
     --ink-hi:      #FFFFFF;
-    --scrim:       rgba(0,0,0,.6);
-    --c-pos: #3987E5; --c-neg: #E66767; --c-ctx: #8E8C86;
-    --c-mark: #F2F1EF; --c-grid: #333331; --c-axis: #3E3E3C; --c-conn: #3A3A38;
+    --scrim:       rgba(0,0,0,.65);
+    --shadow-pop:  rgba(0,0,0,.55);
+    --chev: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%23FAFAFA' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --c-pos: #3987E5; --c-neg: #E66767; --c-ctx: #8A8A8A;
+    --c-mark: #FAFAFA; --c-grid: #262626; --c-axis: #343434; --c-conn: #303030;
     color-scheme: dark;
   }
   html, body { background: var(--ground); }
@@ -230,11 +278,22 @@
   .tbact:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .tbact.kbd { margin-left: auto; }
   .tbact.kbd ~ .tbact { margin-left: .5rem; }
+  /* V4: quiet link back to the dashboard shell (engine lives under /engine/) */
+  .tbact.home {
+    margin-left: 0; text-decoration: none; display: inline-flex; align-items: center;
+    border-color: var(--line); color: var(--ink-2);
+  }
+  .tbact.home:hover { background: var(--ink); color: var(--inv); border-color: var(--ink); }
   .tbact.icon { padding: .38rem .5rem; line-height: 0; min-height: 34px; }
   .tbact.icon svg { width: 16px; height: 16px; display: block; }
   .th-sun, .th-moon { transform-origin: 12px 12px; transition: opacity .3s ease, transform .45s cubic-bezier(.3,0,.2,1); }
-  :root:not([data-theme="dark"]) .th-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
-  :root[data-theme="dark"] .th-sun { opacity: 0; transform: rotate(90deg) scale(.6); }
+  /* dark is the default: show the moon unless light is in effect */
+  :root:not([data-theme="light"]) .th-sun { opacity: 0; transform: rotate(90deg) scale(.6); }
+  :root[data-theme="light"] .th-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .th-sun { opacity: 1; transform: none; }
+    :root:not([data-theme="dark"]) .th-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
+  }
   .topbar .tbact + .v { margin-left: .7rem; }
   .topbar .v {
     font-family: var(--mono); font-size: .55rem; letter-spacing: .16em; color: var(--ink-3);
@@ -671,7 +730,7 @@
   select, .field select, .tier-grid select {
     -webkit-appearance: none; appearance: none;
     background-color: var(--surface);
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%231B1C1C' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: var(--chev);
     background-repeat: no-repeat; background-position: right .75rem center;
     border: 1px solid var(--ink); border-radius: 0;
     color: var(--ink); font-family: var(--sans); font-size: .82rem; font-weight: 600;
@@ -687,7 +746,8 @@
   select[multiple] option { padding: .3rem .35rem; }
   select[multiple] option:checked { background: var(--ink); color: var(--inv); }
   .readout select, .modal select { background-color: var(--surface); }
-  :root[data-theme="dark"] select, .readout select {
+  /* the readout is always a dark instrument — pin the light-stroke chevron */
+  .readout select {
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1.6L6 6.4L11 1.6' stroke='%23F2F1EF' stroke-width='1.7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
@@ -794,7 +854,7 @@
   .tourcard {
     position: fixed; right: 2rem; bottom: 5.5rem; z-index: 45; width: 340px; max-width: calc(100vw - 2rem);
     background: var(--ink); color: var(--inv); padding: 1.25rem 1.35rem 1.1rem;
-    box-shadow: 0 24px 60px rgba(12,12,12,.35);
+    box-shadow: 0 24px 60px var(--shadow-pop);
   }
   .tourcard[hidden] { display: none; }
   .tc-n { font-family: var(--mono); font-size: .58rem; letter-spacing: .2em; color: color-mix(in srgb, var(--inv) 50%, transparent); }
@@ -900,7 +960,7 @@
 
   .vz-tip {
     position: absolute; z-index: 40; pointer-events: none; background: var(--ink); color: var(--inv);
-    padding: .5rem .65rem; min-width: 9rem; box-shadow: 0 10px 26px rgba(12,12,12,.24);
+    padding: .5rem .65rem; min-width: 9rem; box-shadow: 0 10px 26px var(--shadow-pop);
     opacity: 0; transition: opacity .12s ease; transform: translate(-50%, -115%);
   }
   .vz-tip.on { opacity: 1; }
@@ -962,7 +1022,7 @@
             flex-direction: column; gap: .5rem; align-items: flex-end; pointer-events: none; }
   .toast { background: var(--ink); color: var(--inv); padding: .7rem .95rem;
            display: flex; align-items: center; gap: .6rem; font-size: .78rem; max-width: 21rem;
-           box-shadow: 0 12px 32px rgba(0,0,0,.22); pointer-events: auto; }
+           box-shadow: 0 12px 32px var(--shadow-pop); pointer-events: auto; }
   .toast i { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--accent); }
   .toast.ok i { background: var(--go); }
 
@@ -1241,6 +1301,54 @@
   .pl-card .fin-day { display: block; margin-top: .3rem; }
   #book-rows .fin-day { display: inline-block; margin-left: .5rem; }
 
+  /* ================================================================
+     V4 · SHADCN RADIUS LAYER
+     The one place the old zero-radius system is rounded to match the
+     shadcn dashboard. Order matters: this layer sits last so it wins
+     over every earlier `border-radius: 0`. Scale mirrors the app:
+       12px  cards / panels / sheets / bento containers / tables' card
+        10px  photo frames and diagrams
+        8px   buttons / selects / segmented controls / toasts / tips
+        6px   chips / pills / badges
+       999px  progress tracks (shadcn Progress)
+     Gapless bento grids round the OUTER container and clip the corner
+     cells (overflow) so each grid still reads as one piece; interior
+     hairlines stay square.
+     ================================================================ */
+  /* surfaces — cards, panels, dark bars, drawers, dialogs (12px) */
+  .card, details.cfg, .modal, .cmdk-p, .readout, .noticed, .wkrow,
+  .tourcard, .tourbar, .livebar { border-radius: 12px; }
+  .card, details.cfg, .cmdk-p, .noticed, .wkrow, .tourbar, .livebar { overflow: hidden; }
+  .pl-drawer { border-radius: 12px 0 0 12px; overflow: hidden; }
+  @media (max-width: 639px) { .modal { border-radius: 12px 12px 0 0; } } /* bottom sheet */
+
+  /* gapless bento grids — round the container, clip the corner cells */
+  .stats, .ovrow, .stepgrid, .vizgrid, .plgrid, .fin-units, .mixgrid {
+    border-radius: 12px; overflow: hidden;
+  }
+  /* interior cells stay square except the row's own outer corners,
+     so hover fills follow the curve and the bento reads as one piece */
+  .ovrow > .ovc:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+  .ovrow > .ovc:last-child  { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
+  /* photo frames and the damage diagram (10px) */
+  .shots { border-radius: 10px; overflow: hidden; }
+  .bp-img, .vehdiag svg, .lb-fig img { border-radius: 10px; }
+
+  /* controls — buttons, selects, segmented, toasts, tooltips (8px) */
+  .btn, .tbact, .vizfilter button, .db-btn, .cmdk-esc, .lb-x, .lb-nav,
+  select, .seg, .toast, .vz-tip, .flag { border-radius: 8px; }
+
+  /* chips, pills, badges, key hints (6px; micro badges 4px) */
+  .chip, .pill, .achip, .zkey span, .topbar .v, .side-foot .v,
+  .cmdk-it .ck-k { border-radius: 6px; }
+  .shot .xg, .bp-img .xg, .setup .st .dot { border-radius: 4px; }
+
+  /* progress tracks and status dots (shadcn Progress / full round) */
+  .setup-bar, .bias-track, .fbar, .mixrow .mbar, .fin-meter, .pl-partsbar i { border-radius: 999px; }
+  .fin-meter { overflow: hidden; }
+  .achip i, .tc-dots i { border-radius: 50%; }
+
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -1295,6 +1403,7 @@
 
   <div class="main">
   <div class="topbar">
+    <a class="tbact home" href="/">&larr; Dashboard</a>
     <span class="ent">Azuaje Group LLC</span>
     <span class="stamp"><b>Copart</b> · Rental Vehicles · Mon · Wed · pre-bid 8:00 · live 12:00</span>
     <button type="button" class="tbact kbd" id="tb-cmdk" aria-label="Open command menu">Ctrl K</button>
