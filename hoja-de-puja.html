@@ -1100,6 +1100,71 @@
     body[data-print="prebid"] .panel { display: none; }
     body[data-print="prebid"] #p-prebid { display: block; }
   }
+  /* ---------- 06 · pipeline ---------- */
+  .plrow { grid-template-columns: repeat(8, 1fr); }
+  @media (max-width: 1180px) { .plrow { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px)  { .plrow { grid-template-columns: repeat(2, 1fr); } }
+  .plstage { font: inherit; text-align: left; cursor: pointer; }
+  .plstage[aria-pressed="true"] { background: var(--accent-soft); }
+  .plstage .v { margin-top: .8rem; }
+  .plgrid { display: grid; gap: 0; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .pl-card { font: inherit; text-align: left; cursor: pointer; background: var(--surface);
+             border: none; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+             border-radius: 0; padding: 1.2rem 1.3rem; display: flex; flex-direction: column;
+             gap: .45rem; color: var(--ink); transition: background .15s ease; }
+  .pl-card:hover { background: var(--surface-2); }
+  .pl-card:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .pl-card[data-aging="warn"] { box-shadow: inset 3px 0 0 var(--warn); }
+  .pl-card[data-aging="stop"] { box-shadow: inset 3px 0 0 var(--stop); }
+  .pl-top { display: flex; align-items: center; gap: .6rem; }
+  .pl-lot { font-size: .72rem; color: var(--ink-3); }
+  .pl-days { margin-left: auto; font-size: .72rem; font-weight: 600; }
+  .pl-card[data-aging="warn"] .pl-days { color: var(--warn); }
+  .pl-card[data-aging="stop"] .pl-days { color: var(--stop); }
+  .pl-veh { font-size: 1.02rem; font-weight: 600; letter-spacing: -.02em; }
+  .pl-meta, .pl-partsline { font-size: .7rem; color: var(--ink-3); }
+  .pl-carry { font-size: .72rem; color: var(--ink-2); }
+  .pl-partsbar { display: flex; gap: 2px; height: 4px; }
+  .pl-partsbar i { flex: 1; background: var(--line); }
+  .pl-partsbar .ps-ordered, .pl-partsbar .ps-shipped { background: var(--warn); }
+  .pl-partsbar .ps-received { background: var(--accent); }
+  .pl-partsbar .ps-installed { background: var(--go); }
+  .pl-next { font-size: .74rem; color: var(--ink); border-top: 1px solid var(--line-soft);
+             padding-top: .55rem; margin-top: .2rem; }
+  .pl-next::before { content: "→ "; color: var(--accent); font-family: var(--mono); }
+  /* drawer */
+  .pl-scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 58;
+              opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+  .pl-scrim.on { opacity: 1; pointer-events: auto; }
+  .pl-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 100vw);
+               background: var(--surface); border-left: 1px solid var(--ink); z-index: 60;
+               display: flex; flex-direction: column; transform: translateX(102%);
+               transition: transform .28s cubic-bezier(.3,0,.2,1); }
+  .pl-drawer.on { transform: translateX(0); }
+  .pl-drawer:not(.on) { transition-duration: .18s; }
+  .pl-d-h { padding: 1.1rem 1.35rem; border-bottom: 1px solid var(--line);
+            display: flex; align-items: flex-start; gap: .7rem; }
+  .pl-d-h h3 { margin: .25rem 0 0; font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
+  .pl-d-h .btn { margin-left: auto; }
+  .pl-d-b { padding: 1.35rem; overflow-y: auto; flex: 1; }
+  .pl-sec { margin-bottom: 1.5rem; display: grid; gap: .6rem; }
+  .pl-log-row { display: flex; align-items: center; gap: .7rem; font-size: .74rem;
+                border-bottom: 1px solid var(--line-soft); padding: .3rem 0; }
+  .pl-log-row .pl-log-s { font-weight: 600; text-transform: uppercase; letter-spacing: .14em;
+                          font-size: .56rem; color: var(--ink-2); flex: none; width: 9rem; }
+  .pl-log-row input { font-family: var(--mono); font-size: .74rem; border: none;
+                      border-bottom: 1px solid var(--line); background: transparent;
+                      color: var(--ink); padding: .2rem 0; }
+  .pl-finout, .pl-proj { font-size: .76rem; color: var(--ink-2); border: 1px solid var(--line);
+                         padding: .8rem .9rem; background: var(--surface-2); line-height: 1.7; }
+  .pl-d-f { padding: 1rem 1.35rem; border-top: 1px solid var(--line);
+            display: flex; gap: .6rem; justify-content: flex-end; }
+  table.data.pl-d-parts { min-width: 0; font-size: .74rem; }
+  table.data.pl-d-parts td { padding: .55rem .5rem; }
+  table.data.pl-d-parts input, table.data.pl-d-parts select {
+    font: inherit; border: none; border-bottom: 1px solid var(--line); background: transparent;
+    color: var(--ink); padding: .15rem 0; max-width: 8.5rem; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -1135,6 +1200,10 @@
         <button class="tab" role="tab" id="tab-prebid" aria-selected="false" aria-controls="p-prebid"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>Pre-bid<span class="tno">03</span></button>
         <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">04</span></button>
         <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">05</span></button>
+      </div>
+      <div class="nav-group">After the hammer</div>
+      <div class="tabs" role="tablist" aria-label="Pipeline">
+        <button class="tab" role="tab" id="tab-pipeline" aria-selected="false" aria-controls="p-pipeline"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-5 3 10 2.5-5h6"/></svg>Pipeline<span class="tno">06</span></button>
       </div>
       <div class="nav-group">Memory</div>
       <div class="tabs" role="tablist" aria-label="Memory">
@@ -1898,6 +1967,33 @@
     </div>
 
     <!-- ============ LIBRO ============ -->
+    <!-- ============ PIPELINE ============ -->
+    <div class="panel" id="p-pipeline" role="tabpanel" aria-labelledby="tab-pipeline">
+      <div class="pagehead"><h2 class="pt">The <em>pipeline</em>.</h2>
+        <p class="ps">Every car you own, from the hammer to the wire. Time is the cost nobody invoices: financed units accrue interest daily, and this board counts it. The seven active units are demo seeds, invented.</p></div>
+
+      <section>
+        <div class="ovrow plrow pl-stages" id="pl-stages"></div>
+      </section>
+
+      <section id="pl-alerts" style="display:none"></section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Units</h2>
+            <div class="seg" id="pl-seg" role="group" aria-label="Pipeline view">
+              <button type="button" class="on" data-plview="units">Units</button>
+              <button type="button" data-plview="inventory">Inventory</button>
+            </div>
+            <span class="eyebrow" id="pl-filter-note"></span>
+            <span class="eyebrow" id="pl-count" style="margin-left:auto"></span></div>
+          <div id="pl-units-view"><div class="plgrid" id="pl-cards"></div></div>
+          <div id="pl-inventory" style="display:none"></div>
+        </div>
+      </section>
+    </div>
+    <div id="pl-drawer-host"></div>
+
     <div class="panel" id="p-book" role="tabpanel" aria-labelledby="tab-book">
       <div class="pagehead"><h2 class="pt">The <em>Ledger</em>.</h2><p class="ps">Projected against real, unit by unit. This is where the $6,000 gets tested.</p></div>
       <section>
@@ -5903,6 +5999,7 @@
     { g: "Go to", n: "03", t: "Pre-bid triage", k: "", run: function () { var b = $("tab-prebid"); b && b.click(); } },
     { g: "Go to", n: "04", t: "Bid ceiling", k: "", run: function () { $("tab-sheet").click(); } },
     { g: "Go to", n: "05", t: "Parts and damage map", k: "", run: function () { $("tab-parts").click(); } },
+    { g: "Go to", n: "06", t: "Pipeline", k: "", run: function () { var b = $("tab-pipeline"); b && b.click(); } },
     { g: "Go to", n: "07", t: "Ledger", k: "", run: function () { $("tab-book").click(); } },
     { g: "Go to", n: "08", t: "Your numbers", k: "", run: function () { $("tab-numbers").click(); } },
     { g: "Actions", n: "→", t: "Take the guided tour", k: "", run: function () { var b = $("tab-start"); b && b.click(); setTimeout(function () { var g = $("tour-go"); g && g.click(); }, 250); } },
@@ -6510,5 +6607,680 @@
   });
   document.addEventListener("bidsheet:saved", renderAll);
   renderAll();
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   06 · Pipeline. A-to-Z process board over the shared units array.
+   Talks to the core ONLY through window.BidSheet and the
+   "bidsheet:saved" event. Additive: no core function is replaced.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  if (!window.BidSheet) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var anim = !!window.anime &&
+    !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  var PL_STAGES = ["won", "transit", "arrived", "shop", "ready", "listed", "sold"];
+  var PL_LABEL = { won: "Won", transit: "In transit", arrived: "Arrived", shop: "In shop",
+                   ready: "Ready", listed: "Listed", sold: "Sold" };
+  var PL_SUBS = ["teardown", "parts", "repair", "qc"];
+  var PL_SUBLBL = { teardown: "Teardown", parts: "Waiting on parts", repair: "Repair", qc: "QC" };
+  var PL_AGING = { won: 2, transit: 4, arrived: 2, shop: 14, shopParts: 5, ready: 3, listed: 7 };
+  var PL_OPEX = 0;
+
+  var plFilter = null;      // stage filter or null
+  var plOpenId = null;      // unit id in drawer or null
+  var plSaving = false;     // re-entrancy guard around BidSheet.save()
+  var plSaveTimer = null;   // debounce for drawer typing
+
+  /* ---------------- helpers ---------------- */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(n) {
+    if (window.__ops && window.__ops.money) return window.__ops.money(n);
+    var s = "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+    return n < 0 ? "−" + s : s;
+  }
+  function plToday() { return new Date().toISOString().slice(0, 10); }
+  function plDate(iso) { return new Date(iso + "T00:00:00Z"); }
+  function plValidDate(s) {
+    return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(plDate(s).getTime());
+  }
+  function plRawDiff(a, b) {
+    if (!plValidDate(a) || !plValidDate(b)) return 0;
+    return Math.floor((plDate(b) - plDate(a)) / 86400000);
+  }
+  function plDiff(a, b) { var d = plRawDiff(a, b); return d > 0 ? d : 0; }
+  function plAddDays(iso, n) {
+    var t = plValidDate(iso) ? plDate(iso) : new Date();
+    t.setUTCDate(t.getUTCDate() + n);
+    return t.toISOString().slice(0, 10);
+  }
+  function plFmt(iso) {
+    if (!plValidDate(iso)) return "";
+    var M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var t = plDate(iso);
+    return M[t.getUTCMonth()] + " " + t.getUTCDate();
+  }
+  function plLast(u) { var l = u.stageLog; return (l && l.length) ? l[l.length - 1] : null; }
+  function plDaysIn(u) {
+    var e = plLast(u);
+    var at = (e && plValidDate(e.at)) ? e.at : (plValidDate(u.boughtAt) ? u.boughtAt : plToday());
+    return plDiff(at, plToday());
+  }
+
+  /* ---------------- derived math ---------------- */
+  function plFinOn(u) { return !!(u.fin && u.fin.on && u.fin.principal > 0); }
+  function plCarryPerDay(u) {
+    if (!plFinOn(u)) return 0 + PL_OPEX;
+    var f = u.fin;
+    if (f.rateType === "daily") return f.principal * (f.rateValue || 0) / 100 + PL_OPEX;
+    var apr = (f.rateValue != null && f.rateType) ? f.rateValue : (f.aprPct || 0);
+    return f.principal * apr / 100 / 365 + PL_OPEX;
+  }
+  function plFinStart(u) {
+    if (plFinOn(u) && plValidDate(u.fin.startedAt)) return u.fin.startedAt;
+    return plValidDate(u.boughtAt) ? u.boughtAt : plToday();
+  }
+  function plAccrued(u) {
+    if (!plFinOn(u)) return 0;
+    /* +1: auction-finance interest is charged FROM purchase day */
+    return plCarryPerDay(u) * (plDiff(plFinStart(u), plToday()) + 1);
+  }
+  function plMargin(u) {
+    var m = 0;
+    try { m = BidSheet.projMargin(u); } catch (e) {}
+    return isFinite(m) ? m : 0;
+  }
+  function plMarginNet(u) { return plMargin(u) - plAccrued(u) - (u.cont || 0); }
+  function plBreakEven(u) {
+    var per = plCarryPerDay(u);
+    if (per <= 0 || !plFinOn(u)) return null;
+    var s = plFinStart(u);
+    var day = Math.floor(plMargin(u) / per);
+    return { day: day, date: plAddDays(s, day), left: day - plDiff(s, plToday()) };
+  }
+  function plAging(u) {
+    if (u.stage === "sold" || u.status === "sold") return "";
+    var lim = (u.stage === "shop" && u.shopSub === "parts") ? PL_AGING.shopParts : PL_AGING[u.stage];
+    if (!lim) return "";
+    var d = plDaysIn(u);
+    if (d >= 2 * lim) return "stop";
+    if (d >= lim) return "warn";
+    return "";
+  }
+  function plPartsSummary(u) {
+    var s = { n: 0, needed: 0, ordered: 0, shipped: 0, received: 0, installed: 0 };
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++) { s.n++; if (s[ps[i].status] != null) s[ps[i].status]++; }
+    return s;
+  }
+  function plCapital(u) {
+    var t = (u.hammer || 0) + (u.tow || 0);
+    try { t += BidSheet.totalFees(u.hammer || 0); } catch (e) {}
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++) if (ps[i].status !== "needed") t += ps[i].price || 0;
+    return t;
+  }
+  function plNextAction(u) {
+    var ps = u.parts || [], i, p;
+    for (i = 0; i < ps.length; i++) {
+      p = ps[i];
+      if (p.returnBy && plValidDate(p.returnBy) && p.status !== "installed") {
+        var left = plRawDiff(plToday(), p.returnBy);
+        if (left >= 0 && left <= 3) return "Return window closes " + plFmt(p.returnBy) + ": " + p.name;
+      }
+    }
+    var sum = plPartsSummary(u);
+    if (u.stage === "won")
+      return (u.transport && u.transport.note) ? "Dispatch: " + u.transport.note : "Arrange tow — no carrier noted";
+    if (u.stage === "transit")
+      return "In transit" + ((u.transport && u.transport.eta) ? " · eta " + plFmt(u.transport.eta) : " · no ETA");
+    if (u.stage === "arrived") return "Start teardown";
+    if (u.stage === "shop") {
+      if (u.shopSub === "teardown") return "Finish teardown · confirm the parts list";
+      if (u.shopSub === "parts") {
+        var chase = null;
+        for (i = 0; i < ps.length; i++) {
+          p = ps[i];
+          if (p.status === "ordered" || p.status === "shipped") { if (!chase || p.eta) chase = p; if (p.eta) break; }
+        }
+        if (chase && chase.eta) return "Chase: " + chase.name + " · eta " + plFmt(chase.eta);
+        if (sum.needed) return "Order " + sum.needed + " part" + (sum.needed === 1 ? "" : "s");
+        if (chase) return "Chase: " + chase.name;
+        return "Parts in — move to repair";
+      }
+      if (u.shopSub === "qc")
+        return "QC — check the repair, note anything structural. Structural risk not assessable from data.";
+      return "Repair underway · " + sum.installed + "/" + sum.n + " installed";
+    }
+    if (u.stage === "ready") return "List it — sale side is the fast side";
+    if (u.stage === "listed")
+      return "Listed at " + money(u.listPrice != null ? u.listPrice : u.projSale) + " · day " + plDaysIn(u);
+    if (u.stage === "sold")
+      return u.status !== "sold" ? "Close it in the Ledger with the real numbers" : "Done · in the Ledger";
+    return "";
+  }
+
+  /* ---------------- migration ---------------- */
+  function plEnsure(u) {
+    var ch = false;
+    if (!u.stage) {
+      if (u.status === "sold") {
+        u.stage = "sold"; u.shopSub = null;
+        if (!u.stageLog) u.stageLog = [{ s: "sold", at: plAddDays(plToday(), -(u.days || 10)) }];
+      } else {
+        u.stage = "shop"; u.shopSub = "repair";
+        if (!u.boughtAt) u.boughtAt = plAddDays(plToday(), -5);
+        if (!u.stageLog) u.stageLog = [{ s: "won", at: u.boughtAt },
+                                       { s: "shop", sub: "repair", at: plAddDays(u.boughtAt, 1) }];
+      }
+      ch = true;
+    }
+    if (!u.stageLog) { u.stageLog = [{ s: u.stage, at: u.boughtAt || plToday() }]; ch = true; }
+    if (!u.parts) { u.parts = []; ch = true; }
+    if (!u.fin) { u.fin = { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" }; ch = true; }
+    if (!u.transport) { u.transport = { note: "", eta: "" }; ch = true; }
+    if (u.opNotes == null) { u.opNotes = ""; ch = true; }
+    if (u.shopSub === undefined) { u.shopSub = null; ch = true; }
+    if (!u.boughtAt) { u.boughtAt = (u.stageLog[0] && u.stageLog[0].at) || plAddDays(plToday(), -5); ch = true; }
+    return ch;
+  }
+  function plById(id) {
+    var us = BidSheet.units();
+    for (var i = 0; i < us.length; i++) if (us[i].id === id) return us[i];
+    return null;
+  }
+  function plSave() { plSaving = true; try { BidSheet.save(); } finally { plSaving = false; } }
+  function plMigrate() {
+    var ch = false, us = BidSheet.units();
+    for (var i = 0; i < us.length; i++) if (plEnsure(us[i])) ch = true;
+    if (ch) plSave();
+  }
+
+  /* ---------------- stage moves ---------------- */
+  function plSetStage(u, stage, sub) {
+    if (stage === "sold" && u.status !== "sold") {   /* the Ledger owns "sold" */
+      plCloseDrawer();
+      try { BidSheet.openClose(u); } catch (e) {}
+      return;                                        /* bidsheet:saved picks it up */
+    }
+    u.stage = stage;
+    u.shopSub = stage === "shop" ? (sub || "teardown") : null;
+    if (stage === "listed" && !u.listedAt) {
+      u.listedAt = plToday();
+      if (u.listPrice == null) u.listPrice = u.projSale;
+    }
+    u.stageLog.push({ s: stage, sub: u.shopSub || undefined, at: plToday() });
+    plSave(); plRender();
+    if (plOpenId) { var u2 = plById(plOpenId); if (u2) plRenderDrawer(u2); }
+  }
+
+  /* ---------------- board renderers ---------------- */
+  function plRender() { plRenderStepper(); plRenderAlerts(); plRenderCards(); }
+
+  function plRenderStepper() {
+    var host = $("pl-stages"); if (!host) return;
+    var us = BidSheet.units();
+    var counts = {}, oldest = {}, subC = { teardown: 0, parts: 0, repair: 0, qc: 0 };
+    var nActive = 0, capital = 0, perDay = 0, i, u, st;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      st = u.stage || (u.status === "sold" ? "sold" : "shop");
+      counts[st] = (counts[st] || 0) + 1;
+      if (st !== "sold") {
+        var dd = plDaysIn(u);
+        if (oldest[st] == null || dd > oldest[st]) oldest[st] = dd;
+        nActive++; capital += plCapital(u); perDay += plFinOn(u) ? plCarryPerDay(u) : 0;
+        if (st === "shop" && subC[u.shopSub] != null) subC[u.shopSub]++;
+      }
+    }
+    var h = "<div class=\"ovc hero\"><span class=\"eyebrow\">Capital on the street</span>" +
+      "<span class=\"v num\" id=\"pl-capital\">" + money(capital) + "</span>" +
+      "<span class=\"d\">" + nActive + " active · " +
+      (perDay > 0 ? "$" + perDay.toFixed(2) + "/day accruing" : "no financed carry") + "</span></div>";
+    for (i = 0; i < PL_STAGES.length; i++) {
+      st = PL_STAGES[i];
+      var d;
+      if (st === "sold") d = "in the Ledger";
+      else if (st === "shop") d = "t" + subC.teardown + " · p" + subC.parts + " · r" + subC.repair + " · q" + subC.qc;
+      else d = counts[st] ? "oldest " + oldest[st] + "d" : "—";
+      h += "<button type=\"button\" class=\"ovc plstage\" data-stage=\"" + st + "\" aria-pressed=\"" +
+        (plFilter === st ? "true" : "false") + "\">" +
+        "<span class=\"eyebrow\">" + PL_LABEL[st] + "</span>" +
+        "<span class=\"v num\">" + (counts[st] || 0) + "</span>" +
+        "<span class=\"d\">" + d + "</span></button>";
+    }
+    host.innerHTML = h;
+    var btns = host.querySelectorAll(".plstage");
+    for (i = 0; i < btns.length; i++) (function (b) {
+      b.addEventListener("click", function () {
+        var st2 = b.getAttribute("data-stage");
+        plFilter = (plFilter === st2) ? null : st2;
+        plRender();
+      });
+    })(btns[i]);
+  }
+
+  function plRenderAlerts() {
+    var host = $("pl-alerts"); if (!host) return;
+    var us = BidSheet.units(), rows = "", i, u;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      var a = plAging(u);
+      if (!a) continue;
+      var where = u.stage === "shop"
+        ? PL_SUBLBL[u.shopSub || "repair"].toLowerCase()
+        : PL_LABEL[u.stage].toLowerCase();
+      rows += "<div class=\"flag " + a + "\"><span class=\"mark\">D" + plDaysIn(u) + "</span> " +
+        esc(u.lot) + " · " + esc(u.desc) + " — " + plDaysIn(u) + " days " + esc(where) + ". " +
+        esc(plNextAction(u)) + "</div>";
+    }
+    if (rows) { host.innerHTML = rows; host.style.display = ""; }
+    else { host.innerHTML = ""; host.style.display = "none"; }
+  }
+
+  function plCardHTML(u) {
+    var a = plAging(u), sum = plPartsSummary(u), days = plDaysIn(u);
+    var pill, pcls;
+    if (u.stage === "sold") { pill = "SOLD"; pcls = "go"; }
+    else {
+      pill = PL_LABEL[u.stage].toUpperCase();
+      if (u.stage === "shop") pill += " · " + PL_SUBLBL[u.shopSub || "repair"].toUpperCase();
+      pcls = a || "idle";
+    }
+    var meta = days + " days in stage · bought " + plFmt(u.boughtAt);
+    if (!plFinOn(u)) meta += " · cash unit";
+    if ((u.id || "").length <= 3) meta += " · demo";
+    var carry = "";
+    if (plFinOn(u)) {
+      var be = plBreakEven(u);
+      carry = "<span class=\"pl-carry num\" data-accrued=\"" + plAccrued(u).toFixed(2) + "\">$" +
+        plCarryPerDay(u).toFixed(2) + "/day · " + money(plAccrued(u)) + " accrued" +
+        (be ? " · break-even day " + be.day + " (" +
+          (be.left >= 0 ? be.left + " left" : Math.abs(be.left) + " past") + ")" : "") + "</span>";
+    }
+    var bar = "", line = "";
+    if (sum.n) {
+      var order = ["installed", "received", "shipped", "ordered", "needed"], k, c;
+      bar = "<span class=\"pl-partsbar\" aria-hidden=\"true\">";
+      for (k = 0; k < order.length; k++) for (c = 0; c < sum[order[k]]; c++) bar += "<i class=\"ps-" + order[k] + "\"></i>";
+      bar += "</span>";
+      line = "<span class=\"pl-partsline\">" + sum.installed + "/" + sum.n + " installed" +
+        (sum.ordered + sum.shipped ? " · " + (sum.ordered + sum.shipped) + " ordered" : "") +
+        (sum.needed ? " · " + sum.needed + " needed" : "") + "</span>";
+    }
+    return "<button type=\"button\" class=\"pl-card\" data-unit=\"" + esc(u.id) + "\"" +
+      (a ? " data-aging=\"" + a + "\"" : "") + ">" +
+      "<span class=\"pl-top\"><span class=\"num pl-lot\">" + esc(u.lot) + "</span>" +
+      "<span class=\"pill " + pcls + "\">" + esc(pill) + "</span>" +
+      "<span class=\"num pl-days\">D" + days + "</span></span>" +
+      "<span class=\"pl-veh\">" + esc(u.desc) + "</span>" +
+      "<span class=\"pl-meta\">" + esc(meta) + "</span>" +
+      carry + bar + line +
+      "<span class=\"pl-next\">" + esc(plNextAction(u)) + "</span></button>";
+  }
+
+  function plRenderCards() {
+    var host = $("pl-cards"); if (!host) return;
+    var us = BidSheet.units(), shown = [], i;
+    for (i = 0; i < us.length; i++) {
+      var st = us[i].stage || (us[i].status === "sold" ? "sold" : "shop");
+      if (plFilter) { if (st === plFilter) shown.push(us[i]); }
+      else if (st !== "sold") shown.push(us[i]);
+    }
+    var h = "";
+    for (i = 0; i < shown.length; i++) h += plCardHTML(shown[i]);
+    host.innerHTML = h || "<div class=\"empty\">No units in this stage.</div>";
+    var cards = host.querySelectorAll(".pl-card");
+    for (i = 0; i < cards.length; i++) (function (c) {
+      c.addEventListener("click", function () {
+        var u = plById(c.getAttribute("data-unit"));
+        if (u) plOpenDrawer(u);
+      });
+    })(cards[i]);
+    var cnt = $("pl-count");
+    if (cnt) cnt.textContent = shown.length + (shown.length === 1 ? " unit" : " units");
+    var note = $("pl-filter-note");
+    if (note) note.textContent = plFilter ? "showing: " + PL_LABEL[plFilter] : "";
+  }
+
+  /* ---------------- drawer ---------------- */
+  function plDrawerShell() {
+    var host = $("pl-drawer-host");
+    if (!host || $("pl-drawer")) return;
+    host.innerHTML =
+      "<div class=\"pl-scrim\" id=\"pl-scrim\"></div>" +
+      "<aside class=\"pl-drawer\" id=\"pl-drawer\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Unit detail\">" +
+      "<div class=\"pl-d-h\"><div><span class=\"eyebrow\">Lot <span class=\"num\" id=\"pl-d-lot\"></span></span>" +
+      "<h3 id=\"pl-d-veh\"></h3></div>" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pl-d-close\">Esc</button></div>" +
+      "<div class=\"pl-d-b\" id=\"pl-d-b\"></div>" +
+      "<div class=\"pl-d-f\">" +
+      "<button type=\"button\" class=\"btn\" id=\"pl-d-ledger\">Open Ledger</button>" +
+      "<button type=\"button\" class=\"btn primary\" id=\"pl-d-sold\">Sold — close with real numbers</button>" +
+      "</div></aside>";
+    $("pl-scrim").addEventListener("click", plCloseDrawer);
+    $("pl-d-close").addEventListener("click", plCloseDrawer);
+    $("pl-d-ledger").addEventListener("click", function () {
+      plCloseDrawer();
+      var b = $("tab-book"); b && b.click();
+    });
+    $("pl-d-sold").addEventListener("click", function () {
+      var u = plById(plOpenId);
+      if (u) plSetStage(u, "sold");
+    });
+  }
+  function plOpenDrawer(u) {
+    plDrawerShell();
+    plOpenId = u.id;
+    plRenderDrawer(u);
+    $("pl-scrim").classList.add("on");
+    $("pl-drawer").classList.add("on");
+  }
+  function plCloseDrawer() {
+    plOpenId = null;
+    var s = $("pl-scrim"), d = $("pl-drawer");
+    if (s) s.classList.remove("on");
+    if (d) d.classList.remove("on");
+  }
+  function plOpts(vals, cur) {
+    var h = "", i;
+    for (i = 0; i < vals.length; i++)
+      h += "<option value=\"" + vals[i] + "\"" + (cur === vals[i] ? " selected" : "") + ">" +
+        vals[i] + "</option>";
+    return h;
+  }
+  function plRenderDrawer(u) {
+    plDrawerShell();
+    $("pl-d-lot").textContent = u.lot;
+    $("pl-d-veh").textContent = u.desc;
+    var h = "", i;
+    /* stage + sub segs */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Stage</span><div class=\"seg\" id=\"pl-d-stage\">";
+    for (i = 0; i < PL_STAGES.length; i++)
+      h += "<button type=\"button\"" + (u.stage === PL_STAGES[i] ? " class=\"on\"" : "") +
+        " data-st=\"" + PL_STAGES[i] + "\">" + PL_LABEL[PL_STAGES[i]] + "</button>";
+    h += "</div><div class=\"seg\" id=\"pl-d-sub\"" + (u.stage === "shop" ? "" : " style=\"display:none\"") + ">";
+    for (i = 0; i < PL_SUBS.length; i++)
+      h += "<button type=\"button\"" + (u.shopSub === PL_SUBS[i] ? " class=\"on\"" : "") +
+        " data-sub=\"" + PL_SUBS[i] + "\">" + PL_SUBLBL[PL_SUBS[i]] + "</button>";
+    h += "</div></div>";
+    /* timeline */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Timeline</span><div id=\"pl-d-log\">";
+    var log = u.stageLog || [];
+    for (i = 0; i < log.length; i++) {
+      var lb = PL_LABEL[log[i].s] || log[i].s;
+      if (log[i].sub) lb += " · " + (PL_SUBLBL[log[i].sub] || log[i].sub);
+      h += "<div class=\"pl-log-row\"><span class=\"pl-log-s\">" + esc(lb) + "</span>" +
+        "<input type=\"date\" value=\"" + esc(log[i].at) + "\" data-log-i=\"" + i + "\"></div>";
+    }
+    h += "</div>" +
+      "<div class=\"field text\"><label for=\"pl-d-trans\">Transport</label>" +
+      "<input id=\"pl-d-trans\" type=\"text\" placeholder=\"Carrier, driver, phone\" value=\"" +
+      esc(u.transport && u.transport.note) + "\"></div>" +
+      "<div class=\"field\"><label for=\"pl-d-eta\">Transport ETA</label>" +
+      "<input id=\"pl-d-eta\" type=\"date\" value=\"" + esc(u.transport && u.transport.eta) + "\"></div></div>";
+    /* parts — joint model with the inventory sub-view (03) */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Parts · joint model with Inventory</span>" +
+      "<div class=\"tscroll\"><table class=\"data pl-d-parts\" id=\"pl-d-parts\">" +
+      "<thead><tr><th>Part</th><th>Src</th><th style=\"text-align:right\">Price</th><th>Status</th><th>Return by</th><th></th></tr></thead><tbody>";
+    var ps = u.parts || [];
+    for (i = 0; i < ps.length; i++) {
+      var p = ps[i];
+      h += "<tr data-p=\"" + esc(p.id) + "\">" +
+        "<td><input type=\"text\" data-pf=\"name\" value=\"" + esc(p.name) + "\"></td>" +
+        "<td><select data-pf=\"src\">" + plOpts(["ebay", "used", "local"], p.src) + "</select></td>" +
+        "<td class=\"n\"><input type=\"number\" step=\"1\" data-pf=\"price\" value=\"" + (p.price || 0) +
+        "\" style=\"text-align:right;max-width:5.5rem\"></td>" +
+        "<td><select data-pf=\"status\">" +
+        plOpts(["needed", "ordered", "shipped", "received", "installed"], p.status) + "</select></td>" +
+        "<td><input type=\"date\" data-pf=\"returnBy\" value=\"" + esc(p.returnBy || "") + "\"></td>" +
+        "<td><button type=\"button\" class=\"btn sm\" data-prm=\"" + esc(p.id) + "\" aria-label=\"Remove part\">×</button></td></tr>";
+    }
+    h += "</tbody></table></div>" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pl-d-addpart\">+ part</button>" +
+      "<span class=\"hint\">Sourced mostly on eBay — the link goes to eBay, the price is read there, nothing is ingested.</span></div>";
+    /* financing */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Financing · joint model with the Ledger</span>" +
+      "<label class=\"chk\"><input type=\"checkbox\" id=\"pl-d-finon\"" + (u.fin && u.fin.on ? " checked" : "") +
+      "> Auction-finance loan on this unit</label>" +
+      "<div class=\"grid2\"><div class=\"field\"><label for=\"pl-d-prin\">Principal</label>" +
+      "<input id=\"pl-d-prin\" type=\"number\" step=\"25\" value=\"" + ((u.fin && u.fin.principal) || 0) + "\"></div>" +
+      "<div class=\"field\"><label for=\"pl-d-apr\">APR %</label>" +
+      "<input id=\"pl-d-apr\" type=\"number\" step=\"0.1\" value=\"" + ((u.fin && u.fin.aprPct) || 0) + "\"></div></div>" +
+      "<div class=\"field\"><label for=\"pl-d-start\">Interest from</label>" +
+      "<input id=\"pl-d-start\" type=\"date\" value=\"" + esc((u.fin && u.fin.startedAt) || "") + "\"></div>" +
+      "<div class=\"pl-finout num\" id=\"pl-d-finout\"></div></div>";
+    /* frozen at purchase */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Frozen at purchase</span>" +
+      "<div class=\"pl-proj num\" id=\"pl-d-proj\"></div>" +
+      "<span class=\"hint\">The reserve is for what no data source can see. Structural risk not assessable from data.</span></div>";
+    /* notes */
+    h += "<div class=\"pl-sec\"><div class=\"field text\"><label for=\"pl-d-notes\">Notes</label>" +
+      "<input id=\"pl-d-notes\" type=\"text\" value=\"" + esc(u.opNotes || "") + "\"></div></div>";
+    $("pl-d-b").innerHTML = h;
+    plRefreshOut(u);
+    plBindDrawer();
+  }
+  function plRefreshOut(u) {
+    var fo = $("pl-d-finout"), pr = $("pl-d-proj");
+    if (fo) {
+      if (plFinOn(u)) {
+        var be = plBreakEven(u);
+        fo.setAttribute("data-accrued", plAccrued(u).toFixed(2));
+        fo.textContent = "$" + plCarryPerDay(u).toFixed(2) + "/day · " + money(plAccrued(u)) +
+          " accrued over " + (plDiff(plFinStart(u), plToday()) + 1) + " days" +
+          (be ? " · break-even day " + be.day : "") +
+          " · margin net of carry " + money(plMarginNet(u));
+      } else {
+        fo.removeAttribute("data-accrued");
+        fo.textContent = "Cash unit — no daily carry. Margin net of reserve " + money(plMarginNet(u)) + ".";
+      }
+    }
+    if (pr) {
+      pr.textContent = "est. retail " + money(u.estRetail || 0) + " · parts est. " + money(u.cpRepair || 0) +
+        " · reserve " + money(u.cont || 0) + " · projected margin " + money(plMargin(u));
+    }
+  }
+  function plDebounced() {
+    if (plSaveTimer) clearTimeout(plSaveTimer);
+    plSaveTimer = setTimeout(function () {
+      plSaveTimer = null;
+      plSave();
+      plRenderStepper(); plRenderAlerts(); plRenderCards();
+      var u = plById(plOpenId);
+      if (u) plRefreshOut(u);   /* outputs only — never rebuild inputs mid-typing */
+    }, 250);
+  }
+  function plBindDrawer() {
+    var u0 = function () { return plById(plOpenId); };
+    var i, b;
+    /* stage seg */
+    var stBtns = $("pl-d-stage").querySelectorAll("button");
+    for (i = 0; i < stBtns.length; i++) (function (btn) {
+      btn.addEventListener("click", function () {
+        var u = u0(); if (!u) return;
+        var st = btn.getAttribute("data-st");
+        plSetStage(u, st, st === "shop" ? (u.shopSub || "teardown") : undefined);
+      });
+    })(stBtns[i]);
+    var subBtns = $("pl-d-sub").querySelectorAll("button");
+    for (i = 0; i < subBtns.length; i++) (function (btn) {
+      btn.addEventListener("click", function () {
+        var u = u0(); if (!u) return;
+        plSetStage(u, "shop", btn.getAttribute("data-sub"));
+      });
+    })(subBtns[i]);
+    /* timeline dates */
+    var logIns = $("pl-d-log").querySelectorAll("input[data-log-i]");
+    for (i = 0; i < logIns.length; i++) (function (inp) {
+      inp.addEventListener("change", function () {
+        var u = u0(); if (!u) return;
+        var idx = parseInt(inp.getAttribute("data-log-i"), 10);
+        if (plValidDate(inp.value) && u.stageLog[idx]) {
+          u.stageLog[idx].at = inp.value;
+          plSave(); plRenderStepper(); plRenderAlerts(); plRenderCards(); plRefreshOut(u);
+        } else if (u.stageLog[idx]) {
+          inp.value = u.stageLog[idx].at;   /* revert invalid */
+        }
+      });
+    })(logIns[i]);
+    /* transport + notes */
+    var tr = $("pl-d-trans"), eta = $("pl-d-eta"), nts = $("pl-d-notes");
+    if (tr) tr.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.transport.note = tr.value; plDebounced();
+    });
+    if (eta) eta.addEventListener("change", function () {
+      var u = u0(); if (!u) return; u.transport.eta = plValidDate(eta.value) ? eta.value : ""; plDebounced();
+    });
+    if (nts) nts.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.opNotes = nts.value; plDebounced();
+    });
+    /* financing */
+    var fon = $("pl-d-finon"), prin = $("pl-d-prin"), apr = $("pl-d-apr"), start = $("pl-d-start");
+    if (fon) fon.addEventListener("change", function () {
+      var u = u0(); if (!u) return;
+      u.fin.on = !!fon.checked;
+      if (u.fin.on && !plValidDate(u.fin.startedAt)) {
+        u.fin.startedAt = plValidDate(u.boughtAt) ? u.boughtAt : plToday();
+        if (start) start.value = u.fin.startedAt;
+      }
+      if (u.fin.on && !u.fin.lender) u.fin.lender = "Auction finance";
+      plSave(); plRenderStepper(); plRenderAlerts(); plRenderCards(); plRefreshOut(u);
+    });
+    if (prin) prin.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.fin.principal = parseFloat(prin.value) || 0; plDebounced();
+    });
+    if (apr) apr.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.fin.aprPct = parseFloat(apr.value) || 0; plDebounced();
+    });
+    if (start) start.addEventListener("change", function () {
+      var u = u0(); if (!u) return;
+      u.fin.startedAt = plValidDate(start.value) ? start.value : u.fin.startedAt;
+      plDebounced();
+    });
+    /* parts table (delegated) */
+    var tbl = $("pl-d-parts");
+    var tb = tbl ? tbl.getElementsByTagName("tbody")[0] : null;
+    function partOf(el) {
+      var u = u0(); if (!u) return null;
+      var row = el;
+      while (row && row.tagName !== "TR") row = row.parentNode;
+      if (!row) return null;
+      var pid = row.getAttribute("data-p");
+      for (var j = 0; j < u.parts.length; j++) if (u.parts[j].id === pid) return u.parts[j];
+      return null;
+    }
+    function onPartEdit(e) {
+      var t = e.target, f = t.getAttribute && t.getAttribute("data-pf");
+      if (!f) return;
+      var p = partOf(t); if (!p) return;
+      if (f === "price") p.price = parseFloat(t.value) || 0;
+      else if (f === "returnBy") p.returnBy = plValidDate(t.value) ? t.value : undefined;
+      else p[f] = t.value;
+      if (f === "status" && (t.value === "ordered" || t.value === "shipped") && !p.orderedAt) p.orderedAt = plToday();
+      plDebounced();
+    }
+    if (tb) {
+      tb.addEventListener("input", onPartEdit);
+      tb.addEventListener("change", onPartEdit);
+      tb.addEventListener("click", function (e) {
+        var t = e.target, pid = t.getAttribute && t.getAttribute("data-prm");
+        if (!pid) return;
+        var u = u0(); if (!u) return;
+        for (var j = 0; j < u.parts.length; j++) if (u.parts[j].id === pid) { u.parts.splice(j, 1); break; }
+        plSave(); plRender(); plRenderDrawer(u);
+      });
+    }
+    b = $("pl-d-addpart");
+    if (b) b.addEventListener("click", function () {
+      var u = u0(); if (!u) return;
+      u.parts.push({ id: "p" + Date.now(), name: "", src: "ebay", price: 0, status: "needed" });
+      plSave(); plRender(); plRenderDrawer(u);
+    });
+  }
+
+  /* ------- Units / Inventory sub-view · Inventory is the 03 module's stub ------- */
+  var seg = $("pl-seg");
+  if (seg) seg.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (!b) return;
+    var v = b.getAttribute("data-plview");
+    if (!v) return;
+    var bs = seg.querySelectorAll("button");
+    for (var i = 0; i < bs.length; i++) bs[i].classList.remove("on");
+    b.classList.add("on");
+    var uv = $("pl-units-view"), iv = $("pl-inventory");
+    if (uv) uv.style.display = v === "units" ? "" : "none";
+    if (iv) iv.style.display = v === "inventory" ? "" : "none";
+  });
+
+  /* ---------------- tab wiring — the unmanaged-panel pattern ---------------- */
+  function bindTab() {
+    var tab = $("tab-pipeline"), panel = $("p-pipeline");
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".panel"), function (p) {
+        p.classList.remove("on");
+      });
+      Array.prototype.forEach.call(document.querySelectorAll(".tab[role=\"tab\"]"), function (b2) {
+        b2.setAttribute("aria-selected", "false");
+      });
+      panel.classList.add("on");
+      tab.setAttribute("aria-selected", "true");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      plMigrate(); plRender();
+      if (anim) {
+        var kids = panel.querySelectorAll(":scope > *");
+        anime.remove(kids);
+        anime({ targets: kids, opacity: [0, 1], translateY: [10, 0],
+                delay: anime.stagger(60), duration: 420, easing: "easeOutCubic" });
+      }
+    });
+    var nav = document.querySelector(".side-nav");
+    if (nav) nav.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest(".tab") : null;
+      if (t && t.id !== "tab-pipeline") {
+        panel.classList.remove("on");
+        tab.setAttribute("aria-selected", "false");
+        plCloseDrawer();
+      }
+    });
+  }
+  bindTab();
+
+  /* ------- react to core saves: purchase logged, unit closed, demo reset ------- */
+  document.addEventListener("bidsheet:saved", function () {
+    if (plSaving) return;
+    var changed = false, us = BidSheet.units(), i, u;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      if (plEnsure(u)) changed = true;
+      if (u.status === "sold" && u.stage !== "sold") {   /* closed via Ledger or drawer */
+        u.stage = "sold"; u.shopSub = null;
+        u.stageLog.push({ s: "sold", at: plToday() });
+        changed = true;
+      }
+    }
+    if (changed) plSave();
+    var p = $("p-pipeline");
+    if (p && p.classList.contains("on")) plRender();
+    if (plOpenId) {
+      var u2 = plById(plOpenId);
+      if (u2) plRefreshOut(u2); else plCloseDrawer();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") plCloseDrawer();
+  });
+
+  plMigrate();   /* backfill legacy localStorage units once at boot */
 })();
 </script>
