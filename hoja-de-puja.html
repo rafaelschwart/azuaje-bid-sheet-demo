@@ -2363,7 +2363,7 @@
         stageLog:[{s:"won",at:d(-9)},{s:"transit",at:d(-8)},{s:"arrived",at:d(-6)},
                   {s:"shop",sub:"teardown",at:d(-6)},{s:"shop",sub:"parts",at:d(-6)}],
         transport:{note:"Central Dispatch · R. Gómez",eta:""}, opNotes:"",
-        parts:[ {id:"p1",name:"Front bumper cover",src:"ebay",price:212,status:"installed",orderedAt:d(-6)},
+        parts:[ {id:"p1",name:"Front bumper cover",src:"ebay",price:212,status:"installed",orderedAt:d(-6),taught:true},
                 {id:"p2",name:"Bumper reinforcement",src:"ebay",price:145,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
                 {id:"p3",name:"Right headlamp",src:"ebay",price:189,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
                 {id:"p4",name:"Hood hinge pair",src:"used",price:48,status:"received",orderedAt:d(-5)},
@@ -2376,9 +2376,9 @@
         stageLog:[{s:"won",at:d(-7)},{s:"transit",at:d(-6)},{s:"arrived",at:d(-4)},
                   {s:"shop",sub:"teardown",at:d(-4)},{s:"shop",sub:"repair",at:d(-3)}],
         transport:{note:"Own trailer",eta:""}, opNotes:"",
-        parts:[ {id:"p1",name:"Left front door skin",src:"used",price:180,status:"installed"},
-                {id:"p2",name:"Mirror assembly",src:"ebay",price:74,status:"installed"},
-                {id:"p3",name:"Door moulding",src:"ebay",price:31,status:"installed"} ],
+        parts:[ {id:"p1",name:"Left front door skin",src:"used",price:180,status:"installed",taught:true},
+                {id:"p2",name:"Mirror assembly",src:"ebay",price:74,status:"installed",taught:true},
+                {id:"p3",name:"Door moulding",src:"ebay",price:31,status:"installed",taught:true} ],
         fin:{on:false,lender:"",principal:0,aprPct:0,startedAt:""} },
       { id:"u9",  lot:"58011427", desc:"2024 Nissan Sentra S",    damage:"FRONT END",
         projSale:16900, projParts:1400, projLabor:900,  tow:260, margin:6000,
@@ -2409,9 +2409,9 @@
                   {s:"shop",sub:"teardown",at:d(-8)},{s:"shop",sub:"parts",at:d(-7)},
                   {s:"shop",sub:"repair",at:d(-4)},{s:"shop",sub:"qc",at:d(-2)},{s:"ready",at:d(-1)}],
         transport:{note:"",eta:""}, opNotes:"",
-        parts:[ {id:"p1",name:"Left rear door",src:"used",price:260,status:"installed"},
-                {id:"p2",name:"Rocker moulding",src:"ebay",price:58,status:"installed"},
-                {id:"p3",name:"Rear lamp assembly",src:"ebay",price:112,status:"installed"} ],
+        parts:[ {id:"p1",name:"Left rear door",src:"used",price:260,status:"installed",taught:true},
+                {id:"p2",name:"Rocker moulding",src:"ebay",price:58,status:"installed",taught:true},
+                {id:"p3",name:"Rear lamp assembly",src:"ebay",price:112,status:"installed",taught:true} ],
         fin:{on:true,lender:"Auction finance",principal:8710,aprPct:28,startedAt:d(-11)} },
       { id:"u13", lot:"57981174", desc:"2024 Hyundai Elantra SEL", damage:"REAR END",
         projSale:15900, projParts:1200, projLabor:850,  tow:270, margin:6000,
@@ -2421,8 +2421,8 @@
                   {s:"shop",sub:"teardown",at:d(-10)},{s:"shop",sub:"repair",at:d(-8)},
                   {s:"shop",sub:"qc",at:d(-6)},{s:"ready",at:d(-5)},{s:"listed",at:d(-4)}],
         transport:{note:"",eta:""}, opNotes:"",
-        parts:[ {id:"p1",name:"Rear bumper cover",src:"ebay",price:168,status:"installed"},
-                {id:"p2",name:"Trunk lid",src:"used",price:290,status:"installed"} ],
+        parts:[ {id:"p1",name:"Rear bumper cover",src:"ebay",price:168,status:"installed",taught:true},
+                {id:"p2",name:"Trunk lid",src:"used",price:290,status:"installed",taught:true} ],
         fin:{on:true,lender:"Auction finance",principal:7460,aprPct:28,startedAt:d(-13)} }
     ];
   }
@@ -6919,6 +6919,10 @@
       (a ? " data-aging=\"" + a + "\"" : "") + ">" +
       "<span class=\"pl-top\"><span class=\"num pl-lot\">" + esc(u.lot) + "</span>" +
       "<span class=\"pill " + pcls + "\">" + esc(pill) + "</span>" +
+      /* waiting-on-parts is DERIVED (stage shop + any part not received/installed), never stored */
+      (u.stage === "shop" && u.status !== "sold" && u.shopSub !== "parts" &&
+        (sum.needed + sum.ordered + sum.shipped) > 0
+        ? "<span class=\"pill warn\">WAITING ON PARTS</span>" : "") +
       "<span class=\"num pl-days\">D" + days + "</span></span>" +
       "<span class=\"pl-veh\">" + esc(u.desc) + "</span>" +
       "<span class=\"pl-meta\">" + esc(meta) + "</span>" +
@@ -7026,26 +7030,9 @@
       esc(u.transport && u.transport.note) + "\"></div>" +
       "<div class=\"field\"><label for=\"pl-d-eta\">Transport ETA</label>" +
       "<input id=\"pl-d-eta\" type=\"date\" value=\"" + esc(u.transport && u.transport.eta) + "\"></div></div>";
-    /* parts — joint model with the inventory sub-view (03) */
+    /* parts — the parts layer (05) renders its table into this host on "pl:drawer" */
     h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Parts · joint model with Inventory</span>" +
-      "<div class=\"tscroll\"><table class=\"data pl-d-parts\" id=\"pl-d-parts\">" +
-      "<thead><tr><th>Part</th><th>Src</th><th style=\"text-align:right\">Price</th><th>Status</th><th>Return by</th><th></th></tr></thead><tbody>";
-    var ps = u.parts || [];
-    for (i = 0; i < ps.length; i++) {
-      var p = ps[i];
-      h += "<tr data-p=\"" + esc(p.id) + "\">" +
-        "<td><input type=\"text\" data-pf=\"name\" value=\"" + esc(p.name) + "\"></td>" +
-        "<td><select data-pf=\"src\">" + plOpts(["ebay", "used", "local"], p.src) + "</select></td>" +
-        "<td class=\"n\"><input type=\"number\" step=\"1\" data-pf=\"price\" value=\"" + (p.price || 0) +
-        "\" style=\"text-align:right;max-width:5.5rem\"></td>" +
-        "<td><select data-pf=\"status\">" +
-        plOpts(["needed", "ordered", "shipped", "received", "installed"], p.status) + "</select></td>" +
-        "<td><input type=\"date\" data-pf=\"returnBy\" value=\"" + esc(p.returnBy || "") + "\"></td>" +
-        "<td><button type=\"button\" class=\"btn sm\" data-prm=\"" + esc(p.id) + "\" aria-label=\"Remove part\">×</button></td></tr>";
-    }
-    h += "</tbody></table></div>" +
-      "<button type=\"button\" class=\"btn sm\" id=\"pl-d-addpart\">+ part</button>" +
-      "<span class=\"hint\">Sourced mostly on eBay — the link goes to eBay, the price is read there, nothing is ingested.</span></div>";
+      "<div id=\"pl-d-parts-host\"></div></div>";
     /* financing */
     h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Financing · joint model with the Ledger</span>" +
       "<label class=\"chk\"><input type=\"checkbox\" id=\"pl-d-finon\"" + (u.fin && u.fin.on ? " checked" : "") +
@@ -7067,6 +7054,8 @@
     $("pl-d-b").innerHTML = h;
     plRefreshOut(u);
     plBindDrawer();
+    /* hand the freshly-built parts host to the parts layer (05) */
+    try { document.dispatchEvent(new CustomEvent("pl:drawer", { detail: { uid: u.id } })); } catch (e) {}
   }
   function plRefreshOut(u) {
     var fo = $("pl-d-finout"), pr = $("pl-d-proj");
@@ -7282,5 +7271,657 @@
   });
 
   plMigrate();   /* backfill legacy localStorage units once at boot */
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   05 · Parts orders + inventory. Owns the parts table inside the
+   pipeline drawer (#pl-d-parts-host, handed over via "pl:drawer"),
+   the Inventory sub-view (#pl-inventory), and the loose-parts shelf
+   in localStorage "hoja-ops-v1" (read-modify-write + "ops:change").
+   Teaches the pre-bid price memory through window.__parts.remember
+   the first time a template part is INSTALLED with a real cost
+   (guarded by a taught flag; seeded rows are pre-marked taught).
+   eBay is an outbound search link only — nothing is fetched or
+   stored from eBay or any restricted source. No automated bidding,
+   no logged-in automation. Additive: no core function is replaced.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  if (!window.BidSheet) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var LSK = "hoja-ops-v1";
+  var STATUSES = ["needed", "ordered", "shipped", "received", "installed"];
+  var STLBL = { needed: "NEEDED", ordered: "ORDERED", shipped: "SHIPPED",
+                received: "RECEIVED", installed: "INSTALLED" };
+  var GROUP = {
+    needed:    { t: "Needed",    empty: "Nothing waiting to be ordered." },
+    ordered:   { t: "Ordered",   empty: "Nothing ordered right now." },
+    shipped:   { t: "Shipped",   empty: "Nothing in transit." },
+    received:  { t: "Received",  empty: "Nothing received and uninstalled." },
+    installed: { t: "Installed", empty: "Nothing installed yet." }
+  };
+  var ppSeq = 0;
+  var ppUid = null;       /* unit whose parts table is in the drawer */
+  var ppSaving = false;   /* re-entrancy guard around BidSheet.save() */
+
+  /* ---------------- helpers ---------------- */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(n) {
+    if (window.__ops && window.__ops.money) { try { return window.__ops.money(n); } catch (e) {} }
+    var s = "$" + Math.round(Math.abs(n || 0)).toLocaleString("en-US");
+    return (n || 0) < 0 ? "−" + s : s;
+  }
+  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  function addDays(n) {
+    var t = new Date(); t.setDate(t.getDate() + n);
+    return t.toISOString().slice(0, 10);
+  }
+  function validDate(s) { return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+  function dayDiff(a, b) {
+    if (!validDate(a) || !validDate(b)) return 0;
+    var ta = new Date(a + "T00:00:00Z").getTime(), tb = new Date(b + "T00:00:00Z").getTime();
+    if (isNaN(ta) || isNaN(tb)) return 0;
+    return Math.floor((tb - ta) / 86400000);
+  }
+  function fmtD(iso) { return validDate(iso) ? iso.slice(5) : ""; }
+  function newPid() { return "pp" + Date.now().toString(36) + (ppSeq++); }
+  function up(el, attr) {
+    while (el && el.getAttribute) {
+      if (el.getAttribute(attr) != null) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  /* ---------------- core-blob access (via the S1 bridge) ---------------- */
+  function units() { try { return BidSheet.units() || []; } catch (e) { return []; } }
+  function byId(id) {
+    var us = units();
+    for (var i = 0; i < us.length; i++) if (us[i].id === id) return us[i];
+    return null;
+  }
+  function mutate(fn) {
+    ppSaving = true;
+    try { fn(); BidSheet.save(); } finally { ppSaving = false; }
+  }
+  function vehFor(u) {
+    var t = (u.desc || "").trim().split(/\s+/);
+    return { year: t[0] || "", make: (t[1] || "").toUpperCase(), model: t.slice(2).join(" "),
+             retail: u.estRetail || Math.round((u.projSale || 0) / 0.829) || 15000 };
+  }
+
+  /* ---------------- templates ---------------- */
+  function tplByName(name) {
+    var n = (name || "").trim().toLowerCase();
+    if (!n) return null;
+    var T = window.PART_TEMPLATES || {};
+    for (var k in T) if (T.hasOwnProperty(k))
+      for (var i = 0; i < T[k].length; i++)
+        if (T[k][i].es.toLowerCase() === n) return T[k][i];
+    return null;
+  }
+
+  /* ---------------- hoja-ops-v1 · read-modify-write only ---------------- */
+  function loadOps() {
+    var b = null;
+    try { b = JSON.parse(localStorage.getItem(LSK)); } catch (e) {}
+    if (!b || typeof b !== "object") b = {};
+    if (!b.v) b.v = 1;
+    if (!b.seeded) b.seeded = {};
+    if (!b.shelf) b.shelf = [];
+    return b;
+  }
+  function saveOps(mut) {
+    var b = loadOps();
+    try { mut(b); } catch (e) {}
+    try { localStorage.setItem(LSK, JSON.stringify(b)); } catch (e) {}
+    try { document.dispatchEvent(new CustomEvent("ops:change", { detail: { scope: "parts" } })); } catch (e) {}
+    return b;
+  }
+
+  /* Shelf seeds — invented, labelled EXAMPLE, ex:true throughout. */
+  function shelfSeeds() {
+    return [
+      { sid: "s1", partId: "hlR", name: "Right headlight", en: "right headlight",
+        fit: "2015-17 Nissan Altima", boughtFor: "57588044", src: "ebay", ret: true,
+        price: 390, status: "received",
+        dates: { ordered: addDays(-25), shipped: addDays(-23), received: addDays(-19) },
+        eta: "", note: "", ex: true },
+      { sid: "s2", partId: "rad", name: "Radiator", en: "radiator",
+        fit: "2016-18 Honda Civic", boughtFor: "57451266", src: "ebay", ret: true,
+        price: 205, status: "received",
+        dates: { ordered: addDays(-17), shipped: addDays(-15), received: addDays(-12) },
+        eta: "", note: "", ex: true },
+      { sid: "s3", partId: "rbc", name: "Rear bumper", en: "rear bumper cover",
+        fit: "2017 Toyota Corolla", boughtFor: "", src: "ebay", ret: true,
+        price: 260, status: "shipped",
+        dates: { ordered: addDays(-4), shipped: addDays(-2) },
+        eta: addDays(2), note: "", ex: true }
+    ];
+  }
+  function seed() {
+    var b = loadOps();
+    if (b.seeded && b.seeded.parts) return;
+    saveOps(function (bb) { bb.shelf = shelfSeeds(); bb.seeded.parts = true; });
+  }
+
+  /* ---------------- derivations (never stored) ---------------- */
+  function partDate(p) { return (p.dates && p.dates[p.status]) || p.orderedAt || ""; }
+  function daysIn(p) {
+    var d = partDate(p);
+    return validDate(d) ? Math.max(0, dayDiff(d, todayISO())) : null;
+  }
+  function isLate(p) {
+    return !!(p.eta && validDate(p.eta) && p.eta < todayISO() &&
+      p.status !== "received" && p.status !== "installed");
+  }
+  function waiting(u) {
+    if (u.stage !== "shop" || u.status === "sold") return false;
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++)
+      if (ps[i].status !== "received" && ps[i].status !== "installed") return true;
+    return false;
+  }
+  function capital() {
+    var flight = 0, shelfCap = 0, fN = 0, sN = 0, i, j, p;
+    var us = units();
+    for (i = 0; i < us.length; i++) {
+      if (us[i].status === "sold") continue;
+      var ps = us[i].parts || [];
+      for (j = 0; j < ps.length; j++) {
+        p = ps[j];
+        if (p.status === "ordered" || p.status === "shipped") { flight += p.price || 0; fN++; }
+      }
+    }
+    var sh = loadOps().shelf || [];
+    for (i = 0; i < sh.length; i++) {
+      p = sh[i];
+      if (p.status === "ordered" || p.status === "shipped") { flight += p.price || 0; fN++; }
+      else if (p.status === "received") { shelfCap += p.price || 0; sN++; }
+    }
+    return { flight: flight, flightN: fN, shelf: shelfCap, shelfN: sN };
+  }
+
+  /* ---------------- price-memory feedback (the learning loop) ---------------- */
+  function teach(u, p) {
+    if (p.taught || !p.partId || !(p.price > 0)) return;
+    if (!window.__parts || !window.__parts.remember) return;
+    var make = ((u.desc || "").trim().split(/\s+/)[1] || "").toUpperCase();
+    if (!make) return;
+    try { window.__parts.remember(p.partId, make, p.price); p.taught = true; } catch (e) {}
+  }
+
+  /* ---------------- part-line lifecycle ---------------- */
+  function newLine(text, veh) {
+    var t = tplByName(text);
+    var line = { id: newPid(), partId: t ? t.id : null,
+      name: t ? t.es : String(text || "").trim(),
+      en: t ? t.en : String(text || "").trim().toLowerCase(),
+      src: "ebay", ret: true, price: 0, status: "needed",
+      dates: { needed: todayISO() }, eta: "", note: "" };
+    if (t && window.__parts && window.__parts.priceFor) {
+      try { line.price = Math.round(window.__parts.priceFor(t, veh.make, veh.retail).v); } catch (e) {}
+    }
+    return line;
+  }
+  function seedFromDamage(u) {
+    var T = (window.PART_TEMPLATES || {})[u.damage] || [];
+    var veh = vehFor(u), added = 0, i, j;
+    if (!u.parts) u.parts = [];
+    for (i = 0; i < T.length; i++) {
+      if (T[i].p < 0.55) continue;
+      var dup = false;
+      for (j = 0; j < u.parts.length; j++)
+        if (u.parts[j].partId === T[i].id ||
+            (u.parts[j].name || "").toLowerCase() === T[i].es.toLowerCase()) { dup = true; break; }
+      if (dup) continue;
+      u.parts.push(newLine(T[i].es, veh)); added++;
+    }
+    return added;
+  }
+  function advance(u, p, back) {
+    var i = STATUSES.indexOf(p.status);
+    if (back) {
+      if (i <= 0) return false;
+      if (p.status === "installed" &&
+          !confirm("Taught prices cannot be untaught. Move “" + p.name + "” back to RECEIVED anyway?"))
+        return false;
+      if (p.dates) delete p.dates[p.status];
+      p.status = STATUSES[i - 1];
+    } else {
+      if (i >= STATUSES.length - 1) return false;
+      p.status = STATUSES[i + 1];
+      if (!p.dates) p.dates = {};
+      if (!p.dates[p.status]) p.dates[p.status] = todayISO();
+      if (p.status === "ordered" && !p.orderedAt) p.orderedAt = todayISO();
+      if (p.status === "installed") teach(u, p);
+    }
+    return true;
+  }
+
+  /* ---------------- shelf lifecycle ---------------- */
+  function addShelf(name, fit, price) {
+    var t = tplByName(name);
+    saveOps(function (b) {
+      b.shelf.push({ sid: "s" + Date.now().toString(36) + (ppSeq++),
+        partId: t ? t.id : null, name: t ? t.es : name,
+        en: t ? t.en : String(name).toLowerCase(), fit: fit || "", boughtFor: "",
+        src: "ebay", ret: true, price: price || 0, status: "ordered",
+        dates: { ordered: todayISO() }, eta: "", note: "" });
+    });
+  }
+  function shelfAdvance(sid, back) {
+    var LADDER = ["ordered", "shipped", "received"];
+    saveOps(function (b) {
+      for (var i = 0; i < b.shelf.length; i++) {
+        var it = b.shelf[i];
+        if (it.sid !== sid) continue;
+        var k = LADDER.indexOf(it.status);
+        if (back) {
+          if (k <= 0) return;
+          if (it.dates) delete it.dates[it.status];
+          it.status = LADDER[k - 1];
+        } else {
+          if (k < 0 || k >= LADDER.length - 1) return;
+          it.status = LADDER[k + 1];
+          if (!it.dates) it.dates = {};
+          if (!it.dates[it.status]) it.dates[it.status] = todayISO();
+        }
+        return;
+      }
+    });
+  }
+  function attachShelf(sid, uid) {
+    var u = byId(uid);
+    if (!u) return;
+    var item = null;
+    saveOps(function (b) {
+      for (var i = 0; i < b.shelf.length; i++)
+        if (b.shelf[i].sid === sid) { item = b.shelf.splice(i, 1)[0]; break; }
+    });
+    if (!item) return;
+    mutate(function () {
+      if (!u.parts) u.parts = [];
+      u.parts.push({ id: newPid(), partId: item.partId || null, name: item.name,
+        en: item.en || (item.name || "").toLowerCase(), src: item.src || "ebay",
+        ret: item.ret !== false, price: item.price || 0,
+        status: item.status || "received", dates: item.dates || {},
+        eta: item.eta || "", note: item.note || (item.fit ? "fits " + item.fit : ""),
+        fromShelf: true });
+    });
+  }
+
+  /* ---------------- eBay outbound link (nothing fetched, nothing stored) ---------------- */
+  function ebayHref(u, p) {
+    if (!window.__parts || !window.__parts.ebayUrl) return null;
+    try { return window.__parts.ebayUrl({ en: p.en || (p.name || "").toLowerCase() }, vehFor(u)); }
+    catch (e) { return null; }
+  }
+
+  /* ---------------- drawer parts table ---------------- */
+  function srcOpts(cur) {
+    var vals = ["ebay", "used"], h = "", i;
+    if (cur && vals.indexOf(cur) < 0) vals.push(cur);
+    for (i = 0; i < vals.length; i++)
+      h += "<option value=\"" + esc(vals[i]) + "\"" + (cur === vals[i] ? " selected" : "") + ">" +
+        esc(vals[i] === "ebay" ? "eBay" : vals[i]) + "</option>";
+    return h;
+  }
+  function chipHTML(p, attr, key) {
+    var d = partDate(p), din = daysIn(p);
+    var sub = d ? "since " + fmtD(d) + (din != null ? " · " + din + "d" : "") : "";
+    return "<button type=\"button\" class=\"ppchip st-" + p.status + "\" " + attr + "=\"" + esc(key) + "\"" +
+      " aria-label=\"" + esc(p.name) + " is " + p.status +
+      ". Click to advance, Alt+click to go back.\">" + STLBL[p.status] + "</button>" +
+      (sub ? "<div class=\"pp-date\">" + esc(sub) + "</div>" : "");
+  }
+  function rowHTML(u, p) {
+    var href = ebayHref(u, p);
+    return "<tr data-pp=\"" + esc(p.id) + "\">" +
+      "<td><input type=\"text\" class=\"pp-f\" data-f=\"name\" value=\"" + esc(p.name) +
+        "\" aria-label=\"Part name\" style=\"min-width:9rem\">" +
+        (p.fromShelf ? " <span class=\"pill idle\">SHELF</span>" : "") + "</td>" +
+      "<td><select class=\"pp-f\" data-f=\"src\" aria-label=\"Source of " + esc(p.name) + "\">" +
+        srcOpts(p.src) + "</select></td>" +
+      "<td><button type=\"button\" class=\"pill " + (p.ret === false ? "stop" : "go") + " pp-ret\"" +
+        " data-ppret=\"" + esc(p.id) + "\" aria-pressed=\"" + (p.ret === false ? "false" : "true") + "\"" +
+        " title=\"He only buys with return policies. Click to flag a no-returns purchase.\">" +
+        (p.ret === false ? "NO RETURNS" : "RETURNS") + "</button></td>" +
+      "<td class=\"n\"><input type=\"number\" class=\"pp-f\" data-f=\"price\" value=\"" + (p.price || 0) +
+        "\" min=\"0\" step=\"5\" style=\"width:5.4rem;text-align:right\" aria-label=\"Cost of " +
+        esc(p.name) + "\"></td>" +
+      "<td>" + chipHTML(p, "data-ppadv", p.id) + "</td>" +
+      "<td><input type=\"date\" class=\"pp-f\" data-f=\"eta\" value=\"" + esc(p.eta || "") +
+        "\" aria-label=\"ETA\">" + (isLate(p) ? " <span class=\"pill stop\">LATE</span>" : "") + "</td>" +
+      "<td><input type=\"date\" class=\"pp-f\" data-f=\"returnBy\" value=\"" + esc(p.returnBy || "") +
+        "\" aria-label=\"Return window closes\"></td>" +
+      "<td><input type=\"text\" class=\"pp-f\" data-f=\"note\" value=\"" + esc(p.note || "") +
+        "\" aria-label=\"Note\" style=\"min-width:7rem\"></td>" +
+      "<td>" + (href ? "<a class=\"btn sm\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"" +
+        esc(href) + "\" title=\"Opens the search on eBay. Nothing from their site is fetched or stored.\">eBay</a> " : "") +
+        "<button type=\"button\" class=\"btn sm\" data-pprm=\"" + esc(p.id) +
+        "\" aria-label=\"Remove " + esc(p.name) + "\">×</button></td></tr>";
+  }
+  function renderDrawerParts() {
+    var host = $("pl-d-parts-host");
+    if (!host) return;
+    var u = ppUid ? byId(ppUid) : null;
+    if (!u) { host.innerHTML = ""; return; }
+    var ps = u.parts || [], i, inCount = 0;
+    for (i = 0; i < ps.length; i++)
+      if (ps[i].status === "received" || ps[i].status === "installed") inCount++;
+    var h = "";
+    if (ps.length) {
+      h += "<div class=\"pp-date\" style=\"margin:.2rem 0 .5rem\">" + inCount + " of " + ps.length +
+        " parts in" + (waiting(u) ? " · waiting on parts" : "") + "</div>" +
+        "<div class=\"tscroll\"><table class=\"data pp-table\" style=\"min-width:900px\"><thead><tr>" +
+        "<th>Part</th><th>Source</th><th>Returns</th><th style=\"text-align:right\">Cost</th>" +
+        "<th>Status</th><th>ETA</th><th>Return by</th><th>Note</th><th></th></tr></thead><tbody>";
+      for (i = 0; i < ps.length; i++) h += rowHTML(u, ps[i]);
+      h += "</tbody></table></div>";
+    } else {
+      h += "<div class=\"empty\">No parts yet — seed from the damage template or add one.</div>";
+    }
+    h += "<div class=\"pp-add\">" +
+      "<input list=\"pp-cat\" id=\"pp-add-name\" placeholder=\"Add a part — type or pick…\"" +
+      " aria-label=\"Add a part to " + esc(u.lot) + "\">" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-add-btn\">Add</button>" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-seed-btn\" title=\"Pulls the " + esc(u.damage || "") +
+      " template parts not already on the list, priced from your memory\">From damage template</button></div>" +
+      "<span class=\"hint\">Sourced mostly on eBay — the link goes to eBay, the price is read there, " +
+      "nothing is ingested. Installing a template part with a real cost teaches the pre-bid price memory.</span>";
+    host.innerHTML = h;
+  }
+  function ensureDatalist() {
+    if ($("pp-cat")) return;
+    var dl = document.createElement("datalist");
+    dl.id = "pp-cat";
+    var T = window.PART_TEMPLATES || {}, h = "", k, i;
+    for (k in T) if (T.hasOwnProperty(k))
+      for (i = 0; i < T[k].length; i++)
+        h += "<option value=\"" + esc(T[k][i].es) + "\" label=\"" + esc(T[k][i].es + " · " + k) + "\"></option>";
+    dl.innerHTML = h;
+    document.body.appendChild(dl);
+  }
+
+  /* ---------------- inventory sub-view ---------------- */
+  function whereHTML(row) {
+    if (row.shelf) {
+      return "<span class=\"pill idle\">SHELF</span>" +
+        (row.p.fit ? " " + esc(row.p.fit) : "") +
+        (row.p.ex ? " <span class=\"pill idle\">EXAMPLE</span>" : "");
+    }
+    var t = (row.u.desc || "").split(/\s+/);
+    return "<span class=\"num\">" + esc(row.u.lot) + "</span> · " + esc(t.slice(1, 3).join(" "));
+  }
+  function renderInventory() {
+    var host = $("pl-inventory");
+    if (!host) return;
+    var cap = capital();
+    var us = units(), sh = loadOps().shelf || [];
+    var byStatus = { needed: [], ordered: [], shipped: [], received: [], installed: [] };
+    var total = 0, waitN = 0, i, j;
+    var openUnits = [];
+    for (i = 0; i < us.length; i++) {
+      var u = us[i];
+      if (u.status === "sold") continue;
+      if (u.status === "open") openUnits.push(u);
+      if (waiting(u)) waitN++;
+      var ps = u.parts || [];
+      for (j = 0; j < ps.length; j++)
+        if (byStatus[ps[j].status]) { byStatus[ps[j].status].push({ p: ps[j], u: u }); total++; }
+    }
+    for (i = 0; i < sh.length; i++)
+      if (byStatus[sh[i].status]) { byStatus[sh[i].status].push({ p: sh[i], shelf: true }); total++; }
+
+    var h = "<div class=\"card-b\">";
+    /* capital in flight vs on shelf — plain stats, no inverted cell (budget spent on the stepper) */
+    h += "<div class=\"stats\" style=\"margin-bottom:1.2rem\">" +
+      "<div class=\"stat\"><span class=\"k\">Capital in flight</span><span class=\"v num\">" +
+        money(cap.flight) + "</span><span class=\"d\">" + cap.flightN + " part" +
+        (cap.flightN === 1 ? "" : "s") + " ordered or shipped</span></div>" +
+      "<div class=\"stat\"><span class=\"k\">On the shelf</span><span class=\"v num\">" +
+        money(cap.shelf) + "</span><span class=\"d\">" + cap.shelfN + " loose part" +
+        (cap.shelfN === 1 ? "" : "s") + ", no car yet</span></div>" +
+      "<div class=\"stat" + (waitN ? " warn" : "") + "\"><span class=\"k\">Waiting on parts</span>" +
+        "<span class=\"v num\">" + waitN + "</span><span class=\"d\">unit" +
+        (waitN === 1 ? "" : "s") + " in shop blocked</span></div></div>";
+
+    /* every part, by status */
+    h += "<div class=\"pp-board\"><div class=\"eyebrow\" style=\"margin-bottom:.4rem\">Every part, by status · " +
+      total + " part" + (total === 1 ? "" : "s") + "</div>";
+    for (i = 0; i < STATUSES.length; i++) {
+      var st = STATUSES[i], rows = byStatus[st], sum = 0;
+      for (j = 0; j < rows.length; j++) sum += rows[j].p.price || 0;
+      h += "<div class=\"pp-group\"><div class=\"eyebrow\">" + GROUP[st].t + " · " + rows.length +
+        " part" + (rows.length === 1 ? "" : "s") +
+        (rows.length ? " · " + money(sum) +
+          (st === "ordered" || st === "shipped" ? " in transit" : "") : "") + "</div>";
+      if (!rows.length) { h += "<div class=\"empty\">" + GROUP[st].empty + "</div></div>"; continue; }
+      h += "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:560px\"><thead><tr>" +
+        "<th>Part</th><th>Where</th><th style=\"text-align:right\">Cost</th>" +
+        "<th style=\"text-align:right\">Days in status</th><th>ETA</th></tr></thead><tbody>";
+      for (j = 0; j < rows.length; j++) {
+        var r = rows[j], din = daysIn(r.p);
+        h += "<tr><td>" + esc(r.p.name) + "</td><td>" + whereHTML(r) + "</td>" +
+          "<td class=\"n\">" + money(r.p.price || 0) + "</td>" +
+          "<td class=\"n\">" + (din != null ? din + "d" : "—") + "</td>" +
+          "<td>" + (r.p.eta ? "<span class=\"num\">" + esc(fmtD(r.p.eta)) + "</span>" : "—") +
+          (isLate(r.p) ? " <span class=\"pill stop\">LATE</span>" : "") + "</td></tr>";
+      }
+      h += "</tbody></table></div></div>";
+    }
+    h += "</div>";
+
+    /* the shelf */
+    h += "<div class=\"pp-group\"><div class=\"eyebrow\">Shelf · " + money(cap.shelf) + " sitting</div>" +
+      "<p class=\"prose\" style=\"margin:.5rem 0 .7rem\">Parts bought for one car that can go into another. " +
+      "Attaching moves the part onto that unit’s list with its cost and dates intact. " +
+      "Rows marked EXAMPLE are invented, like the demo units — nobody’s purchases.</p>";
+    if (sh.length) {
+      h += "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:640px\"><thead><tr>" +
+        "<th>Part</th><th>Fits</th><th>Bought for</th><th style=\"text-align:right\">Cost</th>" +
+        "<th>Status</th><th>Attach</th></tr></thead><tbody>";
+      for (i = 0; i < sh.length; i++) {
+        var it = sh[i];
+        var opts = "<option value=\"\">attach to…</option>";
+        for (j = 0; j < openUnits.length; j++) {
+          var ou = openUnits[j], tt = (ou.desc || "").split(/\s+/);
+          opts += "<option value=\"" + esc(ou.id) + "\">" + esc(ou.lot) + " · " +
+            esc(tt.slice(1, 3).join(" ")) + "</option>";
+        }
+        h += "<tr><td>" + esc(it.name) +
+          (it.ex ? " <span class=\"pill idle\">EXAMPLE</span>" : "") + "</td>" +
+          "<td>" + esc(it.fit || "—") + "</td>" +
+          "<td class=\"num\">" + esc(it.boughtFor || "—") + "</td>" +
+          "<td class=\"n\">" + money(it.price || 0) + "</td>" +
+          "<td>" + chipHTML(it, "data-ppsadv", it.sid) + "</td>" +
+          "<td><select class=\"pp-attach\" data-sid=\"" + esc(it.sid) +
+          "\" aria-label=\"Attach " + esc(it.name) + " to a unit\">" + opts + "</select></td></tr>";
+      }
+      h += "</tbody></table></div>";
+    } else {
+      h += "<div class=\"empty\">Nothing on the shelf.</div>";
+    }
+    h += "<div class=\"pp-add\">" +
+      "<input type=\"text\" id=\"pp-shelf-name\" placeholder=\"Part\" aria-label=\"Part name\">" +
+      "<input type=\"text\" id=\"pp-shelf-fit\" placeholder=\"Fits (year make model)\"" +
+      " aria-label=\"Fitment\" style=\"flex:1 1 10rem\">" +
+      "<input type=\"number\" id=\"pp-shelf-cost\" placeholder=\"$\" min=\"0\" step=\"5\"" +
+      " aria-label=\"Cost\" style=\"flex:0 1 6rem\">" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-shelf-add\">Add to shelf</button></div>" +
+      "</div></div>";
+    host.innerHTML = h;
+  }
+  function renderAll() { renderInventory(); renderDrawerParts(); }
+
+  /* ---------------- event delegation (survives every re-render) ---------------- */
+  function partOf(u, pid) {
+    var ps = (u && u.parts) || [];
+    for (var i = 0; i < ps.length; i++) if (ps[i].id === pid) return ps[i];
+    return null;
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.nodeType === 1 ? e.target : null;
+    if (!t) return;
+    var el, u, p;
+    /* unit part status chip */
+    el = up(t, "data-ppadv");
+    if (el) {
+      u = byId(ppUid); p = u && partOf(u, el.getAttribute("data-ppadv"));
+      if (p) {
+        var moved = false;
+        mutate(function () { moved = advance(u, p, !!e.altKey); });
+        if (moved) renderAll();
+      }
+      return;
+    }
+    /* returns toggle */
+    el = up(t, "data-ppret");
+    if (el) {
+      u = byId(ppUid); p = u && partOf(u, el.getAttribute("data-ppret"));
+      if (p) { mutate(function () { p.ret = p.ret === false; }); renderAll(); }
+      return;
+    }
+    /* remove line */
+    el = up(t, "data-pprm");
+    if (el) {
+      u = byId(ppUid);
+      if (u && u.parts) {
+        var pid = el.getAttribute("data-pprm");
+        mutate(function () {
+          for (var i = 0; i < u.parts.length; i++)
+            if (u.parts[i].id === pid) { u.parts.splice(i, 1); break; }
+        });
+        renderAll();
+      }
+      return;
+    }
+    /* shelf chip */
+    el = up(t, "data-ppsadv");
+    if (el) { shelfAdvance(el.getAttribute("data-ppsadv"), !!e.altKey); renderAll(); return; }
+    /* add part to the open unit */
+    if (t.id === "pp-add-btn") {
+      u = byId(ppUid);
+      var inp = $("pp-add-name");
+      var txt = inp ? inp.value.replace(/^\s+|\s+$/g, "") : "";
+      if (u && txt) {
+        mutate(function () {
+          if (!u.parts) u.parts = [];
+          u.parts.push(newLine(txt, vehFor(u)));
+        });
+        renderAll();
+      }
+      return;
+    }
+    /* seed from the damage template */
+    if (t.id === "pp-seed-btn") {
+      u = byId(ppUid);
+      if (u) {
+        var added = 0;
+        mutate(function () { added = seedFromDamage(u); });
+        if (added) renderAll();
+      }
+      return;
+    }
+    /* add a shelf item */
+    if (t.id === "pp-shelf-add") {
+      var n = $("pp-shelf-name"), f = $("pp-shelf-fit"), c = $("pp-shelf-cost");
+      var nm = n ? n.value.replace(/^\s+|\s+$/g, "") : "";
+      if (nm) {
+        addShelf(nm, f ? f.value : "", c ? parseFloat(c.value) || 0 : 0);
+        renderAll();
+      }
+      return;
+    }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target && e.target.nodeType === 1 ? e.target : null;
+    if (!t) return;
+    /* drawer field edits */
+    if (t.className && String(t.className).indexOf("pp-f") >= 0) {
+      var row = up(t, "data-pp");
+      if (!row) return;
+      var u = byId(ppUid), p = u && partOf(u, row.getAttribute("data-pp"));
+      if (!p) return;
+      var f = t.getAttribute("data-f");
+      mutate(function () {
+        if (f === "price") {
+          p.price = parseFloat(t.value) || 0;
+          if (p.status === "installed") teach(u, p);   /* cost typed after install still teaches once */
+        } else if (f === "eta" || f === "returnBy") {
+          p[f] = validDate(t.value) ? t.value : "";
+        } else if (f === "name") {
+          p.name = t.value;
+          if (!p.partId) p.en = t.value.toLowerCase();
+        } else if (f === "src") {
+          p.src = t.value;
+        } else if (f === "note") {
+          p.note = t.value;
+        }
+      });
+      renderAll();
+      return;
+    }
+    /* attach a shelf item to a unit */
+    if (t.className && String(t.className).indexOf("pp-attach") >= 0) {
+      var uid = t.value, sid = t.getAttribute("data-sid");
+      if (uid && sid) { attachShelf(sid, uid); renderAll(); }
+      return;
+    }
+  });
+
+  /* ---------------- wiring ---------------- */
+  document.addEventListener("pl:drawer", function (ev) {
+    ppUid = (ev.detail && ev.detail.uid) || null;
+    ensureDatalist();
+    renderDrawerParts();
+  });
+  document.addEventListener("bidsheet:saved", function () {
+    if (ppSaving) return;
+    renderAll();
+  });
+  document.addEventListener("ops:change", function (e) {
+    if (e.detail && e.detail.scope === "parts") return;   /* own writes already re-render */
+    renderInventory();
+  });
+  /* restore-demo also restores the 3 EXAMPLE shelf items */
+  ["btn-reset", "db-reset"].forEach(function (id) {
+    var b = $(id);
+    if (b) b.addEventListener("click", function () {
+      saveOps(function (bb) { bb.shelf = shelfSeeds(); bb.seeded.parts = true; });
+      renderAll();
+    });
+  });
+
+  /* ---------------- CSS · tokens only, all three theme states inherit ---------------- */
+  (function injectCSS() {
+    if ($("pp-css")) return;
+    var st = document.createElement("style");
+    st.id = "pp-css";
+    st.textContent =
+      ".ppchip{font:600 .62rem/1 var(--sans);letter-spacing:.08em;padding:.3rem .55rem;" +
+        "border:1px solid var(--line);background:transparent;color:var(--ink-3);cursor:pointer;" +
+        "border-radius:0;text-transform:uppercase}" +
+      ".ppchip.st-ordered{color:var(--warn);border-color:var(--warn)}" +
+      ".ppchip.st-shipped{color:var(--accent);border-color:var(--accent)}" +
+      ".ppchip.st-received{color:var(--go);border-color:var(--go)}" +
+      ".ppchip.st-installed{background:var(--ink);color:var(--inv);border-color:var(--ink);cursor:default}" +
+      ".pp-date{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);margin-top:.2rem}" +
+      ".pp-add{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;align-items:center}" +
+      ".pp-add input{flex:1 1 12rem}" +
+      ".pp-group{border-top:1px solid var(--line);padding-top:.9rem;margin-top:.9rem}" +
+      ".pp-board .pp-group:first-of-type{border-top:0;margin-top:.2rem;padding-top:0}" +
+      ".pp-table input,.pp-table select{font:inherit}";
+    document.head.appendChild(st);
+  })();
+
+  seed();
+  renderAll();
 })();
 </script>
