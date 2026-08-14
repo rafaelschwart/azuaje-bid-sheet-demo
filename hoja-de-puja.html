@@ -2104,11 +2104,12 @@
      lands well under the 6,000 target. */
 
   function demoUnits() {
+    function d(n) { var t = new Date(); t.setDate(t.getDate() + n); return t.toISOString().slice(0, 10); }
     return [
       { id:"u1", missed:["rsup","cond"], lot:"57118203", desc:"2016 Toyota Camry LE", damage:"FRONT END",
         cpRepair:2150, estRetail:16200,
         projSale:14200, projParts:2100, projLabor:1400, tow:300, margin:6000,
-        hammer:3950, realParts:2680, realLabor:1550, realSale:13400, days:11, status:"sold" },
+        hammer:3950, realParts:2680, realLabor:1550, realSale:13400, days:11, finCost:34, status:"sold" },
       { id:"u2", missed:["rrei"], lot:"57204411", desc:"2017 Kia Optima LX", damage:"REAR END",
         cpRepair:1720, estRetail:14500,
         projSale:12600, projParts:1800, projLabor:1200, tow:275, margin:6000,
@@ -2132,10 +2133,72 @@
         hammer:4010, realParts:1720, realLabor:1150, realSale:12850, days:9, status:"sold" },
       { id:"u7", lot:"57703558", desc:"2018 Kia Forte S", damage:"FRONT END",
         projSale:13900, projParts:2250, projLabor:1500, tow:310, margin:6000,
-        hammer:3730, status:"open" },
+        cpRepair:2250, estRetail:15600, cont:0, hammer:3730, status:"open",
+        stage:"shop", shopSub:"parts", boughtAt:d(-9),
+        stageLog:[{s:"won",at:d(-9)},{s:"transit",at:d(-8)},{s:"arrived",at:d(-6)},
+                  {s:"shop",sub:"teardown",at:d(-6)},{s:"shop",sub:"parts",at:d(-6)}],
+        transport:{note:"Central Dispatch · R. Gómez",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Front bumper cover",src:"ebay",price:212,status:"installed",orderedAt:d(-6)},
+                {id:"p2",name:"Bumper reinforcement",src:"ebay",price:145,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
+                {id:"p3",name:"Right headlamp",src:"ebay",price:189,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
+                {id:"p4",name:"Hood hinge pair",src:"used",price:48,status:"received",orderedAt:d(-5)},
+                {id:"p5",name:"AC condenser",src:"ebay",price:96,status:"needed"} ],
+        fin:{on:true,lender:"Auction finance",principal:4374,aprPct:28,startedAt:d(-9)} },
       { id:"u8", lot:"57741902", desc:"2016 Mazda 6 Sport", damage:"SIDE",
         projSale:12400, projParts:2000, projLabor:1350, tow:295, margin:6000,
-        hammer:2860, status:"open" }
+        cpRepair:2000, estRetail:14100, cont:0, hammer:2860, status:"open",
+        stage:"shop", shopSub:"repair", boughtAt:d(-7),
+        stageLog:[{s:"won",at:d(-7)},{s:"transit",at:d(-6)},{s:"arrived",at:d(-4)},
+                  {s:"shop",sub:"teardown",at:d(-4)},{s:"shop",sub:"repair",at:d(-3)}],
+        transport:{note:"Own trailer",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Left front door skin",src:"used",price:180,status:"installed"},
+                {id:"p2",name:"Mirror assembly",src:"ebay",price:74,status:"installed"},
+                {id:"p3",name:"Door moulding",src:"ebay",price:31,status:"installed"} ],
+        fin:{on:false,lender:"",principal:0,aprPct:0,startedAt:""} },
+      { id:"u9",  lot:"58011427", desc:"2024 Nissan Sentra S",    damage:"FRONT END",
+        projSale:16900, projParts:1400, projLabor:900,  tow:260, margin:6000,
+        cpRepair:1400, estRetail:19200, cont:250, hammer:7250, status:"open",
+        stage:"won", shopSub:null, boughtAt:d(0),
+        stageLog:[{s:"won",at:d(0)}],
+        transport:{note:"",eta:""}, parts:[], opNotes:"",
+        fin:{on:true,lender:"Auction finance",principal:8125,aprPct:28,startedAt:d(0)} },
+      { id:"u10", lot:"58013962", desc:"2023 Kia Forte LXS",      damage:"REAR END",
+        projSale:14800, projParts:1150, projLabor:800,  tow:290, margin:6000,
+        cpRepair:1150, estRetail:16800, cont:0,   hammer:6100, status:"open",
+        stage:"transit", shopSub:null, boughtAt:d(-2),
+        stageLog:[{s:"won",at:d(-2)},{s:"transit",at:d(-2)}],
+        transport:{note:"Central Dispatch · load 8841",eta:d(1)}, parts:[], opNotes:"",
+        fin:{on:true,lender:"Auction finance",principal:6890,aprPct:28,startedAt:d(-2)} },
+      { id:"u11", lot:"58009315", desc:"2025 Toyota Corolla LE",  damage:"FRONT END",
+        projSale:18300, projParts:1600, projLabor:950,  tow:240, margin:6000,
+        cpRepair:1600, estRetail:20900, cont:300, hammer:8400, status:"open",
+        stage:"arrived", shopSub:null, boughtAt:d(-3),
+        stageLog:[{s:"won",at:d(-3)},{s:"transit",at:d(-2)},{s:"arrived",at:d(-1)}],
+        transport:{note:"Delivered",eta:""}, parts:[], opNotes:"Photos suggest rad support — verify at teardown.",
+        fin:{on:true,lender:"Auction finance",principal:9320,aprPct:28,startedAt:d(-3)} },
+      { id:"u12", lot:"57996520", desc:"2023 Nissan Rogue S",     damage:"SIDE",
+        projSale:17600, projParts:1350, projLabor:1050, tow:300, margin:6000,
+        cpRepair:1350, estRetail:20100, cont:0,   hammer:7800, status:"open",
+        stage:"ready", shopSub:null, boughtAt:d(-11),
+        stageLog:[{s:"won",at:d(-11)},{s:"transit",at:d(-10)},{s:"arrived",at:d(-8)},
+                  {s:"shop",sub:"teardown",at:d(-8)},{s:"shop",sub:"parts",at:d(-7)},
+                  {s:"shop",sub:"repair",at:d(-4)},{s:"shop",sub:"qc",at:d(-2)},{s:"ready",at:d(-1)}],
+        transport:{note:"",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Left rear door",src:"used",price:260,status:"installed"},
+                {id:"p2",name:"Rocker moulding",src:"ebay",price:58,status:"installed"},
+                {id:"p3",name:"Rear lamp assembly",src:"ebay",price:112,status:"installed"} ],
+        fin:{on:true,lender:"Auction finance",principal:8710,aprPct:28,startedAt:d(-11)} },
+      { id:"u13", lot:"57981174", desc:"2024 Hyundai Elantra SEL", damage:"REAR END",
+        projSale:15900, projParts:1200, projLabor:850,  tow:270, margin:6000,
+        cpRepair:1200, estRetail:18200, cont:0,   hammer:6650, status:"open",
+        stage:"listed", shopSub:null, boughtAt:d(-13), listPrice:15900, listedAt:d(-4),
+        stageLog:[{s:"won",at:d(-13)},{s:"transit",at:d(-12)},{s:"arrived",at:d(-10)},
+                  {s:"shop",sub:"teardown",at:d(-10)},{s:"shop",sub:"repair",at:d(-8)},
+                  {s:"shop",sub:"qc",at:d(-6)},{s:"ready",at:d(-5)},{s:"listed",at:d(-4)}],
+        transport:{note:"",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Rear bumper cover",src:"ebay",price:168,status:"installed"},
+                {id:"p2",name:"Trunk lid",src:"used",price:290,status:"installed"} ],
+        fin:{on:true,lender:"Auction finance",principal:7460,aprPct:28,startedAt:d(-13)} }
     ];
   }
 
@@ -2148,6 +2211,7 @@
       localStorage.setItem(KEY, JSON.stringify({
         units: units, cfg: cfg, rules: rules, presets: presets, priceMemory: priceMemory
       }));
+      try { document.dispatchEvent(new CustomEvent("bidsheet:saved")); } catch (e2) {}
     } catch (e) {}
   }
   function load() {
@@ -2170,7 +2234,7 @@
   /* ---------------- unit math ---------------- */
 
   function realCost(u) {
-    return u.hammer + totalFees(u.hammer) + u.tow + (u.realParts || 0) + (u.realLabor || 0);
+    return u.hammer + totalFees(u.hammer) + u.tow + (u.realParts || 0) + (u.realLabor || 0) + (u.finCost || 0);
   }
   function realMargin(u) { return (u.realSale || 0) - realCost(u); }
 
@@ -2538,7 +2602,8 @@
       tr.appendChild(el("td", null, k));
       tr.appendChild(el("td", "n", String(g.length)));
       var mt = el("td", "n", money(m));
-      mt.style.color = m < g[0].margin ? "var(--stop)" : "var(--go)";
+      var tAvg = avg(g.map(function (u) { return u.margin || 0; }));
+      mt.style.color = m < tAvg ? "var(--stop)" : "var(--go)";
       tr.appendChild(mt);
       tr.appendChild(el("td", "n", pct(pe)));
       sr.appendChild(tr);
@@ -2604,6 +2669,11 @@
         damage: document.getElementById("m-damage").value,
         projSale: lastCalc.sale, projParts: lastCalc.parts, projLabor: lastCalc.labor,
         tow: lastCalc.tow, margin: lastCalc.margin,
+        cpRepair: lastCalc.parts, estRetail: lastCalc.sale, cont: lastCalc.cont,
+        stage: "won", shopSub: null, boughtAt: new Date().toISOString().slice(0, 10),
+        stageLog: [{ s: "won", at: new Date().toISOString().slice(0, 10) }],
+        parts: [], fin: { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" },
+        transport: { note: "", eta: "" }, opNotes: "",
         hammer: hammer, status: "open"
       });
       save(); renderBook(); renderNumbers(); go("book");
@@ -2639,6 +2709,15 @@
       u.missed = Array.prototype.slice.call(sel.selectedOptions).map(function (o) { return o.value; });
       var n = document.getElementById("c-note").value.trim();
       if (n) u.note = n;
+      /* Freeze accrued interest at close — INTEREST ONLY, on HIS typed day
+         count, so the ledger stays cash-true (financing spec 04). */
+      try {
+        if (u.fin && u.fin.on !== false && u.fin.principal > 0) {
+          var dpF = u.fin.rateType === "daily" ? (u.fin.rateValue || 0)
+            : (u.fin.rateValue != null ? u.fin.rateValue : (u.fin.aprPct || 0)) / 360;
+          u.finCost = Math.round(u.fin.principal * dpF / 100 * Math.max(1, u.days || 0));
+        }
+      } catch (eF) {}
       u.status = "sold";
       save(); renderBook(); renderNumbers();
     }, "Close unit");
@@ -3145,6 +3224,8 @@
       function (l) { return (l._miles || 0) <= rules.distMax ? null : (l._miles || 0) + " miles to the yard"; });
 
     var afterHard = cur.length;
+    var afterHardLots = cur.slice();
+    var afterHardLots = cur.slice();
 
     // Without a repair estimate or a retail value there is nothing to compute a
     // ceiling from. Copart omits repair cost on 30% of lots. These are not bad
@@ -3182,6 +3263,14 @@
                  total: total, rules: rules, afterHard: afterHard, manual: manual };
     save();
     renderPipeline();
+    try {
+      document.dispatchEvent(new CustomEvent("pipeline:done", { detail: {
+        saleKey: $("list-src").textContent,
+        total: total, afterHard: afterHard,
+        afterHardLots: afterHardLots,
+        short: cur.length
+      } }));
+    } catch (e) {}
   }
 
   function renderPipeline() {
@@ -3518,16 +3607,41 @@
     { max: Infinity, k: 1.55, name: "premium" }
   ];
   try { window.PART_TEMPLATES = PART_TEMPLATES; } catch (e) {}
+  // read/teach accessors for the ops layers — same pattern as window.__ledger below.
+  // ebayUrl is an outbound search link only: nothing is fetched or stored from eBay.
+  try {
+    window.__parts = {
+      remember: rememberPrice,
+      priceFor: priceFor,
+      ebayUrl:  ebayUrl
+    };
+  } catch (e) {}
   // read-only accessors so the chart layer can reach the ledger without
   // duplicating any of the arithmetic above
+  // plus a narrow write path for the financing layer: unitsAll/saveAll/refresh
   try {
     window.__ledger = {
       sold:       function () { return sold(); },
       realMargin: realMargin,
       realCost:   realCost,
       projMargin: projMargin,
+      unitsAll:   function () { return units; },
+      saveAll:    function () { save(); },
+      refresh:    function () { renderBook(); renderNumbers(); },
       totalFees:  totalFees,
       biases:     biases
+    };
+  } catch (e) {}
+  // read-only accessors for the pre-bid layer — same contract as __ledger:
+  // reach, never rewrite. Nothing here mutates pipeline state. solveCeiling
+  // is the verified-exact non-monotonic fee solver — never reimplement it.
+  try {
+    window.__ops = {
+      solveCeiling: solveCeiling,
+      shortlist: function () { return pipeline ? pipeline.short.slice() : []; },
+      afterHard: function () { return pipeline ? pipeline.afterHard : 0; },
+      margin:    function () { return rules.margin; },
+      money:     money
     };
   } catch (e) {}
 
@@ -3904,6 +4018,21 @@
   renderBook();
   renderNumbers();
   renderFoot();
+
+  /* V2 bridge — additive modules read and mutate the live units array,
+     then call save(); the core stays the single writer of localStorage. */
+  try {
+    window.BidSheet = {
+      units: function () { return units; },
+      save: save,
+      totalFees: totalFees,
+      projMargin: projMargin,
+      openClose: openClose,
+      go: go,
+      modal: modal,
+      closeModal: closeModal
+    };
+  } catch (eB) {}
 })();
 </script>
 <script>
