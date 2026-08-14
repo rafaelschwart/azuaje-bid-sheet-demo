@@ -2360,7 +2360,10 @@
      lands well under the 6,000 target. */
 
   function demoUnits() {
-    function d(n) { var t = new Date(); t.setDate(t.getDate() + n); return t.toISOString().slice(0, 10); }
+    function d(n) {
+      var t = new Date(); t.setDate(t.getDate() + n);
+      return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+    }
     return [
       { id:"u1", missed:["rsup","cond"], lot:"57118203", desc:"2016 Toyota Camry LE", damage:"FRONT END",
         cpRepair:2150, estRetail:16200,
@@ -2389,7 +2392,7 @@
         hammer:4010, realParts:1720, realLabor:1150, realSale:12850, days:9, status:"sold" },
       { id:"u7", lot:"57703558", desc:"2018 Kia Forte S", damage:"FRONT END",
         projSale:13900, projParts:2250, projLabor:1500, tow:310, margin:6000,
-        cpRepair:2250, estRetail:15600, cont:0, hammer:3730, status:"open",
+        cpRepair:2340, estRetail:15600, cont:0, hammer:3730, status:"open",
         stage:"shop", shopSub:"parts", boughtAt:d(-9),
         stageLog:[{s:"won",at:d(-9)},{s:"transit",at:d(-8)},{s:"arrived",at:d(-6)},
                   {s:"shop",sub:"teardown",at:d(-6)},{s:"shop",sub:"parts",at:d(-6)}],
@@ -2402,7 +2405,7 @@
         fin:{on:true,lender:"Auction finance",principal:4374,aprPct:28,startedAt:d(-9)} },
       { id:"u8", lot:"57741902", desc:"2016 Mazda 6 Sport", damage:"SIDE",
         projSale:12400, projParts:2000, projLabor:1350, tow:295, margin:6000,
-        cpRepair:2000, estRetail:14100, cont:0, hammer:2860, status:"open",
+        cpRepair:2090, estRetail:14100, cont:0, hammer:2860, status:"open",
         stage:"shop", shopSub:"repair", boughtAt:d(-7),
         stageLog:[{s:"won",at:d(-7)},{s:"transit",at:d(-6)},{s:"arrived",at:d(-4)},
                   {s:"shop",sub:"teardown",at:d(-4)},{s:"shop",sub:"repair",at:d(-3)}],
@@ -2413,28 +2416,28 @@
         fin:{on:false,lender:"",principal:0,aprPct:0,startedAt:""} },
       { id:"u9",  lot:"58011427", desc:"2024 Nissan Sentra S",    damage:"FRONT END",
         projSale:16900, projParts:1400, projLabor:900,  tow:260, margin:6000,
-        cpRepair:1400, estRetail:19200, cont:250, hammer:7250, status:"open",
+        cpRepair:1290, estRetail:19200, cont:250, hammer:7250, status:"open",
         stage:"won", shopSub:null, boughtAt:d(0),
         stageLog:[{s:"won",at:d(0)}],
         transport:{note:"",eta:""}, parts:[], opNotes:"",
         fin:{on:true,lender:"Auction finance",principal:8125,aprPct:28,startedAt:d(0)} },
       { id:"u10", lot:"58013962", desc:"2023 Kia Forte LXS",      damage:"REAR END",
         projSale:14800, projParts:1150, projLabor:800,  tow:290, margin:6000,
-        cpRepair:1150, estRetail:16800, cont:0,   hammer:6100, status:"open",
+        cpRepair:1240, estRetail:16800, cont:0,   hammer:6100, status:"open",
         stage:"transit", shopSub:null, boughtAt:d(-2),
         stageLog:[{s:"won",at:d(-2)},{s:"transit",at:d(-2)}],
         transport:{note:"Central Dispatch · load 8841",eta:d(1)}, parts:[], opNotes:"",
         fin:{on:true,lender:"Auction finance",principal:6890,aprPct:28,startedAt:d(-2)} },
       { id:"u11", lot:"58009315", desc:"2025 Toyota Corolla LE",  damage:"FRONT END",
         projSale:18300, projParts:1600, projLabor:950,  tow:240, margin:6000,
-        cpRepair:1600, estRetail:20900, cont:300, hammer:8400, status:"open",
+        cpRepair:1490, estRetail:20900, cont:300, hammer:8400, status:"open",
         stage:"arrived", shopSub:null, boughtAt:d(-3),
         stageLog:[{s:"won",at:d(-3)},{s:"transit",at:d(-2)},{s:"arrived",at:d(-1)}],
         transport:{note:"Delivered",eta:""}, parts:[], opNotes:"Photos suggest rad support — verify at teardown.",
         fin:{on:true,lender:"Auction finance",principal:9320,aprPct:28,startedAt:d(-3)} },
       { id:"u12", lot:"57996520", desc:"2023 Nissan Rogue S",     damage:"SIDE",
         projSale:17600, projParts:1350, projLabor:1050, tow:300, margin:6000,
-        cpRepair:1350, estRetail:20100, cont:0,   hammer:7800, status:"open",
+        cpRepair:1460, estRetail:20100, cont:0,   hammer:7800, status:"open",
         stage:"ready", shopSub:null, boughtAt:d(-11),
         stageLog:[{s:"won",at:d(-11)},{s:"transit",at:d(-10)},{s:"arrived",at:d(-8)},
                   {s:"shop",sub:"teardown",at:d(-8)},{s:"shop",sub:"parts",at:d(-7)},
@@ -2446,7 +2449,7 @@
         fin:{on:true,lender:"Auction finance",principal:8710,aprPct:28,startedAt:d(-11)} },
       { id:"u13", lot:"57981174", desc:"2024 Hyundai Elantra SEL", damage:"REAR END",
         projSale:15900, projParts:1200, projLabor:850,  tow:270, margin:6000,
-        cpRepair:1200, estRetail:18200, cont:0,   hammer:6650, status:"open",
+        cpRepair:1130, estRetail:18200, cont:0,   hammer:6650, status:"open",
         /* held long on purpose: day 35 of a 44-day break-even — the amber teaching case */
         stage:"listed", shopSub:null, boughtAt:d(-34), listPrice:15900, listedAt:d(-4),
         stageLog:[{s:"won",at:d(-34)},{s:"transit",at:d(-33)},{s:"arrived",at:d(-31)},
@@ -2586,6 +2589,12 @@
   /* ---------------- bid sheet ---------------- */
 
   var lastCalc = null;
+  var lastLot = null; /* raw Copart figures of the lot behind the sheet, if any */
+  function isoToday() {
+    var t = new Date();
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
+  try { $("f-lot").addEventListener("input", function () { lastLot = null; }); } catch (e) {}
 
   function recompute() {
     var sale   = val("f-sale");
@@ -2926,9 +2935,13 @@
         damage: document.getElementById("m-damage").value,
         projSale: lastCalc.sale, projParts: lastCalc.parts, projLabor: lastCalc.labor,
         tow: lastCalc.tow, margin: lastCalc.margin,
-        cpRepair: lastCalc.parts, estRetail: lastCalc.sale, cont: lastCalc.cont,
-        stage: "won", shopSub: null, boughtAt: new Date().toISOString().slice(0, 10),
-        stageLog: [{ s: "won", at: new Date().toISOString().slice(0, 10) }],
+        /* raw lot figures only — absent on hand-entered units, which keeps
+           them OUT of the calibration sample instead of poisoning it */
+        cpRepair: lastLot ? lastLot.repair : undefined,
+        estRetail: lastLot ? lastLot.retail : undefined,
+        cont: lastCalc.cont,
+        stage: "won", shopSub: null, boughtAt: isoToday(),
+        stageLog: [{ s: "won", at: isoToday() }],
         parts: [], fin: { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" },
         transport: { note: "", eta: "" }, opNotes: "",
         hammer: hammer, status: "open"
@@ -3702,6 +3715,12 @@
     $("f-lot").value = l.lotId;
     $("f-vin").value = l.vin || "";
     $("f-desc").value = l.year + " " + l.make + " " + l.modelGroup;
+    /* Stash the lot's RAW Copart figures. calibration() measures reality
+       against the raw feed (realSale/estRetail), so a bought unit must carry
+       the raw numbers, never the calibrated sheet prefills — storing the
+       prefills would drag every factor toward 1.0 and quietly inflate future
+       ceilings. Cleared if the lot id is hand-edited (unknown provenance). */
+    lastLot = { retail: l.estRetailValue, repair: l.repairCost };
     $("f-sale").value  = Math.round(l._est.sale);
     $("f-parts").value = Math.round(l._est.parts);
     $("f-labor").value = Math.round(l._est.labor);
@@ -6374,7 +6393,7 @@
       '<span class="pill idle" data-pill>REVIEW</span>' +
       '<div class="field">' +
         '<label>Manheim @ 4.5</label>' +
-        '<input type="number" inputmode="numeric" data-n="mmr45" placeholder="est. sale used">' +
+        '<input type="number" inputmode="numeric" data-n="mmr45" placeholder="sale est.">' +
       '</div>' +
       '<div class="pb-ceil">' +
         '<span class="pb-ck">// Max bid</span>' +
@@ -6678,8 +6697,13 @@
     var s = "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
     return n < 0 ? "−" + s : s;
   }
-  function plToday() { return new Date().toISOString().slice(0, 10); }
-  function plDate(iso) { return new Date(iso + "T00:00:00Z"); }
+  /* local midnights, matching the financing layer — mixed UTC/local made the
+     two layers' day counts diverge for a slice of every evening */
+  function plToday() {
+    var t = new Date();
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
+  function plDate(iso) { return new Date(iso + "T00:00:00"); }
   function plValidDate(s) {
     return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(plDate(s).getTime());
   }
@@ -6710,10 +6734,13 @@
   function plFinOn(u) { return !!(u.fin && u.fin.on && u.fin.principal > 0); }
   function plCarryPerDay(u) {
     if (!plFinOn(u)) return 0 + PL_OPEX;
+    /* S6 owns the math (interest at /360 plus daily ops); this body is only
+       a fallback for a build where the financing layer was reverted. */
+    if (window.__fin) return window.__fin.bleed(u);
     var f = u.fin;
     if (f.rateType === "daily") return f.principal * (f.rateValue || 0) / 100 + PL_OPEX;
     var apr = (f.rateValue != null && f.rateType) ? f.rateValue : (f.aprPct || 0);
-    return f.principal * apr / 100 / 365 + PL_OPEX;
+    return f.principal * apr / 100 / 360 + PL_OPEX;
   }
   function plFinStart(u) {
     if (plFinOn(u) && plValidDate(u.fin.startedAt)) return u.fin.startedAt;
@@ -6721,6 +6748,7 @@
   }
   function plAccrued(u) {
     if (!plFinOn(u)) return 0;
+    if (window.__fin) return window.__fin.accrued(u); /* interest only, /360, from funding day */
     /* +1: auction-finance interest is charged FROM purchase day */
     return plCarryPerDay(u) * (plDiff(plFinStart(u), plToday()) + 1);
   }
@@ -6731,8 +6759,15 @@
   }
   function plMarginNet(u) { return plMargin(u) - plAccrued(u) - (u.cont || 0); }
   function plBreakEven(u) {
+    if (!plFinOn(u)) return null;
+    if (window.__fin) {
+      var b6 = window.__fin.breakEven(u);
+      if (!b6 || !isFinite(b6.M)) return null;
+      var s6 = plFinStart(u);
+      return { day: b6.M, date: plAddDays(s6, b6.M), left: b6.M - b6.N };
+    }
     var per = plCarryPerDay(u);
-    if (per <= 0 || !plFinOn(u)) return null;
+    if (per <= 0) return null;
     var s = plFinStart(u);
     var day = Math.floor(plMargin(u) / per);
     return { day: day, date: plAddDays(s, day), left: day - plDiff(s, plToday()) };
@@ -6930,7 +6965,10 @@
     if (!plFinOn(u)) meta += " · cash unit";
     if ((u.id || "").length <= 3) meta += " · demo";
     var carry = "";
-    if (plFinOn(u)) {
+    /* When the financing layer is loaded, ITS decorator owns the card's carry
+       line (one unit must never show two break-even days). This span is only
+       the fallback for a build with S6 reverted. */
+    if (plFinOn(u) && !window.__fin) {
       var be = plBreakEven(u);
       carry = "<span class=\"pl-carry num\" data-accrued=\"" + plAccrued(u).toFixed(2) + "\">$" +
         plCarryPerDay(u).toFixed(2) + "/day · " + money(plAccrued(u)) + " accrued" +
@@ -7095,10 +7133,10 @@
       if (plFinOn(u)) {
         var be = plBreakEven(u);
         fo.setAttribute("data-accrued", plAccrued(u).toFixed(2));
-        fo.textContent = "$" + plCarryPerDay(u).toFixed(2) + "/day · " + money(plAccrued(u)) +
-          " accrued over " + (plDiff(plFinStart(u), plToday()) + 1) + " days" +
-          (be ? " · break-even day " + be.day : "") +
-          " · margin net of carry " + money(plMarginNet(u));
+        fo.textContent = "carry $" + plCarryPerDay(u).toFixed(2) + "/day incl. ops · interest accrued " +
+          money(plAccrued(u)) + " over " + (plDiff(plFinStart(u), plToday()) + 1) + " days" +
+          (be ? " · break-even day " + be.day + (be.left >= 0 ? " (" + be.left + " left)" : " (" + Math.abs(be.left) + " past)") : "") +
+          " · margin net of interest " + money(plMarginNet(u));
       } else {
         fo.removeAttribute("data-accrued");
         fo.textContent = "Cash unit — no daily carry. Margin net of reserve " + money(plMarginNet(u)) + ".";
@@ -7179,7 +7217,12 @@
       var u = u0(); if (!u) return; u.fin.principal = parseFloat(prin.value) || 0; plDebounced();
     });
     if (apr) apr.addEventListener("input", function () {
-      var u = u0(); if (!u) return; u.fin.aprPct = parseFloat(apr.value) || 0; plDebounced();
+      var u = u0(); if (!u) return;
+      /* write the canonical pair too — every consumer prefers rateValue once
+         rateType is set, so aprPct alone would be a silently dead edit */
+      var v = parseFloat(apr.value) || 0;
+      u.fin.aprPct = v; u.fin.rateType = "apr"; u.fin.rateValue = v;
+      plDebounced();
     });
     if (start) start.addEventListener("change", function () {
       var u = u0(); if (!u) return;
@@ -8050,6 +8093,12 @@
     var state = N > M ? "over" : (N >= 0.7 * M ? "amber" : "ok");
     return { N: N, M: M, ratio: M > 0 ? N / M : 1, state: state };
   }
+  /* Single source of financing truth. The pipeline layer (S4) delegates its
+     card/drawer math here so one unit can never show two break-even days. */
+  try {
+    window.__fin = { finOn: finOn, finN: finN, dailyPct: dailyPct, intPerDay: intPerDay,
+                     accrued: accrued, bleed: bleed, breakEven: breakEven, opDailyOf: opDailyOf };
+  } catch (e) {}
   function weekCarry(u) { return bleed(u) * Math.min(finN(u), 7); }
   function weekInterest(u) { return intPerDay(u) * Math.min(finN(u), 7); }
   function openFinanced() {
