@@ -527,6 +527,12 @@
   .fstage.final .fhead .fn { color: var(--accent); }
   .fnote { font-size: .72rem; color: var(--ink-3); }
 
+  .fdivide { padding: 1rem 0 .4rem; font-family: var(--mono); font-size: .6rem; font-weight: 500;
+             letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+             border-bottom: 1px solid var(--line); }
+  .fdivide b { color: var(--accent); font-weight: 600; }
+  .fstage.manual .fbar i { background: var(--ink-3); }
+  .fstage.manual.final .fbar i { background: var(--accent); }
   .rank { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
 
   /* ---------- filters ---------- */
@@ -1043,6 +1049,153 @@
     .livebar { top: .5rem; padding: 1rem; }
   }
 
+  /* ---------- 03 pre-bid (additive layer) ---------- */
+  .pb-brief .ovc .v { font-size: 2.2rem; }
+  .pb-lot { display: grid; grid-template-columns: 240px 1fr 200px; gap: 0;
+    border-bottom: 1px solid var(--line); }
+  .pb-lot:last-child { border-bottom: none; }
+  .pb-id, .pb-gates, .pb-nums { padding: 1.25rem 1.35rem; }
+  .pb-gates { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+  .pb-run { font-size: .58rem; letter-spacing: .18em; color: var(--ink-3); }
+  .pb-veh { font-size: .98rem; font-weight: 600; letter-spacing: -.02em; margin: .3rem 0 .15rem; }
+  .pb-meta { font-size: .72rem; color: var(--ink-3); }
+  .pb-links { display: flex; align-items: center; gap: .4rem; margin-top: .8rem; }
+  .pb-links .btn { text-decoration: none; display: inline-flex; align-items: center; }
+  .pb-exnote { font-family: var(--mono); font-size: .5rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-3); }
+  .pb-struct { font-family: var(--mono); font-size: .55rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--warn); margin-top: .9rem; }
+  .pb-gate { margin-bottom: 1rem; }
+  .pb-gk { font-family: var(--mono); font-size: .55rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: .5rem; }
+  .pb-vwhy { margin-top: .6rem; }
+  .pb-hdone { font-size: .78rem; display: block; margin-bottom: .4rem; }
+  .pb-hflags { display: flex; flex-wrap: wrap; gap: .2rem 1rem; }
+  .pb-hflags label { font-size: .74rem; color: var(--ink-2); }
+  .pb-hflags label:has(input:checked) { color: var(--stop); }
+  .pb-notes { margin-top: .4rem; margin-bottom: 0; }
+  .pb-nums { display: flex; flex-direction: column; gap: .8rem; align-items: flex-start; }
+  .pb-nums .field { margin-bottom: 0; }
+  .pb-nums .field input { width: 130px; }
+  .pb-ceil .pb-ck { font-family: var(--mono); font-size: .55rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); display: block; }
+  .pb-ceil .pb-cv { font-size: 1.7rem; font-weight: 700; letter-spacing: -.045em; display: block; }
+  .pb-ceil .pb-cb { font-size: .66rem; color: var(--ink-3); }
+  .pb-lot[data-state="out"] .pb-cv { color: var(--ink-3); }
+  .pb-brow { display: grid; grid-template-columns: 90px 70px 1fr auto; align-items: center;
+    gap: 1rem; padding: 1.05rem 1.35rem; border-bottom: 1px solid var(--line); }
+  .pb-brow:last-child { border-bottom: none; }
+  .pb-brun, .pb-btime { font-size: .62rem; letter-spacing: .14em; color: var(--ink-3); }
+  .pb-bveh { font-size: .95rem; font-weight: 600; letter-spacing: -.02em; }
+  .pb-bveh i { font-style: normal; font-weight: 400; font-size: .7rem; color: var(--ink-3);
+    display: block; }
+  .pb-bceil { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -.05em; }
+  @media (max-width: 1000px) { .pb-lot { grid-template-columns: 1fr; }
+    .pb-gates { border-left: none; border-right: none;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); } }
+  /* print: the brief + board are the 8:00 sheet he can carry */
+  @media print {
+    body[data-print="prebid"] .side, body[data-print="prebid"] .topbar { display: none !important; }
+    body[data-print="prebid"] .main { margin-left: 0; }
+    body[data-print="prebid"] .panel { display: none; }
+    body[data-print="prebid"] #p-prebid { display: block; }
+  }
+  /* ---------- 06 · pipeline ---------- */
+  .plrow { grid-template-columns: repeat(8, 1fr); }
+  @media (max-width: 1180px) { .plrow { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 640px)  { .plrow { grid-template-columns: repeat(2, 1fr); } }
+  .plstage { font: inherit; text-align: left; cursor: pointer; }
+  .plstage[aria-pressed="true"] { background: var(--accent-soft); }
+  .plstage .v { margin-top: .8rem; }
+  .plgrid { display: grid; gap: 0; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .pl-card { font: inherit; text-align: left; cursor: pointer; background: var(--surface);
+             border: none; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+             border-radius: 0; padding: 1.2rem 1.3rem; display: flex; flex-direction: column;
+             gap: .45rem; color: var(--ink); transition: background .15s ease; }
+  .pl-card:hover { background: var(--surface-2); }
+  .pl-card:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .pl-card[data-aging="warn"] { box-shadow: inset 3px 0 0 var(--warn); }
+  .pl-card[data-aging="stop"] { box-shadow: inset 3px 0 0 var(--stop); }
+  .pl-top { display: flex; align-items: center; gap: .6rem; }
+  .pl-lot { font-size: .72rem; color: var(--ink-3); }
+  .pl-days { margin-left: auto; font-size: .72rem; font-weight: 600; }
+  .pl-card[data-aging="warn"] .pl-days { color: var(--warn); }
+  .pl-card[data-aging="stop"] .pl-days { color: var(--stop); }
+  .pl-veh { font-size: 1.02rem; font-weight: 600; letter-spacing: -.02em; }
+  .pl-meta, .pl-partsline { font-size: .7rem; color: var(--ink-3); }
+  .pl-carry { font-size: .72rem; color: var(--ink-2); }
+  .pl-partsbar { display: flex; gap: 2px; height: 4px; }
+  .pl-partsbar i { flex: 1; background: var(--line); }
+  .pl-partsbar .ps-ordered, .pl-partsbar .ps-shipped { background: var(--warn); }
+  .pl-partsbar .ps-received { background: var(--accent); }
+  .pl-partsbar .ps-installed { background: var(--go); }
+  .pl-next { font-size: .74rem; color: var(--ink); border-top: 1px solid var(--line-soft);
+             padding-top: .55rem; margin-top: .2rem; }
+  .pl-next::before { content: "→ "; color: var(--accent); font-family: var(--mono); }
+  /* drawer */
+  .pl-scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 58;
+              opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+  .pl-scrim.on { opacity: 1; pointer-events: auto; }
+  .pl-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 100vw);
+               background: var(--surface); border-left: 1px solid var(--ink); z-index: 60;
+               display: flex; flex-direction: column; transform: translateX(102%);
+               transition: transform .28s cubic-bezier(.3,0,.2,1); }
+  .pl-drawer.on { transform: translateX(0); }
+  .pl-drawer:not(.on) { transition-duration: .18s; }
+  .pl-d-h { padding: 1.1rem 1.35rem; border-bottom: 1px solid var(--line);
+            display: flex; align-items: flex-start; gap: .7rem; }
+  .pl-d-h h3 { margin: .25rem 0 0; font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
+  .pl-d-h .btn { margin-left: auto; }
+  .pl-d-b { padding: 1.35rem; overflow-y: auto; flex: 1; }
+  .pl-sec { margin-bottom: 1.5rem; display: grid; gap: .6rem; }
+  .pl-log-row { display: flex; align-items: center; gap: .7rem; font-size: .74rem;
+                border-bottom: 1px solid var(--line-soft); padding: .3rem 0; }
+  .pl-log-row .pl-log-s { font-weight: 600; text-transform: uppercase; letter-spacing: .14em;
+                          font-size: .56rem; color: var(--ink-2); flex: none; width: 9rem; }
+  .pl-log-row input { font-family: var(--mono); font-size: .74rem; border: none;
+                      border-bottom: 1px solid var(--line); background: transparent;
+                      color: var(--ink); padding: .2rem 0; }
+  .pl-finout, .pl-proj { font-size: .76rem; color: var(--ink-2); border: 1px solid var(--line);
+                         padding: .8rem .9rem; background: var(--surface-2); line-height: 1.7; }
+  .pl-d-f { padding: 1rem 1.35rem; border-top: 1px solid var(--line);
+            display: flex; gap: .6rem; justify-content: flex-end; }
+  table.data.pl-d-parts { min-width: 0; font-size: .74rem; }
+  table.data.pl-d-parts td { padding: .55rem .5rem; }
+  table.data.pl-d-parts input, table.data.pl-d-parts select {
+    font: inherit; border: none; border-bottom: 1px solid var(--line); background: transparent;
+    color: var(--ink); padding: .15rem 0; max-width: 8.5rem; }
+  /* ---------- 07 · FINANCING / carry-cost (splice S6) — tokens only ---------- */
+  .fin-kick { font-family: var(--sans); font-size: .55rem; text-transform: uppercase;
+    letter-spacing: .2em; color: var(--ink-3); font-weight: 600; display: block; margin-bottom: .6rem; }
+  .fin-kick::before { content: "// "; color: var(--accent); font-family: var(--mono); }
+  .fin-units { border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 1rem; }
+  .fin-u { display: grid; grid-template-columns: 1fr auto auto; gap: .35rem 1rem; align-items: center;
+    background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    border-radius: 0; padding: .85rem 1.2rem; }
+  .fin-u .t { font-weight: 600; font-size: .85rem; color: var(--ink); }
+  .fin-u .s { font-size: .68rem; color: var(--ink-3); font-family: var(--mono); font-weight: 400; }
+  .fin-day { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: .72rem;
+    font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+  .fin-day.ok { color: var(--ink-2); }
+  .fin-day.amber { color: var(--warn); }
+  .fin-day.over { color: var(--stop); }
+  .fin-meter { grid-column: 1 / -1; height: 3px; background: var(--well); position: relative; }
+  .fin-meter i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); }
+  .fin-meter.amber i { background: var(--warn); }
+  .fin-meter.over i { background: var(--stop); }
+  @media (prefers-reduced-motion: no-preference) {
+    .fin-meter i { transition: width 280ms cubic-bezier(.33, 1, .68, 1); }
+  }
+  .fin-set { display: flex; gap: .6rem; align-items: center; margin-top: .9rem;
+    font-size: .72rem; color: var(--ink-3); flex-wrap: wrap; }
+  .fin-set input { width: 90px; font: inherit; font-family: var(--mono); color: var(--ink);
+    background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: .2rem 0; }
+  .fin-set input:focus { outline: none; border-bottom-color: var(--accent); }
+  .fin-note { display: block; margin-top: .6rem; font-size: .68rem; color: var(--ink-3); max-width: 68ch; }
+  .pl-card .fin-day { display: block; margin-top: .3rem; }
+  #book-rows .fin-day { display: inline-block; margin-left: .5rem; }
+
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -1075,17 +1228,22 @@
       <div class="tabs" role="tablist" aria-label="Flow">
         <button class="tab" role="tab" id="tab-list"   aria-selected="true"  aria-controls="p-list"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h9"/></svg>List<span class="tno">01</span></button>
         <button class="tab" role="tab" id="tab-filters" aria-selected="false" aria-controls="p-filters"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5L10 21v-8L3 5z"/></svg>Filters<span class="tno">02</span></button>
-        <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">03</span></button>
-        <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">04</span></button>
+        <button class="tab" role="tab" id="tab-prebid" aria-selected="false" aria-controls="p-prebid"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>Pre-bid<span class="tno">03</span></button>
+        <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">04</span></button>
+        <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">05</span></button>
+      </div>
+      <div class="nav-group">After the hammer</div>
+      <div class="tabs" role="tablist" aria-label="Pipeline">
+        <button class="tab" role="tab" id="tab-pipeline" aria-selected="false" aria-controls="p-pipeline"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2.5-5 3 10 2.5-5h6"/></svg>Pipeline<span class="tno">06</span></button>
       </div>
       <div class="nav-group">Memory</div>
       <div class="tabs" role="tablist" aria-label="Memory">
-        <button class="tab" role="tab" id="tab-book"   aria-selected="false" aria-controls="p-book"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4h15v16h-15z"/><path d="M9 4v16"/></svg>Ledger<span class="tno">05</span></button>
-        <button class="tab" role="tab" id="tab-numbers"aria-selected="false" aria-controls="p-numbers"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-6M11 20V8M17 20v-9M3 20h18"/></svg>Your numbers<span class="tno">06</span></button>
+        <button class="tab" role="tab" id="tab-book"   aria-selected="false" aria-controls="p-book"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4h15v16h-15z"/><path d="M9 4v16"/></svg>Ledger<span class="tno">07</span></button>
+        <button class="tab" role="tab" id="tab-numbers"aria-selected="false" aria-controls="p-numbers"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-6M11 20V8M17 20v-9M3 20h18"/></svg>Your numbers<span class="tno">08</span></button>
       </div>
     </nav>
     <div class="side-foot">
-      <span class="v">V0 · Demo</span>
+      <span class="v">Demo</span>
       <span class="pv">Everything lives in this browser. Nothing leaves.</span>
     </div>
   </aside>
@@ -1093,7 +1251,7 @@
   <div class="main">
   <div class="topbar">
     <span class="ent">Azuaje Group LLC</span>
-    <span class="stamp"><b>Copart</b> · Rental Vehicles · Mon · Wed · 12:00</span>
+    <span class="stamp"><b>Copart</b> · Rental Vehicles · Mon · Wed · pre-bid 8:00 · live 12:00</span>
     <button type="button" class="tbact kbd" id="tb-cmdk" aria-label="Open command menu">Ctrl K</button>
     <button type="button" class="tbact icon" id="tb-theme" aria-label="Toggle dark mode" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
@@ -1105,7 +1263,7 @@
       </svg>
     </button>
     <button type="button" class="tbact" id="tb-export">Export CSV</button>
-    <span class="v">V0 · Demo</span>
+    <span class="v">Demo</span>
   </div>
 
   <div class="wrap">
@@ -1115,14 +1273,14 @@
     <div class="panel" id="p-start" role="tabpanel" aria-labelledby="tab-start">
       <div class="pagehead">
         <h2 class="pt">Start <em>here</em>.</h2>
-        <p class="ps">Six screens, in the order you already work. Everything stays in this browser.</p>
+        <p class="ps">Eight screens, in the order you already work. Everything stays in this browser.</p>
       </div>
 
       <section>
         <div class="tourbar">
           <div>
             <span class="eyebrow">Guided tour</span>
-            <p class="tb-t">Two minutes, six screens. It walks you through a real Monday.</p>
+            <p class="tb-t">Two minutes, eight screens. It walks you through a real Monday, from the 8:00 pre-bid to sold.</p>
           </div>
           <button type="button" class="btn primary" id="tour-go">Take the tour</button>
         </div>
@@ -1133,8 +1291,8 @@
           <button type="button" class="stepc" data-go="tab-list">
             <span class="sn">01</span>
             <span class="sh">List</span>
-            <span class="sk">Monday, 8:45</span>
-            <span class="sb">Drop in the sale export. 800 published lots become the ones worth opening, and every lot that falls out shows the rule that removed it.</span>
+            <span class="sk">Monday, 8:05</span>
+            <span class="sb">Drop in the sale export. Some 400 published lots — 800 and more on a peak day — become the ones worth opening, and every lot that falls out shows the rule that removed it.</span>
             <span class="sgo">Open List</span>
           </button>
           <button type="button" class="stepc" data-go="tab-filters">
@@ -1144,29 +1302,43 @@
             <span class="sb">Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays.</span>
             <span class="sgo">Open Filters</span>
           </button>
-          <button type="button" class="stepc" data-go="tab-sheet">
+          <button type="button" class="stepc" data-go="tab-prebid">
             <span class="sn">03</span>
+            <span class="sh">Pre-bid</span>
+            <span class="sk">Your eyes, on the record</span>
+            <span class="sb">The survivors, ordered by margin so you open the best first. Your visual call and your Carfax verdict, recorded per lot — never the report, never a clean verdict.</span>
+            <span class="sgo">Open Pre-bid</span>
+          </button>
+          <button type="button" class="stepc" data-go="tab-sheet">
+            <span class="sn">04</span>
             <span class="sh">Bid</span>
             <span class="sk">The ceiling</span>
             <span class="sb">Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon.</span>
             <span class="sgo">Open Bid</span>
           </button>
           <button type="button" class="stepc" data-go="tab-parts">
-            <span class="sn">04</span>
+            <span class="sn">05</span>
             <span class="sh">Parts</span>
             <span class="sk">What broke</span>
             <span class="sb">A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos.</span>
             <span class="sgo">Open Parts</span>
           </button>
+          <button type="button" class="stepc" data-go="tab-pipeline">
+            <span class="sn">06</span>
+            <span class="sh">Pipeline</span>
+            <span class="sk">After the hammer</span>
+            <span class="sb">Bought to sold, stage by stage, with parts status per car and the daily loan interest counted against each unit's projected margin.</span>
+            <span class="sgo">Open Pipeline</span>
+          </button>
           <button type="button" class="stepc" data-go="tab-book">
-            <span class="sn">05</span>
+            <span class="sn">07</span>
             <span class="sh">Ledger</span>
             <span class="sk">Projected against real</span>
             <span class="sb">Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested.</span>
             <span class="sgo">Open Ledger</span>
           </button>
           <button type="button" class="stepc" data-go="tab-numbers">
-            <span class="sn">06</span>
+            <span class="sn">08</span>
             <span class="sh">Your numbers</span>
             <span class="sk">The correction</span>
             <span class="sb">How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for.</span>
@@ -1186,7 +1358,7 @@
             <p class="prose" style="margin-bottom:.9rem"><strong>It never bids for you</strong>, never signs
             into Copart, Manheim, Carfax or eBay on your behalf, and never copies their photographs. Those
             lines protect your auction access, which is the one thing here you could not rebuild.</p>
-            <p class="prose"><strong>The demo data is invented.</strong> The 800 lots and the six Ledger
+            <p class="prose"><strong>The demo data is invented.</strong> The 400 lots and the six Ledger
             units exist to show the shape of the thing with history inside it. The Copart fee table is a
             starting point until one of your real invoices replaces it.</p>
           </div>
@@ -1194,7 +1366,7 @@
       </section>
     </div>
     <div class="panel on" id="p-list" role="tabpanel" aria-labelledby="tab-list">
-      <div class="pagehead"><h2 class="pt">Today's <em>sale</em>.</h2><p class="ps">From 800 published lots down to the ones worth your time, every discard explained.</p></div>
+      <div class="pagehead"><h2 class="pt">Today's <em>sale</em>.</h2><p class="ps">From 400 published lots down to the ones worth your time, every discard explained.</p></div>
 
       <section id="ov-strip" style="display:none">
         <div class="card">
@@ -1229,7 +1401,7 @@
         <div class="card">
           <div class="card-h">
             <h2>From the list to the shortlist</h2>
-            <span class="eyebrow" style="margin-left:auto">3 passes</span>
+            <span class="eyebrow" style="margin-left:auto">4 passes</span>
           </div>
           <div class="card-b">
             <div class="funnel" id="funnel"></div>
@@ -1826,6 +1998,33 @@
     </div>
 
     <!-- ============ LIBRO ============ -->
+    <!-- ============ PIPELINE ============ -->
+    <div class="panel" id="p-pipeline" role="tabpanel" aria-labelledby="tab-pipeline">
+      <div class="pagehead"><h2 class="pt">The <em>pipeline</em>.</h2>
+        <p class="ps">Every car you own, from the hammer to the wire. Time is the cost nobody invoices: financed units accrue interest daily, and this board counts it. The seven active units are demo seeds, invented.</p></div>
+
+      <section>
+        <div class="ovrow plrow pl-stages" id="pl-stages"></div>
+      </section>
+
+      <section id="pl-alerts" style="display:none"></section>
+
+      <section>
+        <div class="card">
+          <div class="card-h"><h2>Units</h2>
+            <div class="seg" id="pl-seg" role="group" aria-label="Pipeline view">
+              <button type="button" class="on" data-plview="units">Units</button>
+              <button type="button" data-plview="inventory">Inventory</button>
+            </div>
+            <span class="eyebrow" id="pl-filter-note"></span>
+            <span class="eyebrow" id="pl-count" style="margin-left:auto"></span></div>
+          <div id="pl-units-view"><div class="plgrid" id="pl-cards"></div></div>
+          <div id="pl-inventory" style="display:none"></div>
+        </div>
+      </section>
+    </div>
+    <div id="pl-drawer-host"></div>
+
     <div class="panel" id="p-book" role="tabpanel" aria-labelledby="tab-book">
       <div class="pagehead"><h2 class="pt">The <em>Ledger</em>.</h2><p class="ps">Projected against real, unit by unit. This is where the $6,000 gets tested.</p></div>
       <section>
@@ -1962,6 +2161,63 @@
               <tbody id="seg-rows"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ PRE-BID (additive layer, tab 03) ============ -->
+    <div class="panel" id="p-prebid" role="tabpanel" aria-labelledby="tab-prebid">
+      <div class="pagehead">
+        <h2 class="pt">The <em>morning</em>.</h2>
+        <p class="ps">8:00 AM the list drops, 12:00 the bidding starts. Every survivor gets your eyes,
+        your Carfax read, and a ceiling — and nothing reaches the noon board without all three.</p>
+      </div>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Morning brief</h2>
+            <span class="eyebrow" id="pb-stamp" style="margin-left:auto"></span>
+            <button type="button" class="btn sm" id="pb-print">Print brief</button>
+          </div>
+          <div class="ovrow pb-brief" id="pb-brief">
+            <div class="ovc"><span class="eyebrow">Released</span><span class="v num" id="pb-n-rel">—</span><span class="d">lots published at 8:00</span></div>
+            <div class="ovc"><span class="eyebrow">Pass rules</span><span class="v num" id="pb-n-rules">—</span><span class="d">survive your filters</span></div>
+            <div class="ovc"><span class="eyebrow">Awaiting visual</span><span class="v num" id="pb-n-vis">—</span><span class="d">photos not read yet</span></div>
+            <div class="ovc"><span class="eyebrow">Awaiting history</span><span class="v num" id="pb-n-his">—</span><span class="d">Carfax not read yet</span></div>
+            <div class="ovc hero"><span class="eyebrow">Ready to bid</span><span class="v num" id="pb-n-ready">—</span><span class="d">all three gates passed</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Triage queue</h2>
+            <div class="seg" id="pb-qfilter" role="group" aria-label="Queue filter">
+              <button type="button" class="on" data-q="all">All</button>
+              <button type="button" data-q="review">Pending</button>
+              <button type="button" data-q="ready">Ready</button>
+              <button type="button" data-q="out">Out</button>
+            </div>
+            <span class="eyebrow" id="pb-qcount" style="margin-left:auto"></span>
+          </div>
+          <div id="pb-queue"></div>
+        </div>
+        <p class="prose" style="margin-top:.8rem">
+          <strong>Structural risk is not assessable from data.</strong> No source anyone sells carries
+          it — which is exactly why the photos and your eyes are a gate here and not a convenience.
+          Nothing on this screen returns a clean verdict.
+        </p>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Bid board · 12:00</h2>
+            <span class="eyebrow" id="pb-bcount" style="margin-left:auto"></span>
+          </div>
+          <div id="pb-board"></div>
         </div>
       </section>
     </div>
@@ -2104,11 +2360,15 @@
      lands well under the 6,000 target. */
 
   function demoUnits() {
+    function d(n) {
+      var t = new Date(); t.setDate(t.getDate() + n);
+      return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+    }
     return [
       { id:"u1", missed:["rsup","cond"], lot:"57118203", desc:"2016 Toyota Camry LE", damage:"FRONT END",
         cpRepair:2150, estRetail:16200,
         projSale:14200, projParts:2100, projLabor:1400, tow:300, margin:6000,
-        hammer:3950, realParts:2680, realLabor:1550, realSale:13400, days:11, status:"sold" },
+        hammer:3950, realParts:2680, realLabor:1550, realSale:13400, days:11, finCost:34, status:"sold" },
       { id:"u2", missed:["rrei"], lot:"57204411", desc:"2017 Kia Optima LX", damage:"REAR END",
         cpRepair:1720, estRetail:14500,
         projSale:12600, projParts:1800, projLabor:1200, tow:275, margin:6000,
@@ -2132,10 +2392,73 @@
         hammer:4010, realParts:1720, realLabor:1150, realSale:12850, days:9, status:"sold" },
       { id:"u7", lot:"57703558", desc:"2018 Kia Forte S", damage:"FRONT END",
         projSale:13900, projParts:2250, projLabor:1500, tow:310, margin:6000,
-        hammer:3730, status:"open" },
+        cpRepair:2340, estRetail:15600, cont:0, hammer:3730, status:"open",
+        stage:"shop", shopSub:"parts", boughtAt:d(-9),
+        stageLog:[{s:"won",at:d(-9)},{s:"transit",at:d(-8)},{s:"arrived",at:d(-6)},
+                  {s:"shop",sub:"teardown",at:d(-6)},{s:"shop",sub:"parts",at:d(-6)}],
+        transport:{note:"Central Dispatch · R. Gómez",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Front bumper cover",src:"ebay",price:212,status:"installed",orderedAt:d(-6),taught:true},
+                {id:"p2",name:"Bumper reinforcement",src:"ebay",price:145,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
+                {id:"p3",name:"Right headlamp",src:"ebay",price:189,status:"ordered",orderedAt:d(-4),eta:d(2),returnBy:d(26)},
+                {id:"p4",name:"Hood hinge pair",src:"used",price:48,status:"received",orderedAt:d(-5)},
+                {id:"p5",name:"AC condenser",src:"ebay",price:96,status:"needed"} ],
+        fin:{on:true,lender:"Auction finance",principal:4374,aprPct:28,startedAt:d(-9)} },
       { id:"u8", lot:"57741902", desc:"2016 Mazda 6 Sport", damage:"SIDE",
         projSale:12400, projParts:2000, projLabor:1350, tow:295, margin:6000,
-        hammer:2860, status:"open" }
+        cpRepair:2090, estRetail:14100, cont:0, hammer:2860, status:"open",
+        stage:"shop", shopSub:"repair", boughtAt:d(-7),
+        stageLog:[{s:"won",at:d(-7)},{s:"transit",at:d(-6)},{s:"arrived",at:d(-4)},
+                  {s:"shop",sub:"teardown",at:d(-4)},{s:"shop",sub:"repair",at:d(-3)}],
+        transport:{note:"Own trailer",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Left front door skin",src:"used",price:180,status:"installed",taught:true},
+                {id:"p2",name:"Mirror assembly",src:"ebay",price:74,status:"installed",taught:true},
+                {id:"p3",name:"Door moulding",src:"ebay",price:31,status:"installed",taught:true} ],
+        fin:{on:false,lender:"",principal:0,aprPct:0,startedAt:""} },
+      { id:"u9",  lot:"58011427", desc:"2024 Nissan Sentra S",    damage:"FRONT END",
+        projSale:16900, projParts:1400, projLabor:900,  tow:260, margin:6000,
+        cpRepair:1290, estRetail:19200, cont:250, hammer:7250, status:"open",
+        stage:"won", shopSub:null, boughtAt:d(0),
+        stageLog:[{s:"won",at:d(0)}],
+        transport:{note:"",eta:""}, parts:[], opNotes:"",
+        fin:{on:true,lender:"Auction finance",principal:8125,aprPct:28,startedAt:d(0)} },
+      { id:"u10", lot:"58013962", desc:"2023 Kia Forte LXS",      damage:"REAR END",
+        projSale:14800, projParts:1150, projLabor:800,  tow:290, margin:6000,
+        cpRepair:1240, estRetail:16800, cont:0,   hammer:6100, status:"open",
+        stage:"transit", shopSub:null, boughtAt:d(-2),
+        stageLog:[{s:"won",at:d(-2)},{s:"transit",at:d(-2)}],
+        transport:{note:"Central Dispatch · load 8841",eta:d(1)}, parts:[], opNotes:"",
+        fin:{on:true,lender:"Auction finance",principal:6890,aprPct:28,startedAt:d(-2)} },
+      { id:"u11", lot:"58009315", desc:"2025 Toyota Corolla LE",  damage:"FRONT END",
+        projSale:18300, projParts:1600, projLabor:950,  tow:240, margin:6000,
+        cpRepair:1490, estRetail:20900, cont:300, hammer:8400, status:"open",
+        stage:"arrived", shopSub:null, boughtAt:d(-3),
+        stageLog:[{s:"won",at:d(-3)},{s:"transit",at:d(-2)},{s:"arrived",at:d(-1)}],
+        transport:{note:"Delivered",eta:""}, parts:[], opNotes:"Photos suggest rad support — verify at teardown.",
+        fin:{on:true,lender:"Auction finance",principal:9320,aprPct:28,startedAt:d(-3)} },
+      { id:"u12", lot:"57996520", desc:"2023 Nissan Rogue S",     damage:"SIDE",
+        projSale:17600, projParts:1350, projLabor:1050, tow:300, margin:6000,
+        cpRepair:1460, estRetail:20100, cont:0,   hammer:7800, status:"open",
+        stage:"ready", shopSub:null, boughtAt:d(-11),
+        stageLog:[{s:"won",at:d(-11)},{s:"transit",at:d(-10)},{s:"arrived",at:d(-8)},
+                  {s:"shop",sub:"teardown",at:d(-8)},{s:"shop",sub:"parts",at:d(-7)},
+                  {s:"shop",sub:"repair",at:d(-4)},{s:"shop",sub:"qc",at:d(-2)},{s:"ready",at:d(-1)}],
+        transport:{note:"",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Left rear door",src:"used",price:260,status:"installed",taught:true},
+                {id:"p2",name:"Rocker moulding",src:"ebay",price:58,status:"installed",taught:true},
+                {id:"p3",name:"Rear lamp assembly",src:"ebay",price:112,status:"installed",taught:true} ],
+        fin:{on:true,lender:"Auction finance",principal:8710,aprPct:28,startedAt:d(-11)} },
+      { id:"u13", lot:"57981174", desc:"2024 Hyundai Elantra SEL", damage:"REAR END",
+        projSale:15900, projParts:1200, projLabor:850,  tow:270, margin:6000,
+        cpRepair:1130, estRetail:18200, cont:0,   hammer:6650, status:"open",
+        /* held long on purpose: day 35 of a 44-day break-even — the amber teaching case */
+        stage:"listed", shopSub:null, boughtAt:d(-34), listPrice:15900, listedAt:d(-4),
+        stageLog:[{s:"won",at:d(-34)},{s:"transit",at:d(-33)},{s:"arrived",at:d(-31)},
+                  {s:"shop",sub:"teardown",at:d(-31)},{s:"shop",sub:"repair",at:d(-20)},
+                  {s:"shop",sub:"qc",at:d(-8)},{s:"ready",at:d(-6)},{s:"listed",at:d(-4)}],
+        transport:{note:"",eta:""}, opNotes:"",
+        parts:[ {id:"p1",name:"Rear bumper cover",src:"ebay",price:168,status:"installed",taught:true},
+                {id:"p2",name:"Trunk lid",src:"used",price:290,status:"installed",taught:true} ],
+        fin:{on:true,lender:"Auction finance",principal:7460,aprPct:28,startedAt:d(-34)} }
     ];
   }
 
@@ -2148,6 +2471,7 @@
       localStorage.setItem(KEY, JSON.stringify({
         units: units, cfg: cfg, rules: rules, presets: presets, priceMemory: priceMemory
       }));
+      try { document.dispatchEvent(new CustomEvent("bidsheet:saved")); } catch (e2) {}
     } catch (e) {}
   }
   function load() {
@@ -2170,7 +2494,7 @@
   /* ---------------- unit math ---------------- */
 
   function realCost(u) {
-    return u.hammer + totalFees(u.hammer) + u.tow + (u.realParts || 0) + (u.realLabor || 0);
+    return u.hammer + totalFees(u.hammer) + u.tow + (u.realParts || 0) + (u.realLabor || 0) + (u.finCost || 0);
   }
   function realMargin(u) { return (u.realSale || 0) - realCost(u); }
 
@@ -2265,6 +2589,12 @@
   /* ---------------- bid sheet ---------------- */
 
   var lastCalc = null;
+  var lastLot = null; /* raw Copart figures of the lot behind the sheet, if any */
+  function isoToday() {
+    var t = new Date();
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
+  try { $("f-lot").addEventListener("input", function () { lastLot = null; }); } catch (e) {}
 
   function recompute() {
     var sale   = val("f-sale");
@@ -2538,7 +2868,8 @@
       tr.appendChild(el("td", null, k));
       tr.appendChild(el("td", "n", String(g.length)));
       var mt = el("td", "n", money(m));
-      mt.style.color = m < g[0].margin ? "var(--stop)" : "var(--go)";
+      var tAvg = avg(g.map(function (u) { return u.margin || 0; }));
+      mt.style.color = m < tAvg ? "var(--stop)" : "var(--go)";
       tr.appendChild(mt);
       tr.appendChild(el("td", "n", pct(pe)));
       sr.appendChild(tr);
@@ -2604,6 +2935,15 @@
         damage: document.getElementById("m-damage").value,
         projSale: lastCalc.sale, projParts: lastCalc.parts, projLabor: lastCalc.labor,
         tow: lastCalc.tow, margin: lastCalc.margin,
+        /* raw lot figures only — absent on hand-entered units, which keeps
+           them OUT of the calibration sample instead of poisoning it */
+        cpRepair: lastLot ? lastLot.repair : undefined,
+        estRetail: lastLot ? lastLot.retail : undefined,
+        cont: lastCalc.cont,
+        stage: "won", shopSub: null, boughtAt: isoToday(),
+        stageLog: [{ s: "won", at: isoToday() }],
+        parts: [], fin: { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" },
+        transport: { note: "", eta: "" }, opNotes: "",
         hammer: hammer, status: "open"
       });
       save(); renderBook(); renderNumbers(); go("book");
@@ -2639,6 +2979,15 @@
       u.missed = Array.prototype.slice.call(sel.selectedOptions).map(function (o) { return o.value; });
       var n = document.getElementById("c-note").value.trim();
       if (n) u.note = n;
+      /* Freeze accrued interest at close — INTEREST ONLY, on HIS typed day
+         count, so the ledger stays cash-true (financing spec 04). */
+      try {
+        if (u.fin && u.fin.on !== false && u.fin.principal > 0) {
+          var dpF = u.fin.rateType === "daily" ? (u.fin.rateValue || 0)
+            : (u.fin.rateValue != null ? u.fin.rateValue : (u.fin.aprPct || 0)) / 360;
+          u.finCost = Math.round(u.fin.principal * dpF / 100 * Math.max(1, u.days || 0));
+        }
+      } catch (eF) {}
       u.status = "sold";
       save(); renderBook(); renderNumbers();
     }, "Close unit");
@@ -2773,13 +3122,13 @@
         saleTitleType: ttl, saleTitleState: yard[1].slice(0, 2),
         estRetailValue: estRetail,
         repairCost: noRepair ? 0 : cpRepair, _noRepair: noRepair,
-        // Screening happens 9:00–12:00, before bidding opens, so most lots
+        // Pre-bid opens 8:00; screening happens 8:00–12:00, before live bidding, so most lots
         // carry only a low pre-bid at this hour.
         highBid: Math.round(Math.max(150, estRetail * (0.06 + r() * 0.26) - cpRepair * 0.55) / 25) * 25,
         runsDrives: r() < 0.72, hasKeys: r() < 0.81,
         rental: r() < 0.88,
         locationZip: yard[2],
-        saleTime: (9 + Math.floor(r() * 7)) + ":" + (r() < .5 ? "00" : "30")
+        saleTime: (12 + Math.floor(r() * 4)) + ":" + (r() < .5 ? "00" : "30")
       });
     }
     return out;
@@ -3145,6 +3494,7 @@
       function (l) { return (l._miles || 0) <= rules.distMax ? null : (l._miles || 0) + " miles to the yard"; });
 
     var afterHard = cur.length;
+    var afterHardLots = cur.slice();
 
     // Without a repair estimate or a retail value there is nothing to compute a
     // ceiling from. Copart omits repair cost on 30% of lots. These are not bad
@@ -3182,6 +3532,14 @@
                  total: total, rules: rules, afterHard: afterHard, manual: manual };
     save();
     renderPipeline();
+    try {
+      document.dispatchEvent(new CustomEvent("pipeline:done", { detail: {
+        saleKey: $("list-src").textContent,
+        total: total, afterHard: afterHard,
+        afterHardLots: afterHardLots,
+        short: cur.length
+      } }));
+    } catch (e) {}
   }
 
   function renderPipeline() {
@@ -3215,7 +3573,7 @@
     mark.style.marginTop = ".9rem";
     mark.innerHTML = "<span class=\"mark\">→</span><span>Your hard filters alone leave <strong class=\"num\">" +
       pipeline.afterHard.toLocaleString("en-US") + "</strong> of " + pipeline.total.toLocaleString("en-US") +
-      ". <strong>This is the number to compare against the 200 you review today.</strong> " +
+      ". <strong>This is the number to compare against the ~80 you open in browser tabs today.</strong> " +
       "If they match, you are already seeing everything that qualifies and the value is in the ordering, not the coverage. " +
       "If it is much higher, cars are going unopened every Monday.</span>";
     f.appendChild(mark);
@@ -3357,6 +3715,12 @@
     $("f-lot").value = l.lotId;
     $("f-vin").value = l.vin || "";
     $("f-desc").value = l.year + " " + l.make + " " + l.modelGroup;
+    /* Stash the lot's RAW Copart figures. calibration() measures reality
+       against the raw feed (realSale/estRetail), so a bought unit must carry
+       the raw numbers, never the calibrated sheet prefills — storing the
+       prefills would drag every factor toward 1.0 and quietly inflate future
+       ceilings. Cleared if the lot id is hand-edited (unknown provenance). */
+    lastLot = { retail: l.estRetailValue, repair: l.repairCost };
     $("f-sale").value  = Math.round(l._est.sale);
     $("f-parts").value = Math.round(l._est.parts);
     $("f-labor").value = Math.round(l._est.labor);
@@ -3387,8 +3751,8 @@
 
   function bindList() {
     $("btn-gen").addEventListener("click", function () {
-      saleList = generateSale(800, 20260803);
-      $("list-src").textContent = "sample sale · 800 lots";
+      saleList = generateSale(400, 20260803);
+      $("list-src").textContent = "sample sale · 400 lots · typical Monday";
       $("csv-msg").textContent = "";
       ensureFacets(); renderFilters(); runPipeline();
     });
@@ -3518,16 +3882,41 @@
     { max: Infinity, k: 1.55, name: "premium" }
   ];
   try { window.PART_TEMPLATES = PART_TEMPLATES; } catch (e) {}
+  // read/teach accessors for the ops layers — same pattern as window.__ledger below.
+  // ebayUrl is an outbound search link only: nothing is fetched or stored from eBay.
+  try {
+    window.__parts = {
+      remember: rememberPrice,
+      priceFor: priceFor,
+      ebayUrl:  ebayUrl
+    };
+  } catch (e) {}
   // read-only accessors so the chart layer can reach the ledger without
   // duplicating any of the arithmetic above
+  // plus a narrow write path for the financing layer: unitsAll/saveAll/refresh
   try {
     window.__ledger = {
       sold:       function () { return sold(); },
       realMargin: realMargin,
       realCost:   realCost,
       projMargin: projMargin,
+      unitsAll:   function () { return units; },
+      saveAll:    function () { save(); },
+      refresh:    function () { renderBook(); renderNumbers(); },
       totalFees:  totalFees,
       biases:     biases
+    };
+  } catch (e) {}
+  // read-only accessors for the pre-bid layer — same contract as __ledger:
+  // reach, never rewrite. Nothing here mutates pipeline state. solveCeiling
+  // is the verified-exact non-monotonic fee solver — never reimplement it.
+  try {
+    window.__ops = {
+      solveCeiling: solveCeiling,
+      shortlist: function () { return pipeline ? pipeline.short.slice() : []; },
+      afterHard: function () { return pipeline ? pipeline.afterHard : 0; },
+      margin:    function () { return rules.margin; },
+      money:     money
     };
   } catch (e) {}
 
@@ -3904,6 +4293,21 @@
   renderBook();
   renderNumbers();
   renderFoot();
+
+  /* V2 bridge — additive modules read and mutate the live units array,
+     then call save(); the core stays the single writer of localStorage. */
+  try {
+    window.BidSheet = {
+      units: function () { return units; },
+      save: save,
+      totalFees: totalFees,
+      projMargin: projMargin,
+      openClose: openClose,
+      go: go,
+      modal: modal,
+      closeModal: closeModal
+    };
+  } catch (eB) {}
 })();
 </script>
 <script>
@@ -4608,9 +5012,18 @@
   var anim = !!window.anime &&
     !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   var SEEN = "bidsheet-start-seen";
-  var TABS = ["tab-list", "tab-filters", "tab-sheet", "tab-parts", "tab-book", "tab-numbers"];
-  var PANES = ["p-list", "p-filters", "p-sheet", "p-parts", "p-book", "p-numbers"];
-  var STEPS = [{"no":"01","name":"List","tab":"tab-list","kicker":"Monday, 8:45","body":"Drop in the sale export. 800 published lots become the ones worth opening, and every lot that falls out shows the rule that removed it."},{"no":"02","name":"Filters","tab":"tab-filters","kicker":"Your rules, as code","body":"Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays."},{"no":"03","name":"Bid","tab":"tab-sheet","kicker":"The ceiling","body":"Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon."},{"no":"04","name":"Parts","tab":"tab-parts","kicker":"What broke","body":"A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos."},{"no":"05","name":"Ledger","tab":"tab-book","kicker":"Projected against real","body":"Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested."},{"no":"06","name":"Your numbers","tab":"tab-numbers","kicker":"The correction","body":"How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for."}];
+  var TABS = ["tab-list", "tab-filters", "tab-prebid", "tab-sheet", "tab-parts", "tab-pipeline", "tab-book", "tab-numbers"];
+  var PANES = ["p-list", "p-filters", "p-prebid", "p-sheet", "p-parts", "p-pipeline", "p-book", "p-numbers"];
+  var STEPS = [
+    {"no":"01","name":"List","tab":"tab-list","kicker":"Monday, 8:05","body":"Drop in the sale export. Some 400 published lots — 800 and more on a peak day — become the ones worth opening, and every lot that falls out shows the rule that removed it."},
+    {"no":"02","name":"Filters","tab":"tab-filters","kicker":"Your rules, as code","body":"Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays."},
+    {"no":"03","name":"Pre-bid","tab":"tab-prebid","kicker":"Your eyes, on the record","body":"The 80 survivors, ordered by margin so you open the best ones first. Record what your eyes and your Carfax account say — pass, fail, and why. It stores your call, never the report, and it never calls a car clean."},
+    {"no":"04","name":"Bid","tab":"tab-sheet","kicker":"The ceiling","body":"Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon."},
+    {"no":"05","name":"Parts","tab":"tab-parts","kicker":"What broke","body":"A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos."},
+    {"no":"06","name":"Pipeline","tab":"tab-pipeline","kicker":"After the hammer","body":"Bought, in transit, arrived, in the shop, ready, listed, sold. Each unit shows its days in stage and the loan interest it accrues every day, so you see the break-even day coming instead of finding it in the rear-view."},
+    {"no":"07","name":"Ledger","tab":"tab-book","kicker":"Projected against real","body":"Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested."},
+    {"no":"08","name":"Your numbers","tab":"tab-numbers","kicker":"The correction","body":"How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for."}
+  ];
 
   function hideStart() {
     var p = $("p-start"), t = $("tab-start");
@@ -4687,7 +5100,7 @@
     litOff();
     if (btn) { btn.classList.add("tourlit"); lit = btn; }
 
-    $("tc-n").textContent = "Step " + s.no + " of 06";
+    $("tc-n").textContent = "Step " + s.no + " of " + ("0" + STEPS.length).slice(-2);
     $("tc-h").textContent = s.name + " · " + s.kicker;
     $("tc-b").textContent = s.body;
     $("tc-back").disabled = i === 0;
@@ -4704,6 +5117,7 @@
   }
 
   function start() {
+    STEPS = STEPS.filter(function (s) { return $(s.tab); });
     if (!card) buildCard();
     card.hidden = false;
     step(0);
@@ -4737,6 +5151,167 @@
       try { localStorage.setItem(SEEN, "1"); } catch (e) {}
     }, 260);
   }
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   Pre-bid triage store (hoja-triage-v1) — demo seeder + funnel act.
+   Additive layer: reads pipeline results via the "pipeline:done"
+   CustomEvent and never calls into the app. The store records HIS
+   verdicts only — the visual call and the Carfax call are the
+   operator's own business record. No report content is ever fetched,
+   parsed or stored, and nothing here calls a car clean: a passing
+   visual still reads "structural risk not assessable from data".
+   Listener order matters: the seeder registers before the funnel
+   augmenter (document listeners fire in registration order), so a
+   fresh seed is visible to the same event's funnel render.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  var KEY = "hoja-triage-v1";
+  var SALE_KEY = "sample sale · 400 lots · typical Monday";
+
+  /* Local ES5 copy of the app's deterministic PRNG (it is IIFE-private). */
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function readTriage() {
+    try { var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function writeTriage(store) {
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  function seedTriage(detail) {
+    var store = { saleKey: detail.saleKey, seeded: true, lots: {} };
+    var TRIAGE_SEED = 20260813;                       // partner-message date
+    // pass probabilities: lots the machine sees margin in are likelier to survive his review
+    var P_VIS = { room: 0.85, other: 0.42 };
+    var P_CFX = { room: 0.90, other: 0.72 };
+    var rt = rng(TRIAGE_SEED);
+    // Draw discipline: ONE draw on a visual fail, TWO on a visual pass.
+    // Changing this changes every downstream verdict; tests/reseed-triage.test.js pins it.
+    detail.afterHardLots.forEach(function (l) {       // generation order — do not sort first
+      var hasRoom = l._room > 0;
+      var v = rt() < (hasRoom ? P_VIS.room : P_VIS.other);               // draw 1
+      var c = v ? (rt() < (hasRoom ? P_CFX.room : P_CFX.other)) : null;  // draw 2 only when v passed
+      store.lots[l.lotId] = { v: v ? "pass" : "fail",
+                              c: c === null ? null : (c ? "pass" : "fail"),
+                              cWhy: "", note: "", ts: Date.now() };
+    });
+    // Seeded shorthand — his words, applied AFTER the stream; annotation only,
+    // the verdicts above already match. The stream's best beat: the machine's
+    // #1 and #2 picks both die at his visual gate (structural suspicion is in
+    // no data source), and his Carfax account kills a near-new Accord the
+    // machine could not even rank. Lot ids verified against the live pipeline
+    // (seed 20260803, n=400, default rules) — tests/reseed-triage.test.js pins them.
+    var SEED_NOTES = {
+      "58524793": { note: "photo 6 — kink in the rear rail, trunk floor ripples. structural suspicion — out" },
+      "58988847": { note: "photo 4 — quarter panel buckled to the wheel arch. parts alone eat the margin — out" },
+      "58683366": { cWhy: "accidents", note: "cfx: 2 accidents on record, second one moderate — out" },
+      "58335067": { note: "paint + glass only, no impact. gaps look straight" }
+    };
+    Object.keys(SEED_NOTES).forEach(function (id) {
+      if (store.lots[id]) {
+        store.lots[id].cWhy = SEED_NOTES[id].cWhy || store.lots[id].cWhy;
+        store.lots[id].note = SEED_NOTES[id].note;
+      }
+    });
+    writeTriage(store);
+    return store;
+  }
+
+  /* ------- seeder: first listener on pipeline:done ------- */
+  document.addEventListener("pipeline:done", function (ev) {
+    var d = ev.detail || {};
+    if (d.saleKey === SALE_KEY && readTriage() === null) seedTriage(d);
+  });
+
+  /* ------- funnel act: his recorded review, appended after the machine ------- */
+  function counts(lots, store) {
+    var vis = 0, cfx = 0, ready = 0;
+    lots.forEach(function (l) {
+      var t = store.lots[l.lotId]; if (!t) return;
+      if (t.v === "pass") vis++;
+      if (t.v === "pass" && t.c === "pass") { cfx++; if (l._room > 0) ready++; }
+    });
+    return { vis: vis, cfx: cfx, ready: ready };
+  }
+
+  function fstage(cls, name, drop, n, total, note) {
+    var d = document.createElement("div"); d.className = cls;
+    var h = document.createElement("div"); h.className = "fhead";
+    var nm = document.createElement("span"); nm.className = "fname"; nm.textContent = name;
+    h.appendChild(nm);
+    if (drop > 0) {
+      var fd = document.createElement("span"); fd.className = "fdrop";
+      fd.textContent = "−" + drop.toLocaleString("en-US");
+      h.appendChild(fd);
+    }
+    var fn = document.createElement("span"); fn.className = "fn";
+    fn.textContent = n.toLocaleString("en-US");
+    h.appendChild(fn);
+    d.appendChild(h);
+    var bar = document.createElement("div"); bar.className = "fbar";
+    var fill = document.createElement("i");
+    fill.style.width = (total ? (n / total * 100) : 0) + "%";
+    bar.appendChild(fill);
+    d.appendChild(bar);
+    var no = document.createElement("div"); no.className = "fnote"; no.textContent = note;
+    d.appendChild(no);
+    return d;
+  }
+
+  document.addEventListener("pipeline:done", function (ev) {
+    var f = document.getElementById("funnel"); if (!f) return;
+    var old = f.querySelectorAll(".fdivide, .fstage.manual");
+    Array.prototype.forEach.call(old, function (n) { n.parentNode.removeChild(n); });
+    var store = readTriage();
+    if (!store || store.saleKey !== ev.detail.saleKey) return;
+    var c = counts(ev.detail.afterHardLots, store);
+    if (!c.vis && !c.cfx) return;                   // nothing recorded yet — funnel stays stock
+    var last = f.querySelector(".fstage.final");
+    if (last) last.classList.remove("final");       // single accent moves to "Ready to bid"
+    var total = ev.detail.total || 0;
+    var div = document.createElement("div"); div.className = "fdivide";
+    div.innerHTML = "<b>//</b> HIS REVIEW · RECORDED IN PRE-BID";
+    var rows = [
+      div,
+      fstage("fstage manual", "Visual inspection", ev.detail.afterHard - c.vis, c.vis, total,
+        "Your pass/fail from the photos, one lot at a time. Never a clean verdict — structural risk is not assessable from data."),
+      fstage("fstage manual", "Carfax gate", c.vis - c.cfx, c.cfx, total,
+        "Your own verdict after reading your Carfax account. The sheet stores your call, never the report."),
+      fstage("fstage manual final", "Ready to bid", 0, c.ready, total,
+        "Passed your eyes, passed your Carfax, and still shows margin over the pre-bid.")
+    ];
+    var before = f.querySelector(".flag");          // renderPipeline appends its flags last
+    rows.forEach(function (n) { if (before) f.insertBefore(n, before); else f.appendChild(n); });
+  });
+
+  /* The app auto-loads the sample sale during its own script block, which runs
+     before this layer registered its listeners. Replay once so the seeder and
+     the funnel act see a pipeline:done for the initial load — generation is
+     seeded, so the replay is byte-identical. */
+  function replay() {
+    var ls = document.getElementById("list-src");
+    var g = document.getElementById("btn-gen");
+    if (ls && g && ls.textContent === SALE_KEY) g.click();
+  }
+  replay();
+
+  /* Restore-demo must also restore the recorded review to its seeded state. */
+  var br = document.getElementById("btn-reset");
+  if (br) br.addEventListener("click", function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    replay();
+  });
 })();
 </script>
 <script>
@@ -5472,10 +6047,12 @@
     { g: "Go to", n: "00", t: "Start here", k: "", run: function () { var b = $("tab-start"); b && b.click(); } },
     { g: "Go to", n: "01", t: "List", k: "", run: function () { $("tab-list").click(); } },
     { g: "Go to", n: "02", t: "Filters", k: "", run: function () { $("tab-filters").click(); } },
-    { g: "Go to", n: "03", t: "Bid ceiling", k: "", run: function () { $("tab-sheet").click(); } },
-    { g: "Go to", n: "04", t: "Parts and damage map", k: "", run: function () { $("tab-parts").click(); } },
-    { g: "Go to", n: "05", t: "Ledger", k: "", run: function () { $("tab-book").click(); } },
-    { g: "Go to", n: "06", t: "Your numbers", k: "", run: function () { $("tab-numbers").click(); } },
+    { g: "Go to", n: "03", t: "Pre-bid triage", k: "", run: function () { var b = $("tab-prebid"); b && b.click(); } },
+    { g: "Go to", n: "04", t: "Bid ceiling", k: "", run: function () { $("tab-sheet").click(); } },
+    { g: "Go to", n: "05", t: "Parts and damage map", k: "", run: function () { $("tab-parts").click(); } },
+    { g: "Go to", n: "06", t: "Pipeline", k: "", run: function () { var b = $("tab-pipeline"); b && b.click(); } },
+    { g: "Go to", n: "07", t: "Ledger", k: "", run: function () { $("tab-book").click(); } },
+    { g: "Go to", n: "08", t: "Your numbers", k: "", run: function () { $("tab-numbers").click(); } },
     { g: "Actions", n: "→", t: "Take the guided tour", k: "", run: function () { var b = $("tab-start"); b && b.click(); setTimeout(function () { var g = $("tour-go"); g && g.click(); }, 250); } },
     { g: "Actions", n: "→", t: "Export shortlist as CSV", k: "", run: function () { var b = $("tb-export"); b && b.click(); } },
     { g: "Actions", n: "→", t: "Toggle dark mode", k: "", run: toggleTheme },
@@ -5632,5 +6209,2399 @@
     e.preventDefault();
     z.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   Pre-bid triage panel — tab 03 (additive layer).
+   Reads the pipeline through window.__ops (the read-only bridge) and
+   records HIS verdicts in the hoja-triage-v1 store the seeder layer
+   above already owns — same record shape {v, c, cWhy, note, ts},
+   extended additively with vWhy (reason categories), cFlags (his five
+   exclusion booleans) and mmr45. Hard rails: nothing here bids, logs
+   in anywhere, fetches or stores report content, or keeps an MMR
+   history — mmr45 is ONE number, overwritten in place. Every card
+   carries the fixed caption "structural risk not assessable from
+   data"; no clean verdict exists on this screen.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = "hoja-triage-v1";
+  var anim = !!window.anime &&
+    !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var FLAGS = ["accidents", "severity", "hail", "structural", "recall"];
+  var FLAG_LABEL = { accidents: "multiple accidents", severity: "moderate/severe damage",
+                     hail: "hail repair", structural: "structural damage", recall: "open recall" };
+  var REASONS = ["structural", "rust", "interior", "airbags", "flood", "other"];
+  var REASON_LABEL = { structural: "structural suspicion", rust: "rust", interior: "interior",
+                       airbags: "airbags", flood: "flood", other: "other" };
+  var qf = "all";
+  var lastTotal = 0;
+  var timers = {};
+
+  /* ---------------- store (the seeder's shape; additive fields only) ---------------- */
+  function saleKey() { var e = $("list-src"); return e ? e.textContent : ""; }
+  function readStore() {
+    try { var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function writeStore(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  function recOf(lotId) {
+    var s = readStore();
+    if (!s || s.saleKey !== saleKey() || !s.lots) return null;
+    return s.lots[lotId] || null;
+  }
+  function mutate(lotId, fn) {
+    var s = readStore(), sk = saleKey();
+    if (!s || s.saleKey !== sk || !s.lots) s = { saleKey: sk, seeded: false, lots: {} };
+    if (!s.lots[lotId]) s.lots[lotId] = { v: null, c: null, cWhy: "", note: "", ts: 0 };
+    fn(s.lots[lotId]);
+    s.lots[lotId].ts = Date.now();
+    writeStore(s);
+  }
+
+  function money(n) {
+    if (window.__ops && window.__ops.money) return window.__ops.money(n);
+    n = Math.round(n || 0);
+    return (n < 0 ? "−$" : "$") + Math.abs(n).toLocaleString("en-US");
+  }
+
+  /* ---------------- queue + derivation ---------------- */
+  function queueLots() {
+    return (window.__ops && window.__ops.shortlist) ? window.__ops.shortlist() : [];
+  }
+  function lotFor(lotId) {
+    var q = queueLots();
+    for (var i = 0; i < q.length; i++) if (q[i].lotId === lotId) return q[i];
+    return null;
+  }
+  function runKey(l) {
+    var m = 0, p = String(l.saleTime || "").split(":");
+    if (p.length === 2) m = parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+    return m * 1000 + (parseInt(l.lotId, 10) % 1000);
+  }
+  function runMap(q) {
+    var sorted = q.slice().sort(function (a, b) { return runKey(a) - runKey(b); });
+    var map = {};
+    sorted.forEach(function (l, i) { map[l.lotId] = i + 1; });
+    return map;
+  }
+  function runFmt(n) { return "RUN " + (n < 10 ? "0" + n : n); }
+  function flagsOf(r) {
+    // derived view of his five exclusions; falls back to the seeded cWhy category
+    var f = {}, i;
+    for (i = 0; i < FLAGS.length; i++) f[FLAGS[i]] = false;
+    if (r && r.cFlags) { for (i = 0; i < FLAGS.length; i++) f[FLAGS[i]] = !!r.cFlags[FLAGS[i]]; }
+    else if (r && r.cWhy && f.hasOwnProperty(r.cWhy)) f[r.cWhy] = true;
+    return f;
+  }
+
+  /* READINESS is three named gates, not a 1-100 score. A score invites
+     "the tool cleared it"; a named gate keeps the verdict his — and the
+     1-100 score was our idea in the meeting, not his ask. Nothing from a
+     Carfax report is stored here: no text, no accident rows, no derived
+     number. The five checkboxes are HIS recorded exclusions after HE read
+     the report under his own login — a business record of his decision,
+     not a copy of their data. mmr45 is one overwritten number, never a
+     history. Structural risk is never scored: it is not assessable from
+     any data source, and this module says so on every card. */
+  function statusFor(r) {
+    if (r && r.v === "fail") return { state: "OUT", gate: "VISUAL" };
+    if (r && r.c === "fail") return { state: "OUT", gate: "HISTORY" };
+    if (r && r.v === "pass" && r.c === "pass") return { state: "READY", gate: null };
+    return { state: "REVIEW", gate: null };
+  }
+  function ceilingFor(l, r) {
+    var ops = window.__ops;
+    var est = l._est || { sale: 0, parts: 0, labor: 0, tow: 0 };
+    var mmr = (r && typeof r.mmr45 === "number" && r.mmr45 > 0) ? r.mmr45 : 0;
+    var sale = mmr || est.sale;
+    var budget = sale - (ops ? ops.margin() : 6000) - est.tow - est.parts - est.labor;
+    var ceiling = (budget > 0 && ops) ? ops.solveCeiling(budget) : 0;
+    return { ceiling: ceiling, budget: budget, basis: mmr ? "mmr" : "est" };
+  }
+
+  /* ---------------- renders ---------------- */
+  function renderBrief() {
+    var q = queueLots();
+    var vis = 0, his = 0, ready = 0;
+    q.forEach(function (l) {
+      var r = recOf(l.lotId);
+      if (!r || !r.v) { vis++; return; }
+      if (r.v === "pass" && r.c !== "pass" && r.c !== "fail") his++;
+      if (statusFor(r).state === "READY") ready++;
+    });
+    var rel = lastTotal;
+    if (!rel) {
+      var m = saleKey().match(/([\d,]+)\s+lots/);
+      if (m) rel = parseInt(m[1].replace(/,/g, ""), 10);
+    }
+    if ($("pb-n-rel")) $("pb-n-rel").textContent = rel ? rel.toLocaleString("en-US") : "—";
+    if ($("pb-n-rules")) $("pb-n-rules").textContent =
+      (window.__ops ? window.__ops.afterHard() : 0).toLocaleString("en-US");
+    if ($("pb-n-vis")) $("pb-n-vis").textContent = vis;
+    if ($("pb-n-his")) $("pb-n-his").textContent = his;
+    if ($("pb-n-ready")) $("pb-n-ready").textContent = ready;
+    if ($("pb-stamp")) $("pb-stamp").textContent =
+      "MON · 8:00 → 12:00 · " + q.length + " in the queue";
+  }
+
+  function cardHtml(l, run) {
+    var desc = (l.year ? l.year + " " : "") + (l.make || "") + " " + (l.modelGroup || "");
+    var dmg = (l.damageDescription || "") + (l.secondaryDamage ? " + " + l.secondaryDamage : "");
+    var mi = l.mileage ? l.mileage.toLocaleString("en-US") + " mi" : "mileage n/a";
+    var chips = "", flags = "", i;
+    for (i = 0; i < REASONS.length; i++) {
+      chips += '<button type="button" class="chip" data-r="' + REASONS[i] +
+        '" aria-pressed="false">' + REASON_LABEL[REASONS[i]] + '</button>';
+    }
+    for (i = 0; i < FLAGS.length; i++) {
+      flags += '<label><input type="checkbox" data-h="' + FLAGS[i] + '"> ' + FLAG_LABEL[FLAGS[i]] + '</label>';
+    }
+    return '<div class="pb-id">' +
+      '<div class="pb-run num">' + runFmt(run) + ' · ' + (l.saleTime || "—") + '</div>' +
+      '<div class="pb-veh">' + desc + '</div>' +
+      '<div class="pb-meta">' + dmg + ' · ' + mi + ' · lot <span class="num">' + l.lotId + '</span></div>' +
+      '<div class="pb-links">' +
+        '<a class="btn sm" href="https://www.copart.com/lot/' + l.lotId + '" target="_blank" rel="noopener noreferrer" title="Example target — demo lot; opens under your own Copart session, never ours">Open lot ↗</a>' +
+        '<a class="btn sm" href="https://www.carfaxonline.com/vhr/' + (l.vin || "") + '" target="_blank" rel="noopener noreferrer" title="Example target — demo VIN; opens under your own Carfax dealer login, never ours">Open Carfax ↗</a>' +
+        '<span class="pb-exnote">example targets</span>' +
+      '</div>' +
+      '<div class="pb-struct">structural risk not assessable from data</div>' +
+    '</div>' +
+    '<div class="pb-gates">' +
+      '<div class="pb-gate">' +
+        '<span class="pb-gk">// Visual — your eyes on the photos</span>' +
+        '<div class="seg pb-vseg" role="group" aria-label="Visual verdict">' +
+          '<button type="button" data-v="pass">Pass</button>' +
+          '<button type="button" data-v="fail">Reject</button>' +
+        '</div>' +
+        '<div class="chips pb-vwhy" hidden>' + chips + '</div>' +
+      '</div>' +
+      '<div class="pb-gate">' +
+        '<span class="pb-gk">// History — your Carfax read, your call</span>' +
+        '<label class="pb-hdone"><input type="checkbox" data-h="done"> Report read</label>' +
+        '<div class="pb-hflags">' + flags + '</div>' +
+      '</div>' +
+      '<div class="field text pb-notes">' +
+        '<label>Notes</label>' +
+        '<input type="text" data-n="note" maxlength="240" placeholder="What you saw, in your words">' +
+      '</div>' +
+    '</div>' +
+    '<div class="pb-nums">' +
+      '<span class="pill idle" data-pill>REVIEW</span>' +
+      '<div class="field">' +
+        '<label>Manheim @ 4.5</label>' +
+        '<input type="number" inputmode="numeric" data-n="mmr45" placeholder="sale est.">' +
+      '</div>' +
+      '<div class="pb-ceil">' +
+        '<span class="pb-ck">// Max bid</span>' +
+        '<span class="pb-cv num">—</span>' +
+        '<span class="pb-cb" data-basis>on estimated sale</span>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function syncCard(card, l, withValues) {
+    var r = recOf(l.lotId);
+    var st = statusFor(r);
+    var low = st.state.toLowerCase();
+    card.setAttribute("data-state", low);
+    card.setAttribute("data-triage", low);
+    var pill = card.querySelector("[data-pill]");
+    if (pill) {
+      pill.className = "pill " + (st.state === "READY" ? "go" : (st.state === "OUT" ? "stop" : "idle"));
+      pill.textContent = st.state === "OUT" ? "OUT · " + st.gate : st.state;
+    }
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-vseg [data-v]"), function (b) {
+      b.classList.toggle("on", !!r && r.v === b.getAttribute("data-v"));
+    });
+    var why = card.querySelector(".pb-vwhy");
+    if (why) why.hidden = !(r && r.v === "fail");
+    var vWhy = (r && r.vWhy) || [];
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-vwhy .chip"), function (c) {
+      c.setAttribute("aria-pressed", vWhy.indexOf(c.getAttribute("data-r")) >= 0 ? "true" : "false");
+    });
+    var read = !!r && (r.c === "pass" || r.c === "fail");
+    var dn = card.querySelector('[data-h="done"]');
+    if (dn) dn.checked = read;
+    var f = flagsOf(r);
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-hflags [data-h]"), function (cb) {
+      cb.checked = !!f[cb.getAttribute("data-h")];
+    });
+    var c = ceilingFor(l, r);
+    card.querySelector(".pb-cv").textContent = money(c.ceiling);
+    card.querySelector("[data-basis]").textContent =
+      c.basis === "mmr" ? "on Manheim 4.5" : "on estimated sale";
+    // focus-sensitive values land only on a rebuild — a patch never rewrites
+    // a text/number input, so typing never loses the caret
+    if (withValues) {
+      card.querySelector('[data-n="note"]').value = (r && r.note) || "";
+      card.querySelector('[data-n="mmr45"]').value = (r && typeof r.mmr45 === "number") ? r.mmr45 : "";
+    }
+    card.style.display = (qf === "all" || qf === low) ? "" : "none";
+    return low;
+  }
+
+  function renderQueue() {
+    var host = $("pb-queue"); if (!host) return;
+    var q = queueLots();
+    var runs = runMap(q);
+    var ids = q.map(function (l) { return l.lotId; }).join(",");
+    var rebuild = host.getAttribute("data-ids") !== ids;
+    if (rebuild) {
+      // full rebuild only when the lot set itself changed; otherwise every
+      // re-render is an in-place patch so focus survives re-renders
+      host.innerHTML = "";
+      q.forEach(function (l) {
+        var card = document.createElement("article");
+        card.className = "pb-lot";
+        card.setAttribute("data-lot", l.lotId);
+        card.innerHTML = cardHtml(l, runs[l.lotId]);
+        host.appendChild(card);
+      });
+      host.setAttribute("data-ids", ids);
+    }
+    var shown = 0;
+    q.forEach(function (l) {
+      var card = host.querySelector('[data-lot="' + l.lotId + '"]');
+      if (!card) return;
+      var low = syncCard(card, l, rebuild);
+      if (qf === "all" || qf === low) shown++;
+    });
+    var qc = $("pb-qcount");
+    if (qc) qc.textContent = shown + " of " + q.length + " shown";
+  }
+
+  function renderBoard() {
+    var host = $("pb-board"); if (!host) return;
+    var q = queueLots();
+    var runs = runMap(q);
+    var ready = [];
+    q.forEach(function (l) { if (statusFor(recOf(l.lotId)).state === "READY") ready.push(l); });
+    ready.sort(function (a, b) { return runKey(a) - runKey(b); });
+    host.innerHTML = "";
+    if (!ready.length) {
+      var fl = document.createElement("div");
+      fl.className = "flag warn";
+      fl.innerHTML = '<span class="mark">!</span><span>Nothing is ready. The board fills itself as lots pass all three gates — it never fills on your behalf.</span>';
+      host.appendChild(fl);
+    } else {
+      ready.forEach(function (l) {
+        var row = document.createElement("div");
+        row.className = "pb-brow";
+        row.setAttribute("data-lot", l.lotId);
+        var c = ceilingFor(l, recOf(l.lotId));
+        row.innerHTML =
+          '<span class="pb-brun num">' + runFmt(runs[l.lotId]) + '</span>' +
+          '<span class="pb-btime num">' + (l.saleTime || "—") + '</span>' +
+          '<span class="pb-bveh">' + (l.year ? l.year + " " : "") + (l.make || "") + " " +
+            (l.modelGroup || "") + '<i>' + (l.damageDescription || "") + ' · lot ' + l.lotId + '</i></span>' +
+          '<span class="pb-bceil num">' + money(c.ceiling) + '</span>';
+        host.appendChild(row);
+      });
+    }
+    var bc = $("pb-bcount");
+    if (bc) bc.textContent = ready.length + " ready · run order";
+  }
+
+  var rafId = 0;
+  function renderAll() {
+    if (rafId) return;
+    var raf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+    rafId = raf(function () { rafId = 0; renderBrief(); renderQueue(); renderBoard(); });
+  }
+
+  /* ---------------- events ---------------- */
+  function bindEvents() {
+    var host = $("pb-queue"); if (!host) return;
+
+    host.addEventListener("click", function (e) {
+      var t = e.target;
+      if (!t || !t.getAttribute) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      if (t.hasAttribute("data-v")) {
+        var v = t.getAttribute("data-v");
+        mutate(lotId, function (r) {
+          r.v = (r.v === v) ? null : v;          // click the active verdict again to clear it
+          if (r.v !== "fail") r.vWhy = [];
+        });
+        renderAll();
+      } else if (t.classList.contains("chip") && t.hasAttribute("data-r")) {
+        var k = t.getAttribute("data-r");
+        mutate(lotId, function (r) {
+          r.vWhy = r.vWhy || [];
+          var i = r.vWhy.indexOf(k);
+          if (i >= 0) r.vWhy.splice(i, 1); else r.vWhy.push(k);
+        });
+        renderAll();
+      }
+    });
+
+    host.addEventListener("change", function (e) {
+      var t = e.target;
+      if (!t || !t.hasAttribute || !t.hasAttribute("data-h")) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      // his verdict, read off the card: any checked exclusion = fail; read + clean = pass
+      var done = card.querySelector('[data-h="done"]').checked;
+      var flags = {}, any = false, why = "";
+      Array.prototype.forEach.call(card.querySelectorAll(".pb-hflags [data-h]"), function (cb) {
+        var k = cb.getAttribute("data-h");
+        flags[k] = cb.checked;
+        if (cb.checked) { any = true; if (!why) why = k; }
+      });
+      if (any) done = true;                       // no exclusion without a read
+      mutate(lotId, function (r) {
+        r.cFlags = flags;
+        r.c = any ? "fail" : (done ? "pass" : null);
+        r.cWhy = why;
+      });
+      renderAll();
+    });
+
+    host.addEventListener("input", function (e) {
+      var t = e.target;
+      if (!t || !t.hasAttribute || !t.hasAttribute("data-n")) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      var field = t.getAttribute("data-n");
+      var tk = lotId + "|" + field;
+      if (timers[tk]) clearTimeout(timers[tk]);
+      timers[tk] = setTimeout(function () {
+        delete timers[tk];
+        if (field === "note") {
+          mutate(lotId, function (r) { r.note = t.value; });
+          // no re-render: typing must never redraw the card under the cursor
+        } else {
+          var n = parseFloat(t.value);
+          mutate(lotId, function (r) { r.mmr45 = (isFinite(n) && n > 0) ? n : null; });
+          var l = lotFor(lotId);
+          if (l) {
+            var c = ceilingFor(l, recOf(lotId));
+            card.querySelector(".pb-cv").textContent = money(c.ceiling);
+            card.querySelector("[data-basis]").textContent =
+              c.basis === "mmr" ? "on Manheim 4.5" : "on estimated sale";
+          }
+          renderBoard(); renderBrief();           // neither holds a text input
+        }
+      }, 300);
+    });
+
+    var seg = $("pb-qfilter");
+    if (seg) seg.addEventListener("click", function (e) {
+      var b = e.target;
+      if (!b || !b.hasAttribute || !b.hasAttribute("data-q")) return;
+      qf = b.getAttribute("data-q");
+      Array.prototype.forEach.call(seg.querySelectorAll("button"), function (x) {
+        x.classList.toggle("on", x === b);
+      });
+      renderQueue();
+    });
+
+    var pr = $("pb-print");
+    if (pr) pr.addEventListener("click", function () {
+      document.body.setAttribute("data-print", "prebid");
+      var clear = function () {
+        document.body.removeAttribute("data-print");
+        window.removeEventListener("afterprint", clear);
+      };
+      window.addEventListener("afterprint", clear);
+      setTimeout(clear, 1000);
+      window.print();
+    });
+  }
+
+  /* ---------------- tab show/hide — the unmanaged-panel pattern ---------------- */
+  function bindTab() {
+    var tab = $("tab-prebid"), panel = $("p-prebid");
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".panel"), function (p) {
+        p.classList.remove("on");
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.tab[role="tab"]'), function (b) {
+        b.setAttribute("aria-selected", "false");
+      });
+      panel.classList.add("on");
+      tab.setAttribute("aria-selected", "true");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      renderAll();
+      if (anim) {
+        var kids = panel.querySelectorAll(":scope > *");
+        anime.remove(kids);
+        anime({ targets: kids, opacity: [0, 1], translateY: [10, 0],
+                delay: anime.stagger(60), duration: 420, easing: "easeOutCubic" });
+      }
+    });
+    // any other tab click hides this panel — go() only clears the original six
+    var nav = document.querySelector(".side-nav");
+    if (nav) nav.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest(".tab") : null;
+      if (t && t.id !== "tab-prebid") {
+        panel.classList.remove("on");
+        tab.setAttribute("aria-selected", "false");
+      }
+    });
+  }
+
+  bindTab();
+  bindEvents();
+  document.addEventListener("pipeline:done", function (ev) {
+    if (ev.detail && ev.detail.total) lastTotal = ev.detail.total;
+    renderAll();
+  });
+  document.addEventListener("bidsheet:saved", renderAll);
+  renderAll();
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   06 · Pipeline. A-to-Z process board over the shared units array.
+   Talks to the core ONLY through window.BidSheet and the
+   "bidsheet:saved" event. Additive: no core function is replaced.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  if (!window.BidSheet) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var anim = !!window.anime &&
+    !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  var PL_STAGES = ["won", "transit", "arrived", "shop", "ready", "listed", "sold"];
+  var PL_LABEL = { won: "Won", transit: "In transit", arrived: "Arrived", shop: "In shop",
+                   ready: "Ready", listed: "Listed", sold: "Sold" };
+  var PL_SUBS = ["teardown", "parts", "repair", "qc"];
+  var PL_SUBLBL = { teardown: "Teardown", parts: "Waiting on parts", repair: "Repair", qc: "QC" };
+  var PL_AGING = { won: 2, transit: 4, arrived: 2, shop: 14, shopParts: 5, ready: 3, listed: 7 };
+  var PL_OPEX = 0;
+
+  var plFilter = null;      // stage filter or null
+  var plOpenId = null;      // unit id in drawer or null
+  var plSaving = false;     // re-entrancy guard around BidSheet.save()
+  var plSaveTimer = null;   // debounce for drawer typing
+
+  /* ---------------- helpers ---------------- */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(n) {
+    if (window.__ops && window.__ops.money) return window.__ops.money(n);
+    var s = "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+    return n < 0 ? "−" + s : s;
+  }
+  /* local midnights, matching the financing layer — mixed UTC/local made the
+     two layers' day counts diverge for a slice of every evening */
+  function plToday() {
+    var t = new Date();
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
+  function plDate(iso) { return new Date(iso + "T00:00:00"); }
+  function plValidDate(s) {
+    return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(plDate(s).getTime());
+  }
+  function plRawDiff(a, b) {
+    if (!plValidDate(a) || !plValidDate(b)) return 0;
+    return Math.floor((plDate(b) - plDate(a)) / 86400000);
+  }
+  function plDiff(a, b) { var d = plRawDiff(a, b); return d > 0 ? d : 0; }
+  function plAddDays(iso, n) {
+    var t = plValidDate(iso) ? plDate(iso) : new Date();
+    t.setUTCDate(t.getUTCDate() + n);
+    return t.toISOString().slice(0, 10);
+  }
+  function plFmt(iso) {
+    if (!plValidDate(iso)) return "";
+    var M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var t = plDate(iso);
+    return M[t.getUTCMonth()] + " " + t.getUTCDate();
+  }
+  function plLast(u) { var l = u.stageLog; return (l && l.length) ? l[l.length - 1] : null; }
+  function plDaysIn(u) {
+    var e = plLast(u);
+    var at = (e && plValidDate(e.at)) ? e.at : (plValidDate(u.boughtAt) ? u.boughtAt : plToday());
+    return plDiff(at, plToday());
+  }
+
+  /* ---------------- derived math ---------------- */
+  function plFinOn(u) { return !!(u.fin && u.fin.on && u.fin.principal > 0); }
+  function plCarryPerDay(u) {
+    if (!plFinOn(u)) return 0 + PL_OPEX;
+    /* S6 owns the math (interest at /360 plus daily ops); this body is only
+       a fallback for a build where the financing layer was reverted. */
+    if (window.__fin) return window.__fin.bleed(u);
+    var f = u.fin;
+    if (f.rateType === "daily") return f.principal * (f.rateValue || 0) / 100 + PL_OPEX;
+    var apr = (f.rateValue != null && f.rateType) ? f.rateValue : (f.aprPct || 0);
+    return f.principal * apr / 100 / 360 + PL_OPEX;
+  }
+  function plFinStart(u) {
+    if (plFinOn(u) && plValidDate(u.fin.startedAt)) return u.fin.startedAt;
+    return plValidDate(u.boughtAt) ? u.boughtAt : plToday();
+  }
+  function plAccrued(u) {
+    if (!plFinOn(u)) return 0;
+    if (window.__fin) return window.__fin.accrued(u); /* interest only, /360, from funding day */
+    /* +1: auction-finance interest is charged FROM purchase day */
+    return plCarryPerDay(u) * (plDiff(plFinStart(u), plToday()) + 1);
+  }
+  function plMargin(u) {
+    var m = 0;
+    try { m = BidSheet.projMargin(u); } catch (e) {}
+    return isFinite(m) ? m : 0;
+  }
+  function plMarginNet(u) { return plMargin(u) - plAccrued(u) - (u.cont || 0); }
+  function plBreakEven(u) {
+    if (!plFinOn(u)) return null;
+    if (window.__fin) {
+      var b6 = window.__fin.breakEven(u);
+      if (!b6 || !isFinite(b6.M)) return null;
+      var s6 = plFinStart(u);
+      return { day: b6.M, date: plAddDays(s6, b6.M), left: b6.M - b6.N };
+    }
+    var per = plCarryPerDay(u);
+    if (per <= 0) return null;
+    var s = plFinStart(u);
+    var day = Math.floor(plMargin(u) / per);
+    return { day: day, date: plAddDays(s, day), left: day - plDiff(s, plToday()) };
+  }
+  function plAging(u) {
+    if (u.stage === "sold" || u.status === "sold") return "";
+    var lim = (u.stage === "shop" && u.shopSub === "parts") ? PL_AGING.shopParts : PL_AGING[u.stage];
+    if (!lim) return "";
+    var d = plDaysIn(u);
+    if (d >= 2 * lim) return "stop";
+    if (d >= lim) return "warn";
+    return "";
+  }
+  function plPartsSummary(u) {
+    var s = { n: 0, needed: 0, ordered: 0, shipped: 0, received: 0, installed: 0 };
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++) { s.n++; if (s[ps[i].status] != null) s[ps[i].status]++; }
+    return s;
+  }
+  function plCapital(u) {
+    var t = (u.hammer || 0) + (u.tow || 0);
+    try { t += BidSheet.totalFees(u.hammer || 0); } catch (e) {}
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++) if (ps[i].status !== "needed") t += ps[i].price || 0;
+    return t;
+  }
+  function plNextAction(u) {
+    var ps = u.parts || [], i, p;
+    for (i = 0; i < ps.length; i++) {
+      p = ps[i];
+      if (p.returnBy && plValidDate(p.returnBy) && p.status !== "installed") {
+        var left = plRawDiff(plToday(), p.returnBy);
+        if (left >= 0 && left <= 3) return "Return window closes " + plFmt(p.returnBy) + ": " + p.name;
+      }
+    }
+    var sum = plPartsSummary(u);
+    if (u.stage === "won")
+      return (u.transport && u.transport.note) ? "Dispatch: " + u.transport.note : "Arrange tow — no carrier noted";
+    if (u.stage === "transit")
+      return "In transit" + ((u.transport && u.transport.eta) ? " · eta " + plFmt(u.transport.eta) : " · no ETA");
+    if (u.stage === "arrived") return "Start teardown";
+    if (u.stage === "shop") {
+      if (u.shopSub === "teardown") return "Finish teardown · confirm the parts list";
+      if (u.shopSub === "parts") {
+        var chase = null;
+        for (i = 0; i < ps.length; i++) {
+          p = ps[i];
+          if (p.status === "ordered" || p.status === "shipped") { if (!chase || p.eta) chase = p; if (p.eta) break; }
+        }
+        if (chase && chase.eta) return "Chase: " + chase.name + " · eta " + plFmt(chase.eta);
+        if (sum.needed) return "Order " + sum.needed + " part" + (sum.needed === 1 ? "" : "s");
+        if (chase) return "Chase: " + chase.name;
+        return "Parts in — move to repair";
+      }
+      if (u.shopSub === "qc")
+        return "QC — check the repair, note anything structural. Structural risk not assessable from data.";
+      return "Repair underway · " + sum.installed + "/" + sum.n + " installed";
+    }
+    if (u.stage === "ready") return "List it — sale side is the fast side";
+    if (u.stage === "listed")
+      return "Listed at " + money(u.listPrice != null ? u.listPrice : u.projSale) + " · day " + plDaysIn(u);
+    if (u.stage === "sold")
+      return u.status !== "sold" ? "Close it in the Ledger with the real numbers" : "Done · in the Ledger";
+    return "";
+  }
+
+  /* ---------------- migration ---------------- */
+  function plEnsure(u) {
+    var ch = false;
+    if (!u.stage) {
+      if (u.status === "sold") {
+        u.stage = "sold"; u.shopSub = null;
+        if (!u.stageLog) u.stageLog = [{ s: "sold", at: plAddDays(plToday(), -(u.days || 10)) }];
+      } else {
+        u.stage = "shop"; u.shopSub = "repair";
+        if (!u.boughtAt) u.boughtAt = plAddDays(plToday(), -5);
+        if (!u.stageLog) u.stageLog = [{ s: "won", at: u.boughtAt },
+                                       { s: "shop", sub: "repair", at: plAddDays(u.boughtAt, 1) }];
+      }
+      ch = true;
+    }
+    if (!u.stageLog) { u.stageLog = [{ s: u.stage, at: u.boughtAt || plToday() }]; ch = true; }
+    if (!u.parts) { u.parts = []; ch = true; }
+    if (!u.fin) { u.fin = { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" }; ch = true; }
+    if (!u.transport) { u.transport = { note: "", eta: "" }; ch = true; }
+    if (u.opNotes == null) { u.opNotes = ""; ch = true; }
+    if (u.shopSub === undefined) { u.shopSub = null; ch = true; }
+    if (!u.boughtAt) { u.boughtAt = (u.stageLog[0] && u.stageLog[0].at) || plAddDays(plToday(), -5); ch = true; }
+    return ch;
+  }
+  function plById(id) {
+    var us = BidSheet.units();
+    for (var i = 0; i < us.length; i++) if (us[i].id === id) return us[i];
+    return null;
+  }
+  function plSave() { plSaving = true; try { BidSheet.save(); } finally { plSaving = false; } }
+  function plMigrate() {
+    var ch = false, us = BidSheet.units();
+    for (var i = 0; i < us.length; i++) if (plEnsure(us[i])) ch = true;
+    if (ch) plSave();
+  }
+
+  /* ---------------- stage moves ---------------- */
+  function plSetStage(u, stage, sub) {
+    if (stage === "sold" && u.status !== "sold") {   /* the Ledger owns "sold" */
+      plCloseDrawer();
+      try { BidSheet.openClose(u); } catch (e) {}
+      return;                                        /* bidsheet:saved picks it up */
+    }
+    u.stage = stage;
+    u.shopSub = stage === "shop" ? (sub || "teardown") : null;
+    if (stage === "listed" && !u.listedAt) {
+      u.listedAt = plToday();
+      if (u.listPrice == null) u.listPrice = u.projSale;
+    }
+    u.stageLog.push({ s: stage, sub: u.shopSub || undefined, at: plToday() });
+    plSave(); plRender();
+    if (plOpenId) { var u2 = plById(plOpenId); if (u2) plRenderDrawer(u2); }
+  }
+
+  /* ---------------- board renderers ---------------- */
+  function plRender() { plRenderStepper(); plRenderAlerts(); plRenderCards(); }
+
+  function plRenderStepper() {
+    var host = $("pl-stages"); if (!host) return;
+    var us = BidSheet.units();
+    var counts = {}, oldest = {}, subC = { teardown: 0, parts: 0, repair: 0, qc: 0 };
+    var nActive = 0, capital = 0, perDay = 0, i, u, st;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      st = u.stage || (u.status === "sold" ? "sold" : "shop");
+      counts[st] = (counts[st] || 0) + 1;
+      if (st !== "sold") {
+        var dd = plDaysIn(u);
+        if (oldest[st] == null || dd > oldest[st]) oldest[st] = dd;
+        nActive++; capital += plCapital(u); perDay += plFinOn(u) ? plCarryPerDay(u) : 0;
+        if (st === "shop" && subC[u.shopSub] != null) subC[u.shopSub]++;
+      }
+    }
+    var h = "<div class=\"ovc hero\"><span class=\"eyebrow\">Capital on the street</span>" +
+      "<span class=\"v num\" id=\"pl-capital\">" + money(capital) + "</span>" +
+      "<span class=\"d\">" + nActive + " active · " +
+      (perDay > 0 ? "$" + perDay.toFixed(2) + "/day accruing" : "no financed carry") + "</span></div>";
+    for (i = 0; i < PL_STAGES.length; i++) {
+      st = PL_STAGES[i];
+      var d;
+      if (st === "sold") d = "in the Ledger";
+      else if (st === "shop") d = "t" + subC.teardown + " · p" + subC.parts + " · r" + subC.repair + " · q" + subC.qc;
+      else d = counts[st] ? "oldest " + oldest[st] + "d" : "—";
+      h += "<button type=\"button\" class=\"ovc plstage\" data-stage=\"" + st + "\" aria-pressed=\"" +
+        (plFilter === st ? "true" : "false") + "\">" +
+        "<span class=\"eyebrow\">" + PL_LABEL[st] + "</span>" +
+        "<span class=\"v num\">" + (counts[st] || 0) + "</span>" +
+        "<span class=\"d\">" + d + "</span></button>";
+    }
+    host.innerHTML = h;
+    var btns = host.querySelectorAll(".plstage");
+    for (i = 0; i < btns.length; i++) (function (b) {
+      b.addEventListener("click", function () {
+        var st2 = b.getAttribute("data-stage");
+        plFilter = (plFilter === st2) ? null : st2;
+        plRender();
+      });
+    })(btns[i]);
+  }
+
+  function plRenderAlerts() {
+    var host = $("pl-alerts"); if (!host) return;
+    var us = BidSheet.units(), rows = "", i, u;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      var a = plAging(u);
+      if (!a) continue;
+      var where = u.stage === "shop"
+        ? PL_SUBLBL[u.shopSub || "repair"].toLowerCase()
+        : PL_LABEL[u.stage].toLowerCase();
+      rows += "<div class=\"flag " + a + "\"><span class=\"mark\">D" + plDaysIn(u) + "</span> " +
+        esc(u.lot) + " · " + esc(u.desc) + " — " + plDaysIn(u) + " days " + esc(where) + ". " +
+        esc(plNextAction(u)) + "</div>";
+    }
+    if (rows) { host.innerHTML = rows; host.style.display = ""; }
+    else { host.innerHTML = ""; host.style.display = "none"; }
+  }
+
+  function plCardHTML(u) {
+    var a = plAging(u), sum = plPartsSummary(u), days = plDaysIn(u);
+    var pill, pcls;
+    if (u.stage === "sold") { pill = "SOLD"; pcls = "go"; }
+    else {
+      pill = PL_LABEL[u.stage].toUpperCase();
+      if (u.stage === "shop") pill += " · " + PL_SUBLBL[u.shopSub || "repair"].toUpperCase();
+      pcls = a || "idle";
+    }
+    var meta = days + " days in stage · bought " + plFmt(u.boughtAt);
+    if (!plFinOn(u)) meta += " · cash unit";
+    if ((u.id || "").length <= 3) meta += " · demo";
+    var carry = "";
+    /* When the financing layer is loaded, ITS decorator owns the card's carry
+       line (one unit must never show two break-even days). This span is only
+       the fallback for a build with S6 reverted. */
+    if (plFinOn(u) && !window.__fin) {
+      var be = plBreakEven(u);
+      carry = "<span class=\"pl-carry num\" data-accrued=\"" + plAccrued(u).toFixed(2) + "\">$" +
+        plCarryPerDay(u).toFixed(2) + "/day · " + money(plAccrued(u)) + " accrued" +
+        (be ? " · break-even day " + be.day + " (" +
+          (be.left >= 0 ? be.left + " left" : Math.abs(be.left) + " past") + ")" : "") + "</span>";
+    }
+    var bar = "", line = "";
+    if (sum.n) {
+      var order = ["installed", "received", "shipped", "ordered", "needed"], k, c;
+      bar = "<span class=\"pl-partsbar\" aria-hidden=\"true\">";
+      for (k = 0; k < order.length; k++) for (c = 0; c < sum[order[k]]; c++) bar += "<i class=\"ps-" + order[k] + "\"></i>";
+      bar += "</span>";
+      line = "<span class=\"pl-partsline\">" + sum.installed + "/" + sum.n + " installed" +
+        (sum.ordered + sum.shipped ? " · " + (sum.ordered + sum.shipped) + " ordered" : "") +
+        (sum.needed ? " · " + sum.needed + " needed" : "") + "</span>";
+    }
+    return "<button type=\"button\" class=\"pl-card\" data-unit=\"" + esc(u.id) + "\"" +
+      (a ? " data-aging=\"" + a + "\"" : "") + ">" +
+      "<span class=\"pl-top\"><span class=\"num pl-lot\">" + esc(u.lot) + "</span>" +
+      "<span class=\"pill " + pcls + "\">" + esc(pill) + "</span>" +
+      /* waiting-on-parts is DERIVED (stage shop + any part not received/installed), never stored */
+      (u.stage === "shop" && u.status !== "sold" && u.shopSub !== "parts" &&
+        (sum.needed + sum.ordered + sum.shipped) > 0
+        ? "<span class=\"pill warn\">WAITING ON PARTS</span>" : "") +
+      "<span class=\"num pl-days\">D" + days + "</span></span>" +
+      "<span class=\"pl-veh\">" + esc(u.desc) + "</span>" +
+      "<span class=\"pl-meta\">" + esc(meta) + "</span>" +
+      carry + bar + line +
+      "<span class=\"pl-next\">" + esc(plNextAction(u)) + "</span></button>";
+  }
+
+  function plRenderCards() {
+    var host = $("pl-cards"); if (!host) return;
+    var us = BidSheet.units(), shown = [], i;
+    for (i = 0; i < us.length; i++) {
+      var st = us[i].stage || (us[i].status === "sold" ? "sold" : "shop");
+      if (plFilter) { if (st === plFilter) shown.push(us[i]); }
+      else if (st !== "sold") shown.push(us[i]);
+    }
+    var h = "";
+    for (i = 0; i < shown.length; i++) h += plCardHTML(shown[i]);
+    host.innerHTML = h || "<div class=\"empty\">No units in this stage.</div>";
+    var cards = host.querySelectorAll(".pl-card");
+    for (i = 0; i < cards.length; i++) (function (c) {
+      c.addEventListener("click", function () {
+        var u = plById(c.getAttribute("data-unit"));
+        if (u) plOpenDrawer(u);
+      });
+    })(cards[i]);
+    var cnt = $("pl-count");
+    if (cnt) cnt.textContent = shown.length + (shown.length === 1 ? " unit" : " units");
+    var note = $("pl-filter-note");
+    if (note) note.textContent = plFilter ? "showing: " + PL_LABEL[plFilter] : "";
+  }
+
+  /* ---------------- drawer ---------------- */
+  function plDrawerShell() {
+    var host = $("pl-drawer-host");
+    if (!host || $("pl-drawer")) return;
+    host.innerHTML =
+      "<div class=\"pl-scrim\" id=\"pl-scrim\"></div>" +
+      "<aside class=\"pl-drawer\" id=\"pl-drawer\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Unit detail\">" +
+      "<div class=\"pl-d-h\"><div><span class=\"eyebrow\">Lot <span class=\"num\" id=\"pl-d-lot\"></span></span>" +
+      "<h3 id=\"pl-d-veh\"></h3></div>" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pl-d-close\">Esc</button></div>" +
+      "<div class=\"pl-d-b\" id=\"pl-d-b\"></div>" +
+      "<div class=\"pl-d-f\">" +
+      "<button type=\"button\" class=\"btn\" id=\"pl-d-ledger\">Open Ledger</button>" +
+      "<button type=\"button\" class=\"btn primary\" id=\"pl-d-sold\">Sold — close with real numbers</button>" +
+      "</div></aside>";
+    $("pl-scrim").addEventListener("click", plCloseDrawer);
+    $("pl-d-close").addEventListener("click", plCloseDrawer);
+    $("pl-d-ledger").addEventListener("click", function () {
+      plCloseDrawer();
+      var b = $("tab-book"); b && b.click();
+    });
+    $("pl-d-sold").addEventListener("click", function () {
+      var u = plById(plOpenId);
+      if (u) plSetStage(u, "sold");
+    });
+  }
+  function plOpenDrawer(u) {
+    plDrawerShell();
+    plOpenId = u.id;
+    plRenderDrawer(u);
+    $("pl-scrim").classList.add("on");
+    $("pl-drawer").classList.add("on");
+  }
+  function plCloseDrawer() {
+    plOpenId = null;
+    var s = $("pl-scrim"), d = $("pl-drawer");
+    if (s) s.classList.remove("on");
+    if (d) d.classList.remove("on");
+  }
+  function plOpts(vals, cur) {
+    var h = "", i;
+    for (i = 0; i < vals.length; i++)
+      h += "<option value=\"" + vals[i] + "\"" + (cur === vals[i] ? " selected" : "") + ">" +
+        vals[i] + "</option>";
+    return h;
+  }
+  function plRenderDrawer(u) {
+    plDrawerShell();
+    $("pl-d-lot").textContent = u.lot;
+    $("pl-d-veh").textContent = u.desc;
+    var h = "", i;
+    /* stage + sub segs */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Stage</span><div class=\"seg\" id=\"pl-d-stage\">";
+    for (i = 0; i < PL_STAGES.length; i++)
+      h += "<button type=\"button\"" + (u.stage === PL_STAGES[i] ? " class=\"on\"" : "") +
+        " data-st=\"" + PL_STAGES[i] + "\">" + PL_LABEL[PL_STAGES[i]] + "</button>";
+    h += "</div><div class=\"seg\" id=\"pl-d-sub\"" + (u.stage === "shop" ? "" : " style=\"display:none\"") + ">";
+    for (i = 0; i < PL_SUBS.length; i++)
+      h += "<button type=\"button\"" + (u.shopSub === PL_SUBS[i] ? " class=\"on\"" : "") +
+        " data-sub=\"" + PL_SUBS[i] + "\">" + PL_SUBLBL[PL_SUBS[i]] + "</button>";
+    h += "</div></div>";
+    /* timeline */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Timeline</span><div id=\"pl-d-log\">";
+    var log = u.stageLog || [];
+    for (i = 0; i < log.length; i++) {
+      var lb = PL_LABEL[log[i].s] || log[i].s;
+      if (log[i].sub) lb += " · " + (PL_SUBLBL[log[i].sub] || log[i].sub);
+      h += "<div class=\"pl-log-row\"><span class=\"pl-log-s\">" + esc(lb) + "</span>" +
+        "<input type=\"date\" value=\"" + esc(log[i].at) + "\" data-log-i=\"" + i + "\"></div>";
+    }
+    h += "</div>" +
+      "<div class=\"field text\"><label for=\"pl-d-trans\">Transport</label>" +
+      "<input id=\"pl-d-trans\" type=\"text\" placeholder=\"Carrier, driver, phone\" value=\"" +
+      esc(u.transport && u.transport.note) + "\"></div>" +
+      "<div class=\"field\"><label for=\"pl-d-eta\">Transport ETA</label>" +
+      "<input id=\"pl-d-eta\" type=\"date\" value=\"" + esc(u.transport && u.transport.eta) + "\"></div></div>";
+    /* parts — the parts layer (05) renders its table into this host on "pl:drawer" */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Parts · joint model with Inventory</span>" +
+      "<div id=\"pl-d-parts-host\"></div></div>";
+    /* financing */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Financing · joint model with the Ledger</span>" +
+      "<label class=\"chk\"><input type=\"checkbox\" id=\"pl-d-finon\"" + (u.fin && u.fin.on ? " checked" : "") +
+      "> Auction-finance loan on this unit</label>" +
+      "<div class=\"grid2\"><div class=\"field\"><label for=\"pl-d-prin\">Principal</label>" +
+      "<input id=\"pl-d-prin\" type=\"number\" step=\"25\" value=\"" + ((u.fin && u.fin.principal) || 0) + "\"></div>" +
+      "<div class=\"field\"><label for=\"pl-d-apr\">APR %</label>" +
+      "<input id=\"pl-d-apr\" type=\"number\" step=\"0.1\" value=\"" + ((u.fin && u.fin.aprPct) || 0) + "\"></div></div>" +
+      "<div class=\"field\"><label for=\"pl-d-start\">Interest from</label>" +
+      "<input id=\"pl-d-start\" type=\"date\" value=\"" + esc((u.fin && u.fin.startedAt) || "") + "\"></div>" +
+      "<div class=\"pl-finout num\" id=\"pl-d-finout\"></div></div>";
+    /* frozen at purchase */
+    h += "<div class=\"pl-sec\"><span class=\"eyebrow\">Frozen at purchase</span>" +
+      "<div class=\"pl-proj num\" id=\"pl-d-proj\"></div>" +
+      "<span class=\"hint\">The reserve is for what no data source can see. Structural risk not assessable from data.</span></div>";
+    /* notes */
+    h += "<div class=\"pl-sec\"><div class=\"field text\"><label for=\"pl-d-notes\">Notes</label>" +
+      "<input id=\"pl-d-notes\" type=\"text\" value=\"" + esc(u.opNotes || "") + "\"></div></div>";
+    $("pl-d-b").innerHTML = h;
+    plRefreshOut(u);
+    plBindDrawer();
+    /* hand the freshly-built parts host to the parts layer (05) */
+    try { document.dispatchEvent(new CustomEvent("pl:drawer", { detail: { uid: u.id } })); } catch (e) {}
+  }
+  function plRefreshOut(u) {
+    var fo = $("pl-d-finout"), pr = $("pl-d-proj");
+    if (fo) {
+      if (plFinOn(u)) {
+        var be = plBreakEven(u);
+        fo.setAttribute("data-accrued", plAccrued(u).toFixed(2));
+        fo.textContent = "carry $" + plCarryPerDay(u).toFixed(2) + "/day incl. ops · interest accrued " +
+          money(plAccrued(u)) + " over " + (plDiff(plFinStart(u), plToday()) + 1) + " days" +
+          (be ? " · break-even day " + be.day + (be.left >= 0 ? " (" + be.left + " left)" : " (" + Math.abs(be.left) + " past)") : "") +
+          " · margin net of interest " + money(plMarginNet(u));
+      } else {
+        fo.removeAttribute("data-accrued");
+        fo.textContent = "Cash unit — no daily carry. Margin net of reserve " + money(plMarginNet(u)) + ".";
+      }
+    }
+    if (pr) {
+      pr.textContent = "est. retail " + money(u.estRetail || 0) + " · parts est. " + money(u.cpRepair || 0) +
+        " · reserve " + money(u.cont || 0) + " · projected margin " + money(plMargin(u));
+    }
+  }
+  function plDebounced() {
+    if (plSaveTimer) clearTimeout(plSaveTimer);
+    plSaveTimer = setTimeout(function () {
+      plSaveTimer = null;
+      plSave();
+      plRenderStepper(); plRenderAlerts(); plRenderCards();
+      var u = plById(plOpenId);
+      if (u) plRefreshOut(u);   /* outputs only — never rebuild inputs mid-typing */
+    }, 250);
+  }
+  function plBindDrawer() {
+    var u0 = function () { return plById(plOpenId); };
+    var i, b;
+    /* stage seg */
+    var stBtns = $("pl-d-stage").querySelectorAll("button");
+    for (i = 0; i < stBtns.length; i++) (function (btn) {
+      btn.addEventListener("click", function () {
+        var u = u0(); if (!u) return;
+        var st = btn.getAttribute("data-st");
+        plSetStage(u, st, st === "shop" ? (u.shopSub || "teardown") : undefined);
+      });
+    })(stBtns[i]);
+    var subBtns = $("pl-d-sub").querySelectorAll("button");
+    for (i = 0; i < subBtns.length; i++) (function (btn) {
+      btn.addEventListener("click", function () {
+        var u = u0(); if (!u) return;
+        plSetStage(u, "shop", btn.getAttribute("data-sub"));
+      });
+    })(subBtns[i]);
+    /* timeline dates */
+    var logIns = $("pl-d-log").querySelectorAll("input[data-log-i]");
+    for (i = 0; i < logIns.length; i++) (function (inp) {
+      inp.addEventListener("change", function () {
+        var u = u0(); if (!u) return;
+        var idx = parseInt(inp.getAttribute("data-log-i"), 10);
+        if (plValidDate(inp.value) && u.stageLog[idx]) {
+          u.stageLog[idx].at = inp.value;
+          plSave(); plRenderStepper(); plRenderAlerts(); plRenderCards(); plRefreshOut(u);
+        } else if (u.stageLog[idx]) {
+          inp.value = u.stageLog[idx].at;   /* revert invalid */
+        }
+      });
+    })(logIns[i]);
+    /* transport + notes */
+    var tr = $("pl-d-trans"), eta = $("pl-d-eta"), nts = $("pl-d-notes");
+    if (tr) tr.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.transport.note = tr.value; plDebounced();
+    });
+    if (eta) eta.addEventListener("change", function () {
+      var u = u0(); if (!u) return; u.transport.eta = plValidDate(eta.value) ? eta.value : ""; plDebounced();
+    });
+    if (nts) nts.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.opNotes = nts.value; plDebounced();
+    });
+    /* financing */
+    var fon = $("pl-d-finon"), prin = $("pl-d-prin"), apr = $("pl-d-apr"), start = $("pl-d-start");
+    if (fon) fon.addEventListener("change", function () {
+      var u = u0(); if (!u) return;
+      u.fin.on = !!fon.checked;
+      if (u.fin.on && !plValidDate(u.fin.startedAt)) {
+        u.fin.startedAt = plValidDate(u.boughtAt) ? u.boughtAt : plToday();
+        if (start) start.value = u.fin.startedAt;
+      }
+      if (u.fin.on && !u.fin.lender) u.fin.lender = "Auction finance";
+      plSave(); plRenderStepper(); plRenderAlerts(); plRenderCards(); plRefreshOut(u);
+    });
+    if (prin) prin.addEventListener("input", function () {
+      var u = u0(); if (!u) return; u.fin.principal = parseFloat(prin.value) || 0; plDebounced();
+    });
+    if (apr) apr.addEventListener("input", function () {
+      var u = u0(); if (!u) return;
+      /* write the canonical pair too — every consumer prefers rateValue once
+         rateType is set, so aprPct alone would be a silently dead edit */
+      var v = parseFloat(apr.value) || 0;
+      u.fin.aprPct = v; u.fin.rateType = "apr"; u.fin.rateValue = v;
+      plDebounced();
+    });
+    if (start) start.addEventListener("change", function () {
+      var u = u0(); if (!u) return;
+      u.fin.startedAt = plValidDate(start.value) ? start.value : u.fin.startedAt;
+      plDebounced();
+    });
+    /* parts table (delegated) */
+    var tbl = $("pl-d-parts");
+    var tb = tbl ? tbl.getElementsByTagName("tbody")[0] : null;
+    function partOf(el) {
+      var u = u0(); if (!u) return null;
+      var row = el;
+      while (row && row.tagName !== "TR") row = row.parentNode;
+      if (!row) return null;
+      var pid = row.getAttribute("data-p");
+      for (var j = 0; j < u.parts.length; j++) if (u.parts[j].id === pid) return u.parts[j];
+      return null;
+    }
+    function onPartEdit(e) {
+      var t = e.target, f = t.getAttribute && t.getAttribute("data-pf");
+      if (!f) return;
+      var p = partOf(t); if (!p) return;
+      if (f === "price") p.price = parseFloat(t.value) || 0;
+      else if (f === "returnBy") p.returnBy = plValidDate(t.value) ? t.value : undefined;
+      else p[f] = t.value;
+      if (f === "status" && (t.value === "ordered" || t.value === "shipped") && !p.orderedAt) p.orderedAt = plToday();
+      plDebounced();
+    }
+    if (tb) {
+      tb.addEventListener("input", onPartEdit);
+      tb.addEventListener("change", onPartEdit);
+      tb.addEventListener("click", function (e) {
+        var t = e.target, pid = t.getAttribute && t.getAttribute("data-prm");
+        if (!pid) return;
+        var u = u0(); if (!u) return;
+        for (var j = 0; j < u.parts.length; j++) if (u.parts[j].id === pid) { u.parts.splice(j, 1); break; }
+        plSave(); plRender(); plRenderDrawer(u);
+      });
+    }
+    b = $("pl-d-addpart");
+    if (b) b.addEventListener("click", function () {
+      var u = u0(); if (!u) return;
+      u.parts.push({ id: "p" + Date.now(), name: "", src: "ebay", price: 0, status: "needed" });
+      plSave(); plRender(); plRenderDrawer(u);
+    });
+  }
+
+  /* ------- Units / Inventory sub-view · Inventory is the 03 module's stub ------- */
+  var seg = $("pl-seg");
+  if (seg) seg.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button") : null;
+    if (!b) return;
+    var v = b.getAttribute("data-plview");
+    if (!v) return;
+    var bs = seg.querySelectorAll("button");
+    for (var i = 0; i < bs.length; i++) bs[i].classList.remove("on");
+    b.classList.add("on");
+    var uv = $("pl-units-view"), iv = $("pl-inventory");
+    if (uv) uv.style.display = v === "units" ? "" : "none";
+    if (iv) iv.style.display = v === "inventory" ? "" : "none";
+  });
+
+  /* ---------------- tab wiring — the unmanaged-panel pattern ---------------- */
+  function bindTab() {
+    var tab = $("tab-pipeline"), panel = $("p-pipeline");
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".panel"), function (p) {
+        p.classList.remove("on");
+      });
+      Array.prototype.forEach.call(document.querySelectorAll(".tab[role=\"tab\"]"), function (b2) {
+        b2.setAttribute("aria-selected", "false");
+      });
+      panel.classList.add("on");
+      tab.setAttribute("aria-selected", "true");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      plMigrate(); plRender();
+      if (anim) {
+        var kids = panel.querySelectorAll(":scope > *");
+        anime.remove(kids);
+        anime({ targets: kids, opacity: [0, 1], translateY: [10, 0],
+                delay: anime.stagger(60), duration: 420, easing: "easeOutCubic" });
+      }
+    });
+    var nav = document.querySelector(".side-nav");
+    if (nav) nav.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest(".tab") : null;
+      if (t && t.id !== "tab-pipeline") {
+        panel.classList.remove("on");
+        tab.setAttribute("aria-selected", "false");
+        plCloseDrawer();
+      }
+    });
+  }
+  bindTab();
+
+  /* ------- react to core saves: purchase logged, unit closed, demo reset ------- */
+  document.addEventListener("bidsheet:saved", function () {
+    if (plSaving) return;
+    var changed = false, us = BidSheet.units(), i, u;
+    for (i = 0; i < us.length; i++) {
+      u = us[i];
+      if (plEnsure(u)) changed = true;
+      if (u.status === "sold" && u.stage !== "sold") {   /* closed via Ledger or drawer */
+        u.stage = "sold"; u.shopSub = null;
+        u.stageLog.push({ s: "sold", at: plToday() });
+        changed = true;
+      }
+    }
+    if (changed) plSave();
+    var p = $("p-pipeline");
+    if (p && p.classList.contains("on")) plRender();
+    if (plOpenId) {
+      var u2 = plById(plOpenId);
+      if (u2) plRefreshOut(u2); else plCloseDrawer();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") plCloseDrawer();
+  });
+
+  plMigrate();   /* backfill legacy localStorage units once at boot */
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   05 · Parts orders + inventory. Owns the parts table inside the
+   pipeline drawer (#pl-d-parts-host, handed over via "pl:drawer"),
+   the Inventory sub-view (#pl-inventory), and the loose-parts shelf
+   in localStorage "hoja-ops-v1" (read-modify-write + "ops:change").
+   Teaches the pre-bid price memory through window.__parts.remember
+   the first time a template part is INSTALLED with a real cost
+   (guarded by a taught flag; seeded rows are pre-marked taught).
+   eBay is an outbound search link only — nothing is fetched or
+   stored from eBay or any restricted source. No automated bidding,
+   no logged-in automation. Additive: no core function is replaced.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  if (!window.BidSheet) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var LSK = "hoja-ops-v1";
+  var STATUSES = ["needed", "ordered", "shipped", "received", "installed"];
+  var STLBL = { needed: "NEEDED", ordered: "ORDERED", shipped: "SHIPPED",
+                received: "RECEIVED", installed: "INSTALLED" };
+  var GROUP = {
+    needed:    { t: "Needed",    empty: "Nothing waiting to be ordered." },
+    ordered:   { t: "Ordered",   empty: "Nothing ordered right now." },
+    shipped:   { t: "Shipped",   empty: "Nothing in transit." },
+    received:  { t: "Received",  empty: "Nothing received and uninstalled." },
+    installed: { t: "Installed", empty: "Nothing installed yet." }
+  };
+  var ppSeq = 0;
+  var ppUid = null;       /* unit whose parts table is in the drawer */
+  var ppSaving = false;   /* re-entrancy guard around BidSheet.save() */
+
+  /* ---------------- helpers ---------------- */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(n) {
+    if (window.__ops && window.__ops.money) { try { return window.__ops.money(n); } catch (e) {} }
+    var s = "$" + Math.round(Math.abs(n || 0)).toLocaleString("en-US");
+    return (n || 0) < 0 ? "−" + s : s;
+  }
+  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  function addDays(n) {
+    var t = new Date(); t.setDate(t.getDate() + n);
+    return t.toISOString().slice(0, 10);
+  }
+  function validDate(s) { return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+  function dayDiff(a, b) {
+    if (!validDate(a) || !validDate(b)) return 0;
+    var ta = new Date(a + "T00:00:00Z").getTime(), tb = new Date(b + "T00:00:00Z").getTime();
+    if (isNaN(ta) || isNaN(tb)) return 0;
+    return Math.floor((tb - ta) / 86400000);
+  }
+  function fmtD(iso) { return validDate(iso) ? iso.slice(5) : ""; }
+  function newPid() { return "pp" + Date.now().toString(36) + (ppSeq++); }
+  function up(el, attr) {
+    while (el && el.getAttribute) {
+      if (el.getAttribute(attr) != null) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  /* ---------------- core-blob access (via the S1 bridge) ---------------- */
+  function units() { try { return BidSheet.units() || []; } catch (e) { return []; } }
+  function byId(id) {
+    var us = units();
+    for (var i = 0; i < us.length; i++) if (us[i].id === id) return us[i];
+    return null;
+  }
+  function mutate(fn) {
+    ppSaving = true;
+    try { fn(); BidSheet.save(); } finally { ppSaving = false; }
+  }
+  function vehFor(u) {
+    var t = (u.desc || "").trim().split(/\s+/);
+    return { year: t[0] || "", make: (t[1] || "").toUpperCase(), model: t.slice(2).join(" "),
+             retail: u.estRetail || Math.round((u.projSale || 0) / 0.829) || 15000 };
+  }
+
+  /* ---------------- templates ---------------- */
+  function tplByName(name) {
+    var n = (name || "").trim().toLowerCase();
+    if (!n) return null;
+    var T = window.PART_TEMPLATES || {};
+    for (var k in T) if (T.hasOwnProperty(k))
+      for (var i = 0; i < T[k].length; i++)
+        if (T[k][i].es.toLowerCase() === n) return T[k][i];
+    return null;
+  }
+
+  /* ---------------- hoja-ops-v1 · read-modify-write only ---------------- */
+  function loadOps() {
+    var b = null;
+    try { b = JSON.parse(localStorage.getItem(LSK)); } catch (e) {}
+    if (!b || typeof b !== "object") b = {};
+    if (!b.v) b.v = 1;
+    if (!b.seeded) b.seeded = {};
+    if (!b.shelf) b.shelf = [];
+    return b;
+  }
+  function saveOps(mut) {
+    var b = loadOps();
+    try { mut(b); } catch (e) {}
+    try { localStorage.setItem(LSK, JSON.stringify(b)); } catch (e) {}
+    try { document.dispatchEvent(new CustomEvent("ops:change", { detail: { scope: "parts" } })); } catch (e) {}
+    return b;
+  }
+
+  /* Shelf seeds — invented, labelled EXAMPLE, ex:true throughout. */
+  function shelfSeeds() {
+    return [
+      { sid: "s1", partId: "hlR", name: "Right headlight", en: "right headlight",
+        fit: "2015-17 Nissan Altima", boughtFor: "57588044", src: "ebay", ret: true,
+        price: 390, status: "received",
+        dates: { ordered: addDays(-25), shipped: addDays(-23), received: addDays(-19) },
+        eta: "", note: "", ex: true },
+      { sid: "s2", partId: "rad", name: "Radiator", en: "radiator",
+        fit: "2016-18 Honda Civic", boughtFor: "57451266", src: "ebay", ret: true,
+        price: 205, status: "received",
+        dates: { ordered: addDays(-17), shipped: addDays(-15), received: addDays(-12) },
+        eta: "", note: "", ex: true },
+      { sid: "s3", partId: "rbc", name: "Rear bumper", en: "rear bumper cover",
+        fit: "2017 Toyota Corolla", boughtFor: "", src: "ebay", ret: true,
+        price: 260, status: "shipped",
+        dates: { ordered: addDays(-4), shipped: addDays(-2) },
+        eta: addDays(2), note: "", ex: true }
+    ];
+  }
+  function seed() {
+    var b = loadOps();
+    if (b.seeded && b.seeded.parts) return;
+    saveOps(function (bb) { bb.shelf = shelfSeeds(); bb.seeded.parts = true; });
+  }
+
+  /* ---------------- derivations (never stored) ---------------- */
+  function partDate(p) { return (p.dates && p.dates[p.status]) || p.orderedAt || ""; }
+  function daysIn(p) {
+    var d = partDate(p);
+    return validDate(d) ? Math.max(0, dayDiff(d, todayISO())) : null;
+  }
+  function isLate(p) {
+    return !!(p.eta && validDate(p.eta) && p.eta < todayISO() &&
+      p.status !== "received" && p.status !== "installed");
+  }
+  function waiting(u) {
+    if (u.stage !== "shop" || u.status === "sold") return false;
+    var ps = u.parts || [];
+    for (var i = 0; i < ps.length; i++)
+      if (ps[i].status !== "received" && ps[i].status !== "installed") return true;
+    return false;
+  }
+  function capital() {
+    var flight = 0, shelfCap = 0, fN = 0, sN = 0, i, j, p;
+    var us = units();
+    for (i = 0; i < us.length; i++) {
+      if (us[i].status === "sold") continue;
+      var ps = us[i].parts || [];
+      for (j = 0; j < ps.length; j++) {
+        p = ps[j];
+        if (p.status === "ordered" || p.status === "shipped") { flight += p.price || 0; fN++; }
+      }
+    }
+    var sh = loadOps().shelf || [];
+    for (i = 0; i < sh.length; i++) {
+      p = sh[i];
+      if (p.status === "ordered" || p.status === "shipped") { flight += p.price || 0; fN++; }
+      else if (p.status === "received") { shelfCap += p.price || 0; sN++; }
+    }
+    return { flight: flight, flightN: fN, shelf: shelfCap, shelfN: sN };
+  }
+
+  /* ---------------- price-memory feedback (the learning loop) ---------------- */
+  function teach(u, p) {
+    if (p.taught || !p.partId || !(p.price > 0)) return;
+    if (!window.__parts || !window.__parts.remember) return;
+    var make = ((u.desc || "").trim().split(/\s+/)[1] || "").toUpperCase();
+    if (!make) return;
+    try { window.__parts.remember(p.partId, make, p.price); p.taught = true; } catch (e) {}
+  }
+
+  /* ---------------- part-line lifecycle ---------------- */
+  function newLine(text, veh) {
+    var t = tplByName(text);
+    var line = { id: newPid(), partId: t ? t.id : null,
+      name: t ? t.es : String(text || "").trim(),
+      en: t ? t.en : String(text || "").trim().toLowerCase(),
+      src: "ebay", ret: true, price: 0, status: "needed",
+      dates: { needed: todayISO() }, eta: "", note: "" };
+    if (t && window.__parts && window.__parts.priceFor) {
+      try { line.price = Math.round(window.__parts.priceFor(t, veh.make, veh.retail).v); } catch (e) {}
+    }
+    return line;
+  }
+  function seedFromDamage(u) {
+    var T = (window.PART_TEMPLATES || {})[u.damage] || [];
+    var veh = vehFor(u), added = 0, i, j;
+    if (!u.parts) u.parts = [];
+    for (i = 0; i < T.length; i++) {
+      if (T[i].p < 0.55) continue;
+      var dup = false;
+      for (j = 0; j < u.parts.length; j++)
+        if (u.parts[j].partId === T[i].id ||
+            (u.parts[j].name || "").toLowerCase() === T[i].es.toLowerCase()) { dup = true; break; }
+      if (dup) continue;
+      u.parts.push(newLine(T[i].es, veh)); added++;
+    }
+    return added;
+  }
+  function advance(u, p, back) {
+    var i = STATUSES.indexOf(p.status);
+    if (back) {
+      if (i <= 0) return false;
+      if (p.status === "installed" &&
+          !confirm("Taught prices cannot be untaught. Move “" + p.name + "” back to RECEIVED anyway?"))
+        return false;
+      if (p.dates) delete p.dates[p.status];
+      p.status = STATUSES[i - 1];
+    } else {
+      if (i >= STATUSES.length - 1) return false;
+      p.status = STATUSES[i + 1];
+      if (!p.dates) p.dates = {};
+      if (!p.dates[p.status]) p.dates[p.status] = todayISO();
+      if (p.status === "ordered" && !p.orderedAt) p.orderedAt = todayISO();
+      if (p.status === "installed") teach(u, p);
+    }
+    return true;
+  }
+
+  /* ---------------- shelf lifecycle ---------------- */
+  function addShelf(name, fit, price) {
+    var t = tplByName(name);
+    saveOps(function (b) {
+      b.shelf.push({ sid: "s" + Date.now().toString(36) + (ppSeq++),
+        partId: t ? t.id : null, name: t ? t.es : name,
+        en: t ? t.en : String(name).toLowerCase(), fit: fit || "", boughtFor: "",
+        src: "ebay", ret: true, price: price || 0, status: "ordered",
+        dates: { ordered: todayISO() }, eta: "", note: "" });
+    });
+  }
+  function shelfAdvance(sid, back) {
+    var LADDER = ["ordered", "shipped", "received"];
+    saveOps(function (b) {
+      for (var i = 0; i < b.shelf.length; i++) {
+        var it = b.shelf[i];
+        if (it.sid !== sid) continue;
+        var k = LADDER.indexOf(it.status);
+        if (back) {
+          if (k <= 0) return;
+          if (it.dates) delete it.dates[it.status];
+          it.status = LADDER[k - 1];
+        } else {
+          if (k < 0 || k >= LADDER.length - 1) return;
+          it.status = LADDER[k + 1];
+          if (!it.dates) it.dates = {};
+          if (!it.dates[it.status]) it.dates[it.status] = todayISO();
+        }
+        return;
+      }
+    });
+  }
+  function attachShelf(sid, uid) {
+    var u = byId(uid);
+    if (!u) return;
+    var item = null;
+    saveOps(function (b) {
+      for (var i = 0; i < b.shelf.length; i++)
+        if (b.shelf[i].sid === sid) { item = b.shelf.splice(i, 1)[0]; break; }
+    });
+    if (!item) return;
+    mutate(function () {
+      if (!u.parts) u.parts = [];
+      u.parts.push({ id: newPid(), partId: item.partId || null, name: item.name,
+        en: item.en || (item.name || "").toLowerCase(), src: item.src || "ebay",
+        ret: item.ret !== false, price: item.price || 0,
+        status: item.status || "received", dates: item.dates || {},
+        eta: item.eta || "", note: item.note || (item.fit ? "fits " + item.fit : ""),
+        fromShelf: true });
+    });
+  }
+
+  /* ---------------- eBay outbound link (nothing fetched, nothing stored) ---------------- */
+  function ebayHref(u, p) {
+    if (!window.__parts || !window.__parts.ebayUrl) return null;
+    try { return window.__parts.ebayUrl({ en: p.en || (p.name || "").toLowerCase() }, vehFor(u)); }
+    catch (e) { return null; }
+  }
+
+  /* ---------------- drawer parts table ---------------- */
+  function srcOpts(cur) {
+    var vals = ["ebay", "used"], h = "", i;
+    if (cur && vals.indexOf(cur) < 0) vals.push(cur);
+    for (i = 0; i < vals.length; i++)
+      h += "<option value=\"" + esc(vals[i]) + "\"" + (cur === vals[i] ? " selected" : "") + ">" +
+        esc(vals[i] === "ebay" ? "eBay" : vals[i]) + "</option>";
+    return h;
+  }
+  function chipHTML(p, attr, key) {
+    var d = partDate(p), din = daysIn(p);
+    var sub = d ? "since " + fmtD(d) + (din != null ? " · " + din + "d" : "") : "";
+    return "<button type=\"button\" class=\"ppchip st-" + p.status + "\" " + attr + "=\"" + esc(key) + "\"" +
+      " aria-label=\"" + esc(p.name) + " is " + p.status +
+      ". Click to advance, Alt+click to go back.\">" + STLBL[p.status] + "</button>" +
+      (sub ? "<div class=\"pp-date\">" + esc(sub) + "</div>" : "");
+  }
+  function rowHTML(u, p) {
+    var href = ebayHref(u, p);
+    return "<tr data-pp=\"" + esc(p.id) + "\">" +
+      "<td><input type=\"text\" class=\"pp-f\" data-f=\"name\" value=\"" + esc(p.name) +
+        "\" aria-label=\"Part name\" style=\"min-width:9rem\">" +
+        (p.fromShelf ? " <span class=\"pill idle\">SHELF</span>" : "") + "</td>" +
+      "<td><select class=\"pp-f\" data-f=\"src\" aria-label=\"Source of " + esc(p.name) + "\">" +
+        srcOpts(p.src) + "</select></td>" +
+      "<td><button type=\"button\" class=\"pill " + (p.ret === false ? "stop" : "go") + " pp-ret\"" +
+        " data-ppret=\"" + esc(p.id) + "\" aria-pressed=\"" + (p.ret === false ? "false" : "true") + "\"" +
+        " title=\"He only buys with return policies. Click to flag a no-returns purchase.\">" +
+        (p.ret === false ? "NO RETURNS" : "RETURNS") + "</button></td>" +
+      "<td class=\"n\"><input type=\"number\" class=\"pp-f\" data-f=\"price\" value=\"" + (p.price || 0) +
+        "\" min=\"0\" step=\"5\" style=\"width:5.4rem;text-align:right\" aria-label=\"Cost of " +
+        esc(p.name) + "\"></td>" +
+      "<td>" + chipHTML(p, "data-ppadv", p.id) + "</td>" +
+      "<td><input type=\"date\" class=\"pp-f\" data-f=\"eta\" value=\"" + esc(p.eta || "") +
+        "\" aria-label=\"ETA\">" + (isLate(p) ? " <span class=\"pill stop\">LATE</span>" : "") + "</td>" +
+      "<td><input type=\"date\" class=\"pp-f\" data-f=\"returnBy\" value=\"" + esc(p.returnBy || "") +
+        "\" aria-label=\"Return window closes\"></td>" +
+      "<td><input type=\"text\" class=\"pp-f\" data-f=\"note\" value=\"" + esc(p.note || "") +
+        "\" aria-label=\"Note\" style=\"min-width:7rem\"></td>" +
+      "<td>" + (href ? "<a class=\"btn sm\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"" +
+        esc(href) + "\" title=\"Opens the search on eBay. Nothing from their site is fetched or stored.\">eBay</a> " : "") +
+        "<button type=\"button\" class=\"btn sm\" data-pprm=\"" + esc(p.id) +
+        "\" aria-label=\"Remove " + esc(p.name) + "\">×</button></td></tr>";
+  }
+  function renderDrawerParts() {
+    var host = $("pl-d-parts-host");
+    if (!host) return;
+    var u = ppUid ? byId(ppUid) : null;
+    if (!u) { host.innerHTML = ""; return; }
+    var ps = u.parts || [], i, inCount = 0;
+    for (i = 0; i < ps.length; i++)
+      if (ps[i].status === "received" || ps[i].status === "installed") inCount++;
+    var h = "";
+    if (ps.length) {
+      h += "<div class=\"pp-date\" style=\"margin:.2rem 0 .5rem\">" + inCount + " of " + ps.length +
+        " parts in" + (waiting(u) ? " · waiting on parts" : "") + "</div>" +
+        "<div class=\"tscroll\"><table class=\"data pp-table\" style=\"min-width:900px\"><thead><tr>" +
+        "<th>Part</th><th>Source</th><th>Returns</th><th style=\"text-align:right\">Cost</th>" +
+        "<th>Status</th><th>ETA</th><th>Return by</th><th>Note</th><th></th></tr></thead><tbody>";
+      for (i = 0; i < ps.length; i++) h += rowHTML(u, ps[i]);
+      h += "</tbody></table></div>";
+    } else {
+      h += "<div class=\"empty\">No parts yet — seed from the damage template or add one.</div>";
+    }
+    h += "<div class=\"pp-add\">" +
+      "<input list=\"pp-cat\" id=\"pp-add-name\" placeholder=\"Add a part — type or pick…\"" +
+      " aria-label=\"Add a part to " + esc(u.lot) + "\">" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-add-btn\">Add</button>" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-seed-btn\" title=\"Pulls the " + esc(u.damage || "") +
+      " template parts not already on the list, priced from your memory\">From damage template</button></div>" +
+      "<span class=\"hint\">Sourced mostly on eBay — the link goes to eBay, the price is read there, " +
+      "nothing is ingested. Installing a template part with a real cost teaches the pre-bid price memory.</span>";
+    host.innerHTML = h;
+  }
+  function ensureDatalist() {
+    if ($("pp-cat")) return;
+    var dl = document.createElement("datalist");
+    dl.id = "pp-cat";
+    var T = window.PART_TEMPLATES || {}, h = "", k, i;
+    for (k in T) if (T.hasOwnProperty(k))
+      for (i = 0; i < T[k].length; i++)
+        h += "<option value=\"" + esc(T[k][i].es) + "\" label=\"" + esc(T[k][i].es + " · " + k) + "\"></option>";
+    dl.innerHTML = h;
+    document.body.appendChild(dl);
+  }
+
+  /* ---------------- inventory sub-view ---------------- */
+  function whereHTML(row) {
+    if (row.shelf) {
+      return "<span class=\"pill idle\">SHELF</span>" +
+        (row.p.fit ? " " + esc(row.p.fit) : "") +
+        (row.p.ex ? " <span class=\"pill idle\">EXAMPLE</span>" : "");
+    }
+    var t = (row.u.desc || "").split(/\s+/);
+    return "<span class=\"num\">" + esc(row.u.lot) + "</span> · " + esc(t.slice(1, 3).join(" "));
+  }
+  function renderInventory() {
+    var host = $("pl-inventory");
+    if (!host) return;
+    var cap = capital();
+    var us = units(), sh = loadOps().shelf || [];
+    var byStatus = { needed: [], ordered: [], shipped: [], received: [], installed: [] };
+    var total = 0, waitN = 0, i, j;
+    var openUnits = [];
+    for (i = 0; i < us.length; i++) {
+      var u = us[i];
+      if (u.status === "sold") continue;
+      if (u.status === "open") openUnits.push(u);
+      if (waiting(u)) waitN++;
+      var ps = u.parts || [];
+      for (j = 0; j < ps.length; j++)
+        if (byStatus[ps[j].status]) { byStatus[ps[j].status].push({ p: ps[j], u: u }); total++; }
+    }
+    for (i = 0; i < sh.length; i++)
+      if (byStatus[sh[i].status]) { byStatus[sh[i].status].push({ p: sh[i], shelf: true }); total++; }
+
+    var h = "<div class=\"card-b\">";
+    /* capital in flight vs on shelf — plain stats, no inverted cell (budget spent on the stepper) */
+    h += "<div class=\"stats\" style=\"margin-bottom:1.2rem\">" +
+      "<div class=\"stat\"><span class=\"k\">Capital in flight</span><span class=\"v num\">" +
+        money(cap.flight) + "</span><span class=\"d\">" + cap.flightN + " part" +
+        (cap.flightN === 1 ? "" : "s") + " ordered or shipped</span></div>" +
+      "<div class=\"stat\"><span class=\"k\">On the shelf</span><span class=\"v num\">" +
+        money(cap.shelf) + "</span><span class=\"d\">" + cap.shelfN + " loose part" +
+        (cap.shelfN === 1 ? "" : "s") + ", no car yet</span></div>" +
+      "<div class=\"stat" + (waitN ? " warn" : "") + "\"><span class=\"k\">Waiting on parts</span>" +
+        "<span class=\"v num\">" + waitN + "</span><span class=\"d\">unit" +
+        (waitN === 1 ? "" : "s") + " in shop blocked</span></div></div>";
+
+    /* every part, by status */
+    h += "<div class=\"pp-board\"><div class=\"eyebrow\" style=\"margin-bottom:.4rem\">Every part, by status · " +
+      total + " part" + (total === 1 ? "" : "s") + "</div>";
+    for (i = 0; i < STATUSES.length; i++) {
+      var st = STATUSES[i], rows = byStatus[st], sum = 0;
+      for (j = 0; j < rows.length; j++) sum += rows[j].p.price || 0;
+      h += "<div class=\"pp-group\"><div class=\"eyebrow\">" + GROUP[st].t + " · " + rows.length +
+        " part" + (rows.length === 1 ? "" : "s") +
+        (rows.length ? " · " + money(sum) +
+          (st === "ordered" || st === "shipped" ? " in transit" : "") : "") + "</div>";
+      if (!rows.length) { h += "<div class=\"empty\">" + GROUP[st].empty + "</div></div>"; continue; }
+      h += "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:560px\"><thead><tr>" +
+        "<th>Part</th><th>Where</th><th style=\"text-align:right\">Cost</th>" +
+        "<th style=\"text-align:right\">Days in status</th><th>ETA</th></tr></thead><tbody>";
+      for (j = 0; j < rows.length; j++) {
+        var r = rows[j], din = daysIn(r.p);
+        h += "<tr><td>" + esc(r.p.name) + "</td><td>" + whereHTML(r) + "</td>" +
+          "<td class=\"n\">" + money(r.p.price || 0) + "</td>" +
+          "<td class=\"n\">" + (din != null ? din + "d" : "—") + "</td>" +
+          "<td>" + (r.p.eta ? "<span class=\"num\">" + esc(fmtD(r.p.eta)) + "</span>" : "—") +
+          (isLate(r.p) ? " <span class=\"pill stop\">LATE</span>" : "") + "</td></tr>";
+      }
+      h += "</tbody></table></div></div>";
+    }
+    h += "</div>";
+
+    /* the shelf */
+    h += "<div class=\"pp-group\"><div class=\"eyebrow\">Shelf · " + money(cap.shelf) + " sitting</div>" +
+      "<p class=\"prose\" style=\"margin:.5rem 0 .7rem\">Parts bought for one car that can go into another. " +
+      "Attaching moves the part onto that unit’s list with its cost and dates intact. " +
+      "Rows marked EXAMPLE are invented, like the demo units — nobody’s purchases.</p>";
+    if (sh.length) {
+      h += "<div class=\"tscroll\"><table class=\"data\" style=\"min-width:640px\"><thead><tr>" +
+        "<th>Part</th><th>Fits</th><th>Bought for</th><th style=\"text-align:right\">Cost</th>" +
+        "<th>Status</th><th>Attach</th></tr></thead><tbody>";
+      for (i = 0; i < sh.length; i++) {
+        var it = sh[i];
+        var opts = "<option value=\"\">attach to…</option>";
+        for (j = 0; j < openUnits.length; j++) {
+          var ou = openUnits[j], tt = (ou.desc || "").split(/\s+/);
+          opts += "<option value=\"" + esc(ou.id) + "\">" + esc(ou.lot) + " · " +
+            esc(tt.slice(1, 3).join(" ")) + "</option>";
+        }
+        h += "<tr><td>" + esc(it.name) +
+          (it.ex ? " <span class=\"pill idle\">EXAMPLE</span>" : "") + "</td>" +
+          "<td>" + esc(it.fit || "—") + "</td>" +
+          "<td class=\"num\">" + esc(it.boughtFor || "—") + "</td>" +
+          "<td class=\"n\">" + money(it.price || 0) + "</td>" +
+          "<td>" + chipHTML(it, "data-ppsadv", it.sid) + "</td>" +
+          "<td><select class=\"pp-attach\" data-sid=\"" + esc(it.sid) +
+          "\" aria-label=\"Attach " + esc(it.name) + " to a unit\">" + opts + "</select></td></tr>";
+      }
+      h += "</tbody></table></div>";
+    } else {
+      h += "<div class=\"empty\">Nothing on the shelf.</div>";
+    }
+    h += "<div class=\"pp-add\">" +
+      "<input type=\"text\" id=\"pp-shelf-name\" placeholder=\"Part\" aria-label=\"Part name\">" +
+      "<input type=\"text\" id=\"pp-shelf-fit\" placeholder=\"Fits (year make model)\"" +
+      " aria-label=\"Fitment\" style=\"flex:1 1 10rem\">" +
+      "<input type=\"number\" id=\"pp-shelf-cost\" placeholder=\"$\" min=\"0\" step=\"5\"" +
+      " aria-label=\"Cost\" style=\"flex:0 1 6rem\">" +
+      "<button type=\"button\" class=\"btn sm\" id=\"pp-shelf-add\">Add to shelf</button></div>" +
+      "</div></div>";
+    host.innerHTML = h;
+  }
+  function renderAll() { renderInventory(); renderDrawerParts(); }
+
+  /* ---------------- event delegation (survives every re-render) ---------------- */
+  function partOf(u, pid) {
+    var ps = (u && u.parts) || [];
+    for (var i = 0; i < ps.length; i++) if (ps[i].id === pid) return ps[i];
+    return null;
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.nodeType === 1 ? e.target : null;
+    if (!t) return;
+    var el, u, p;
+    /* unit part status chip */
+    el = up(t, "data-ppadv");
+    if (el) {
+      u = byId(ppUid); p = u && partOf(u, el.getAttribute("data-ppadv"));
+      if (p) {
+        var moved = false;
+        mutate(function () { moved = advance(u, p, !!e.altKey); });
+        if (moved) renderAll();
+      }
+      return;
+    }
+    /* returns toggle */
+    el = up(t, "data-ppret");
+    if (el) {
+      u = byId(ppUid); p = u && partOf(u, el.getAttribute("data-ppret"));
+      if (p) { mutate(function () { p.ret = p.ret === false; }); renderAll(); }
+      return;
+    }
+    /* remove line */
+    el = up(t, "data-pprm");
+    if (el) {
+      u = byId(ppUid);
+      if (u && u.parts) {
+        var pid = el.getAttribute("data-pprm");
+        mutate(function () {
+          for (var i = 0; i < u.parts.length; i++)
+            if (u.parts[i].id === pid) { u.parts.splice(i, 1); break; }
+        });
+        renderAll();
+      }
+      return;
+    }
+    /* shelf chip */
+    el = up(t, "data-ppsadv");
+    if (el) { shelfAdvance(el.getAttribute("data-ppsadv"), !!e.altKey); renderAll(); return; }
+    /* add part to the open unit */
+    if (t.id === "pp-add-btn") {
+      u = byId(ppUid);
+      var inp = $("pp-add-name");
+      var txt = inp ? inp.value.replace(/^\s+|\s+$/g, "") : "";
+      if (u && txt) {
+        mutate(function () {
+          if (!u.parts) u.parts = [];
+          u.parts.push(newLine(txt, vehFor(u)));
+        });
+        renderAll();
+      }
+      return;
+    }
+    /* seed from the damage template */
+    if (t.id === "pp-seed-btn") {
+      u = byId(ppUid);
+      if (u) {
+        var added = 0;
+        mutate(function () { added = seedFromDamage(u); });
+        if (added) renderAll();
+      }
+      return;
+    }
+    /* add a shelf item */
+    if (t.id === "pp-shelf-add") {
+      var n = $("pp-shelf-name"), f = $("pp-shelf-fit"), c = $("pp-shelf-cost");
+      var nm = n ? n.value.replace(/^\s+|\s+$/g, "") : "";
+      if (nm) {
+        addShelf(nm, f ? f.value : "", c ? parseFloat(c.value) || 0 : 0);
+        renderAll();
+      }
+      return;
+    }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target && e.target.nodeType === 1 ? e.target : null;
+    if (!t) return;
+    /* drawer field edits */
+    if (t.className && String(t.className).indexOf("pp-f") >= 0) {
+      var row = up(t, "data-pp");
+      if (!row) return;
+      var u = byId(ppUid), p = u && partOf(u, row.getAttribute("data-pp"));
+      if (!p) return;
+      var f = t.getAttribute("data-f");
+      mutate(function () {
+        if (f === "price") {
+          p.price = parseFloat(t.value) || 0;
+          if (p.status === "installed") teach(u, p);   /* cost typed after install still teaches once */
+        } else if (f === "eta" || f === "returnBy") {
+          p[f] = validDate(t.value) ? t.value : "";
+        } else if (f === "name") {
+          p.name = t.value;
+          if (!p.partId) p.en = t.value.toLowerCase();
+        } else if (f === "src") {
+          p.src = t.value;
+        } else if (f === "note") {
+          p.note = t.value;
+        }
+      });
+      renderAll();
+      return;
+    }
+    /* attach a shelf item to a unit */
+    if (t.className && String(t.className).indexOf("pp-attach") >= 0) {
+      var uid = t.value, sid = t.getAttribute("data-sid");
+      if (uid && sid) { attachShelf(sid, uid); renderAll(); }
+      return;
+    }
+  });
+
+  /* ---------------- wiring ---------------- */
+  document.addEventListener("pl:drawer", function (ev) {
+    ppUid = (ev.detail && ev.detail.uid) || null;
+    ensureDatalist();
+    renderDrawerParts();
+  });
+  document.addEventListener("bidsheet:saved", function () {
+    if (ppSaving) return;
+    renderAll();
+  });
+  document.addEventListener("ops:change", function (e) {
+    if (e.detail && e.detail.scope === "parts") return;   /* own writes already re-render */
+    renderInventory();
+  });
+  /* restore-demo also restores the 3 EXAMPLE shelf items */
+  ["btn-reset", "db-reset"].forEach(function (id) {
+    var b = $(id);
+    if (b) b.addEventListener("click", function () {
+      saveOps(function (bb) { bb.shelf = shelfSeeds(); bb.seeded.parts = true; });
+      renderAll();
+    });
+  });
+
+  /* ---------------- CSS · tokens only, all three theme states inherit ---------------- */
+  (function injectCSS() {
+    if ($("pp-css")) return;
+    var st = document.createElement("style");
+    st.id = "pp-css";
+    st.textContent =
+      ".ppchip{font:600 .62rem/1 var(--sans);letter-spacing:.08em;padding:.3rem .55rem;" +
+        "border:1px solid var(--line);background:transparent;color:var(--ink-3);cursor:pointer;" +
+        "border-radius:0;text-transform:uppercase}" +
+      ".ppchip.st-ordered{color:var(--warn);border-color:var(--warn)}" +
+      ".ppchip.st-shipped{color:var(--accent);border-color:var(--accent)}" +
+      ".ppchip.st-received{color:var(--go);border-color:var(--go)}" +
+      ".ppchip.st-installed{background:var(--ink);color:var(--inv);border-color:var(--ink);cursor:default}" +
+      ".pp-date{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);margin-top:.2rem}" +
+      ".pp-add{display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;align-items:center}" +
+      ".pp-add input{flex:1 1 12rem}" +
+      ".pp-group{border-top:1px solid var(--line);padding-top:.9rem;margin-top:.9rem}" +
+      ".pp-board .pp-group:first-of-type{border-top:0;margin-top:.2rem;padding-top:0}" +
+      ".pp-table input,.pp-table select{font:inherit}";
+    document.head.appendChild(st);
+  })();
+
+  seed();
+  renderAll();
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   07 · Financing / carry-cost layer (module 04 · splice S6).
+   Per-unit auction-finance loans, daily accrual computed ON RENDER
+   (APR/360, day 1 = purchase day, local midnights, no timers),
+   break-even countdown "day N of M", finance strip on the Pipeline
+   tab, day badges on pipeline cards and Ledger rows, and the
+   margin-erosion chart. Reads and writes units ONLY through
+   window.BidSheet / window.__ledger; settings live under
+   hoja-ops-v1.finCfg (read-modify-write + "ops:change").
+   TWO TRUTHS, BY DESIGN: the countdown uses full carry (interest +
+   operational $/day estimate); the Ledger charges only the interest
+   frozen at close. They will not reconcile to the dollar — said on
+   screen, never hidden. Demo loans are generated and labelled.
+   No lender API, no automation, no external calls.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  if (!window.BidSheet || !window.__ledger) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var NS = "http://www.w3.org/2000/svg";
+  var OPS_KEY = "hoja-ops-v1";
+  var OP_DEFAULT = 130;   /* demo default operational $/day, generated — his real number replaces it */
+  var anim = !!window.anime &&
+    !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  /* ---------------- settings · hoja-ops-v1.finCfg ---------------- */
+  function opsRead() {
+    try { return JSON.parse(localStorage.getItem(OPS_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function opDefault() {
+    var c = opsRead().finCfg || {};
+    var v = parseFloat(c.opDaily);
+    return (isFinite(v) && v >= 0) ? v : OP_DEFAULT;
+  }
+  function opDefaultSet(v) {
+    try {
+      var o = opsRead();
+      o.finCfg = o.finCfg || {};
+      o.finCfg.opDaily = v;
+      localStorage.setItem(OPS_KEY, JSON.stringify(o));
+    } catch (e) {}
+    try {
+      document.dispatchEvent(new CustomEvent("ops:change", { detail: { scope: "fin" } }));
+    } catch (e2) {}
+  }
+
+  /* ---------------- day arithmetic · local midnights ---------------- */
+  function validIso(s) { return typeof s === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s); }
+  function midnight(iso) { var p = iso.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]).getTime(); }
+  function today0() { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime(); }
+  function todayIso() {
+    var t = new Date();
+    return t.getFullYear() + "-" + ("0" + (t.getMonth() + 1)).slice(-2) + "-" + ("0" + t.getDate()).slice(-2);
+  }
+
+  /* ---------------- loan math ---------------- */
+  function finOn(u) { return !!(u && u.fin && u.fin.on !== false && u.fin.principal > 0); }
+  function isOpen(u) { return u.status !== "sold" && u.stage !== "sold"; }
+  function dailyPct(fin) {   /* a percent per day, not a fraction */
+    if (fin.rateType === "daily") return fin.rateValue || 0;
+    var apr = (fin.rateValue != null && fin.rateType) ? fin.rateValue : (fin.aprPct || 0);
+    return apr / 360;
+  }
+  function finStart(u) {
+    if (u.fin && validIso(u.fin.startedAt)) return u.fin.startedAt;
+    if (u.fin && validIso(u.fin.start)) return u.fin.start;
+    return validIso(u.boughtAt) ? u.boughtAt : todayIso();
+  }
+  /* day 1 is the purchase day — lenders charge from funding day */
+  function finN(u) {
+    return Math.max(1, Math.floor((today0() - midnight(finStart(u))) / 864e5) + 1);
+  }
+  function intPerDay(u) { return u.fin.principal * dailyPct(u.fin) / 100; }
+  function accrued(u) { return intPerDay(u) * finN(u); }
+  function opDailyOf(u) {
+    return (u.fin && u.fin.opDaily != null && isFinite(u.fin.opDaily)) ? u.fin.opDaily : opDefault();
+  }
+  function bleed(u) { return intPerDay(u) + opDailyOf(u); }
+  function projMargin(u) {
+    var m = 0;
+    try { m = BidSheet.projMargin(u); } catch (e) {}
+    return isFinite(m) ? m : 0;
+  }
+  /* -> { N, M, ratio, state }.  bleed<=0: no clock. margin<=0: already under water. */
+  function breakEven(u) {
+    var N = finN(u), b = bleed(u), m = projMargin(u);
+    if (b <= 0) return { N: N, M: Infinity, ratio: 0, state: "ok" };
+    if (m <= 0) return { N: N, M: 0, ratio: 1, state: "over" };
+    var M = Math.floor(m / b);
+    var state = N > M ? "over" : (N >= 0.7 * M ? "amber" : "ok");
+    return { N: N, M: M, ratio: M > 0 ? N / M : 1, state: state };
+  }
+  /* Single source of financing truth. The pipeline layer (S4) delegates its
+     card/drawer math here so one unit can never show two break-even days. */
+  try {
+    window.__fin = { finOn: finOn, finN: finN, dailyPct: dailyPct, intPerDay: intPerDay,
+                     accrued: accrued, bleed: bleed, breakEven: breakEven, opDailyOf: opDailyOf };
+  } catch (e) {}
+  function weekCarry(u) { return bleed(u) * Math.min(finN(u), 7); }
+  function weekInterest(u) { return intPerDay(u) * Math.min(finN(u), 7); }
+  function openFinanced() {
+    var us = BidSheet.units(), out = [], i;
+    for (i = 0; i < us.length; i++) if (isOpen(us[i]) && finOn(us[i])) out.push(us[i]);
+    return out;
+  }
+  function openUnfinanced() {
+    var us = BidSheet.units(), out = [], i;
+    for (i = 0; i < us.length; i++) if (isOpen(us[i]) && !finOn(us[i])) out.push(us[i]);
+    return out;
+  }
+  function isDemo(u) { return (u.id || "").length <= 3; }
+
+  /* ---------------- formatting ---------------- */
+  function money(n) {
+    if (window.__ops && window.__ops.money) { try { return window.__ops.money(n); } catch (e) {} }
+    var s = "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+    return n < 0 ? "−" + s : s;
+  }
+  function perDayTxt(u) { return "−$" + bleed(u).toFixed(2) + "/day"; }
+  function dayOfTxt(r) { return "day " + r.N + " of " + (isFinite(r.M) ? r.M : "—"); }
+  function rateTxt(f) {
+    if (f.rateType === "daily") return (f.rateValue || 0) + "%/day";
+    var apr = (f.rateValue != null && f.rateType) ? f.rateValue : (f.aprPct || 0);
+    return apr + "% APR";
+  }
+  function dEl(tag, cls, txt) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt != null) e.textContent = txt;
+    return e;
+  }
+
+  /* ================= the FINANCE strip · #p-pipeline ================= */
+  function mountStrip() {
+    if ($("fin-strip")) return;
+    var panel = $("p-pipeline"), alerts = $("pl-alerts");
+    if (!panel || !alerts) return;
+    var sec = document.createElement("section");
+    sec.className = "fin-sec"; sec.id = "fin-strip";
+    sec.appendChild(dEl("span", "fin-kick", "Financing · daily carry against projected margin"));
+    var stats = dEl("div", "stats"); stats.id = "fin-stats"; sec.appendChild(stats);
+    var rows = dEl("div", "fin-units"); rows.id = "fin-units"; sec.appendChild(rows);
+    var set = dEl("div", "fin-set");
+    var lab = dEl("label", null, "Operational $/day, default");
+    lab.setAttribute("for", "fin-opday");
+    var inp = document.createElement("input");
+    inp.id = "fin-opday"; inp.type = "number"; inp.step = "5"; inp.min = "0";
+    inp.setAttribute("inputmode", "decimal");
+    inp.value = String(opDefault());
+    set.appendChild(lab); set.appendChild(inp);
+    set.appendChild(dEl("span", null,
+      "Shop, lot, insurance, your time — spread per unit per day. The demo default is generated; put your real number here."));
+    sec.appendChild(set);
+    sec.appendChild(dEl("span", "fin-note",
+      "Two numbers, on purpose: the break-even countdown uses the full carry — interest plus this operational $/day, an estimate. " +
+      "The Ledger charges only the interest frozen at close. They will not reconcile to the dollar, and that is the point."));
+    panel.insertBefore(sec, alerts);
+    inp.addEventListener("input", function () {
+      var v = parseFloat(inp.value);
+      if (isFinite(v) && v >= 0) { opDefaultSet(v); }
+    });
+  }
+
+  function statEl(k, v, d, variant, accr) {
+    var s = dEl("div", "stat" + (variant ? " " + variant : ""));
+    s.appendChild(dEl("span", "k", k));
+    var vv = dEl("span", "v num", v);
+    if (accr != null) vv.setAttribute("data-accrued", accr);
+    s.appendChild(vv);
+    s.appendChild(dEl("span", "d", d));
+    return s;
+  }
+
+  function renderStrip() {
+    var stats = $("fin-stats"), rows = $("fin-units");
+    if (!stats || !rows) return;
+    var fin = openFinanced(), unfin = openUnfinanced(), i, u;
+
+    /* stats */
+    var principal = 0, carry7 = 0, int7 = 0, anyDemo = false, worst = null, worstR = null;
+    for (i = 0; i < fin.length; i++) {
+      u = fin[i];
+      principal += u.fin.principal;
+      carry7 += weekCarry(u); int7 += weekInterest(u);
+      if (isDemo(u)) anyDemo = true;
+      var r = breakEven(u);
+      if (!worstR || r.ratio > worstR.ratio) { worst = u; worstR = r; }
+    }
+    stats.textContent = "";
+    stats.appendChild(statEl("Principal out", money(principal),
+      fin.length + " financed unit" + (fin.length === 1 ? "" : "s") + " in inventory" +
+      (anyDemo ? " · demo values, generated" : "") + "."));
+    stats.appendChild(statEl("Carry this week", money(carry7),
+      "Interest + operational $/day, last 7 days.", null, int7.toFixed(2)));
+    if (worst && worstR) {
+      var variant = worstR.state === "over" ? "stop" : (worstR.state === "amber" ? "warn" : "");
+      stats.appendChild(statEl("Closest to break-even",
+        "Day " + worstR.N + " of " + (isFinite(worstR.M) ? worstR.M : "—"),
+        worst.desc + ". After day " + (isFinite(worstR.M) ? worstR.M : "—") +
+        " this unit stops making money.", variant));
+    } else {
+      stats.appendChild(statEl("Closest to break-even", "—",
+        "No financed units — no clock running."));
+    }
+
+    /* per-unit rows */
+    rows.textContent = "";
+    if (!fin.length) {
+      var e0 = dEl("div", "fin-u");
+      e0.appendChild(dEl("span", "t",
+        "No financed units. Log a purchase, then add its credit line here — the countdown starts the day the loan does."));
+      rows.appendChild(e0);
+    }
+    for (i = 0; i < fin.length; i++) {
+      u = fin[i];
+      var be = breakEven(u);
+      var row = dEl("div", "fin-u");
+      row.setAttribute("data-unit", u.id);
+      var t = dEl("span", "t", u.desc + " ");
+      t.appendChild(dEl("span", "s",
+        "· " + (u.fin.lender || "Auction finance") + " · " + money(u.fin.principal) +
+        " at " + rateTxt(u.fin) + (isDemo(u) ? " · demo values, generated" : "")));
+      row.appendChild(t);
+      var day = dEl("span", "fin-day " + be.state, dayOfTxt(be) + " · " + perDayTxt(u));
+      day.setAttribute("data-accrued", accrued(u).toFixed(2));
+      row.appendChild(day);
+      var eb = dEl("button", "btn sm", "Edit loan");
+      eb.type = "button"; eb.setAttribute("data-fin-edit", u.id);
+      row.appendChild(eb);
+      var meter = dEl("div", "fin-meter " + be.state);
+      var fill = document.createElement("i");
+      var pct = (isFinite(be.M) && be.M > 0) ? Math.min(100, Math.round(be.N / be.M * 100)) : (be.state === "over" ? 100 : 0);
+      fill.style.width = pct + "%";
+      meter.appendChild(fill);
+      row.appendChild(meter);
+      rows.appendChild(row);
+    }
+    for (i = 0; i < unfin.length; i++) {
+      u = unfin[i];
+      var row2 = dEl("div", "fin-u");
+      row2.setAttribute("data-unit", u.id);
+      var t2 = dEl("span", "t", u.desc + " ");
+      t2.appendChild(dEl("span", "s", "· cash unit · no daily carry"));
+      row2.appendChild(t2);
+      row2.appendChild(dEl("span", "s", ""));
+      var ab = dEl("button", "btn sm", "+ financing");
+      ab.type = "button"; ab.setAttribute("data-fin-add", u.id);
+      row2.appendChild(ab);
+      rows.appendChild(row2);
+    }
+  }
+
+  /* strip buttons — delegated once */
+  function bindStrip() {
+    var rows = $("fin-units");
+    if (!rows || rows.getAttribute("data-fin-bound")) return;
+    rows.setAttribute("data-fin-bound", "1");
+    rows.addEventListener("click", function (e) {
+      var t = e.target;
+      var id = t.getAttribute && (t.getAttribute("data-fin-edit") || t.getAttribute("data-fin-add"));
+      if (!id) return;
+      var us = BidSheet.units();
+      for (var i = 0; i < us.length; i++) if (us[i].id === id) { openLoanModal(us[i]); return; }
+    });
+  }
+
+  /* ================= loan modal · BidSheet.modal ================= */
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function openLoanModal(u) {
+    var f = u.fin || {};
+    var has = finOn(u);
+    var pre = f.principal > 0 ? f.principal : 0;
+    if (!pre) {
+      pre = u.hammer || 0;
+      try { pre += BidSheet.totalFees(u.hammer || 0); } catch (e) {}
+      pre = Math.round(pre);
+    }
+    var isDaily = f.rateType === "daily";
+    var rate = isDaily ? (f.rateValue || 0)
+      : ((f.rateValue != null && f.rateType) ? f.rateValue : (f.aprPct || 28));
+    var start = finStart(u);
+    var od = (f.opDaily != null && isFinite(f.opDaily)) ? String(f.opDaily) : "";
+    var body =
+      "<div class=\"field text\"><label for=\"fl-lender\">Lender</label>" +
+      "<input id=\"fl-lender\" type=\"text\" placeholder=\"Auction finance\" value=\"" + esc(f.lender || "") + "\"></div>" +
+      "<div class=\"field\"><label for=\"fl-principal\">Principal</label>" +
+      "<input id=\"fl-principal\" type=\"number\" inputmode=\"decimal\" step=\"25\" value=\"" + pre + "\"></div>" +
+      "<span class=\"hint\">Prefilled bid + fees — edit if the lender funded a different amount.</span>" +
+      "<div class=\"grid2\"><div class=\"field\"><label for=\"fl-mode\">Rate entered as</label>" +
+      "<select id=\"fl-mode\"><option value=\"apr\"" + (isDaily ? "" : " selected") + ">APR % (÷360)</option>" +
+      "<option value=\"daily\"" + (isDaily ? " selected" : "") + ">daily %</option></select></div>" +
+      "<div class=\"field\"><label for=\"fl-rate\">Rate</label>" +
+      "<input id=\"fl-rate\" type=\"number\" inputmode=\"decimal\" step=\"0.01\" value=\"" + rate + "\"></div></div>" +
+      "<div class=\"field\"><label for=\"fl-start\">Interest from</label>" +
+      "<input id=\"fl-start\" type=\"date\" value=\"" + esc(start) + "\"></div>" +
+      "<div class=\"field\"><label for=\"fl-opday\">Operational $/day, this unit only</label>" +
+      "<input id=\"fl-opday\" type=\"number\" inputmode=\"decimal\" step=\"5\" min=\"0\" value=\"" + esc(od) + "\" placeholder=\"" + opDefault() + " (default)\"></div>" +
+      "<span class=\"hint\">Interest accrues from day 1 — the funding day. Break-even counts interest plus operational $/day; " +
+      "the Ledger will charge only the interest, frozen when you close.</span>" +
+      (has ? "<p class=\"prose\"><button type=\"button\" class=\"btn sm\" id=\"fl-remove\">Remove financing</button></p>" : "");
+
+    BidSheet.modal("Financing · " + u.lot, body, function () {
+      var principal = parseFloat($("fl-principal").value);
+      var rt = parseFloat($("fl-rate").value);
+      var mode = $("fl-mode").value === "daily" ? "daily" : "apr";
+      var st = $("fl-start").value;
+      if (!(principal > 0) || !(rt >= 0) || !validIso(st)) return false;   /* keep the modal open */
+      var odv = parseFloat($("fl-opday").value);
+      u.fin = {
+        on: true,
+        lender: ($("fl-lender").value || "").replace(/^\s+|\s+$/g, "") || "Auction finance",
+        principal: principal,
+        rateType: mode,
+        rateValue: rt,
+        /* mirror for the pipeline drawer's APR field — one loan, one truth */
+        aprPct: mode === "daily" ? Math.round(rt * 360 * 100) / 100 : rt,
+        startedAt: st,
+        opDaily: (isFinite(odv) && odv >= 0) ? odv : null
+      };
+      finSave();
+    }, "Save loan");
+
+    var rm = $("fl-remove");
+    if (rm) rm.addEventListener("click", function () {
+      u.fin = { on: false, lender: "", principal: 0, aprPct: 0, startedAt: "" };
+      /* u.finCost, if already frozen at close, is deliberately kept */
+      try { BidSheet.closeModal(); } catch (e) {}
+      finSave();
+    });
+  }
+  function finSave() {
+    try { BidSheet.save(); } catch (e) {}          /* dispatches bidsheet:saved */
+    try { window.__ledger.refresh(); } catch (e2) {}
+    renderFin();
+  }
+
+  /* ============ day badges · pipeline cards + Ledger rows ============ */
+  /* Both decorators mutate the subtree they observe: the busy flag stops
+     re-entrancy, the [data-fin] mark makes each pass idempotent. */
+  var cardBusy = false;
+  function decorateCards() {
+    if (cardBusy) return;
+    var host = $("pl-cards"); if (!host) return;
+    cardBusy = true;
+    try {
+      var cards = host.querySelectorAll(".pl-card:not([data-fin])");
+      for (var i = 0; i < cards.length; i++) {
+        var c = cards[i];
+        c.setAttribute("data-fin", "1");
+        var id = c.getAttribute("data-unit"); if (!id) continue;
+        var u = null, us = BidSheet.units();
+        for (var j = 0; j < us.length; j++) if (us[j].id === id) { u = us[j]; break; }
+        if (!u || !isOpen(u) || !finOn(u)) continue;
+        var be = breakEven(u);
+        var span = dEl("span", "fin-day " + be.state,
+          "break-even " + dayOfTxt(be) + " · carry " + perDayTxt(u));
+        span.setAttribute("data-accrued", accrued(u).toFixed(2));
+        c.appendChild(span);
+      }
+    } finally { cardBusy = false; }
+  }
+
+  var bookBusy = false;
+  function decorateBook() {
+    if (bookBusy) return;
+    var tb = $("book-rows"); if (!tb) return;
+    bookBusy = true;
+    try {
+      /* match by lot text; duplicate lots degrade silently — the strip is authoritative */
+      var map = {}, dup = {}, us = BidSheet.units(), i, u;
+      for (i = 0; i < us.length; i++) {
+        u = us[i];
+        if (!isOpen(u) || !finOn(u)) continue;
+        if (map[u.lot]) dup[u.lot] = true; else map[u.lot] = u;
+      }
+      var rows = tb.querySelectorAll("tr:not([data-fin])");
+      for (i = 0; i < rows.length; i++) {
+        var tr = rows[i];
+        tr.setAttribute("data-fin", "1");
+        var cells = tr.cells;
+        if (!cells || cells.length < 2) continue;
+        var lot = (cells[0].textContent || "").replace(/^\s+|\s+$/g, "");
+        u = map[lot];
+        if (!u || dup[lot]) continue;
+        var be = breakEven(u);
+        var span = dEl("span", "fin-day " + be.state, dayOfTxt(be));
+        span.setAttribute("data-accrued", accrued(u).toFixed(2));
+        cells[1].appendChild(span);
+      }
+    } finally { bookBusy = false; }
+  }
+
+  /* ================= vz-erode · margin erosion by days held ================= */
+  function sEl(tag, attrs) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) if (attrs.hasOwnProperty(k)) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  var tip = null;
+  function tipEl() {
+    if (tip) return tip;
+    tip = document.createElement("div");
+    tip.className = "vz-tip";
+    document.body.appendChild(tip);
+    return tip;
+  }
+  function showTip(target, value, key, rowTxt, rowColor) {
+    var t = tipEl();
+    t.textContent = "";
+    t.appendChild(dEl("span", "t-v", value));
+    t.appendChild(dEl("span", "t-k", key));
+    if (rowTxt) {
+      var row = dEl("span", "t-r");
+      var i = document.createElement("i"); i.style.background = rowColor || "currentColor";
+      row.appendChild(i); row.appendChild(dEl("span", null, rowTxt));
+      t.appendChild(row);
+    }
+    var b = target.getBoundingClientRect();
+    t.style.left = (b.left + b.width / 2 + window.scrollX) + "px";
+    t.style.top = (b.top + window.scrollY) + "px";
+    t.__owner = target;
+    t.classList.add("on");
+  }
+  function hideTip(from) {
+    if (!tip) return;
+    if (from && tip.__owner && tip.__owner !== from) return;
+    tip.classList.remove("on");
+  }
+
+  function mountChart() {
+    if ($("vz-erode")) return;
+    var grid = document.querySelector("#viz-wrap .vizgrid");
+    if (!grid) return;
+    var fig = document.createElement("figure");
+    fig.className = "vizcard wide"; fig.id = "vz-erode";
+    var cap = document.createElement("figcaption");
+    cap.appendChild(dEl("span", "vz-h", "The clock on every financed car"));
+    cap.appendChild(dEl("span", "vz-s",
+      "Projected margin minus daily carry, day by day. Where the line crosses zero, the unit stops paying"));
+    fig.appendChild(cap);
+    fig.appendChild(dEl("div", "vz-plot"));
+    var det = document.createElement("details");
+    det.className = "vz-table";
+    var sum = document.createElement("summary"); sum.textContent = "Table view";
+    det.appendChild(sum); det.appendChild(document.createElement("div"));
+    fig.appendChild(det);
+    grid.appendChild(fig);
+  }
+
+  function renderChart() {
+    var fig = $("vz-erode"); if (!fig) return;
+    var plot = fig.querySelector(".vz-plot"); if (!plot) return;
+    plot.textContent = "";
+    var twin = fig.querySelector(".vz-table > div");
+    var fin = openFinanced();
+    if (!fin.length) {
+      plot.appendChild(dEl("div", "vz-empty",
+        "No financed units in inventory. The chart starts when the first loan does."));
+      if (twin) twin.textContent = "";
+      return;
+    }
+    /* the validated pair + neutrals only — amber never enters the SVG */
+    var cs = getComputedStyle(document.documentElement);
+    var POS = (cs.getPropertyValue("--c-pos") || "").replace(/^\s+|\s+$/g, "") || "currentColor";
+    var NEG = (cs.getPropertyValue("--c-neg") || "").replace(/^\s+|\s+$/g, "") || "currentColor";
+    var CTX = (cs.getPropertyValue("--c-ctx") || "").replace(/^\s+|\s+$/g, "") || "currentColor";
+
+    var W = 760, H = 300, PLm = 62, PR = 18, PT = 16, PB = 34;
+    var iw = W - PLm - PR, ih = H - PT - PB;
+    var i, u, rows = [];
+    var xmax = 10, ymax = 0, ymin = 0;
+    for (i = 0; i < fin.length; i++) {
+      u = fin[i];
+      var be = breakEven(u), b = bleed(u), m0 = projMargin(u);
+      var xEnd = isFinite(be.M) ? Math.min(be.M + 3, 60) : Math.min(be.N + 10, 60);
+      xEnd = Math.max(xEnd, be.N + 1);
+      var left = m0 - be.N * b;
+      rows.push({ u: u, be: be, b: b, m0: m0, xEnd: xEnd, left: left });
+      if (xEnd > xmax) xmax = xEnd;
+      if (m0 > ymax) ymax = m0;
+      var yAt = m0 - xEnd * b;
+      if (yAt < ymin) ymin = yAt;
+    }
+    ymax = ymax || 1;
+    var X = function (d) { return PLm + d / xmax * iw; };
+    var Y = function (v) { return PT + (ymax - v) / (ymax - ymin) * ih; };
+
+    var svg = sEl("svg", { viewBox: "0 0 " + W + " " + H, role: "img" });
+    svg.style.maxHeight = H + "px";
+    svg.setAttribute("aria-label", "Margin erosion by days held for financed units");
+
+    /* horizontal grid + y labels */
+    var steps = 4, s;
+    for (s = 0; s <= steps; s++) {
+      var v = ymin + (ymax - ymin) * s / steps;
+      var gy = Y(v);
+      svg.appendChild(sEl("line", { x1: PLm, x2: W - PR, y1: gy, y2: gy, "class": "vz-grid" }));
+      var lab = sEl("text", { x: PLm - 8, y: gy + 3, "text-anchor": "end", "class": "vz-val" });
+      lab.textContent = money(v);
+      svg.appendChild(lab);
+    }
+    /* x ticks every 10 days */
+    for (s = 0; s <= xmax; s += 10) {
+      var tx = sEl("text", { x: X(s), y: H - PB + 16, "text-anchor": "middle", "class": "vz-cat" });
+      tx.textContent = s === 0 ? "day 0" : String(s);
+      svg.appendChild(tx);
+    }
+    /* axis */
+    svg.appendChild(sEl("line", { x1: PLm, x2: W - PR, y1: PT + ih, y2: PT + ih, "class": "vz-axis" }));
+    /* break-even hairline at zero */
+    var y0 = Y(0);
+    svg.appendChild(sEl("line", { x1: PLm, x2: W - PR, y1: y0, y2: y0, "class": "vz-target" }));
+    var tl = sEl("text", { x: W - PR, y: y0 - 5, "text-anchor": "end", "class": "vz-targetlab" });
+    tl.textContent = "Break-even";
+    svg.appendChild(tl);
+
+    /* one eroding line per financed unit + today's dot */
+    for (i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      var line = sEl("line", {
+        x1: X(0), y1: Y(r.m0), x2: X(r.xEnd), y2: Y(r.m0 - r.xEnd * r.b),
+        stroke: CTX, "stroke-width": 1.4
+      });
+      svg.appendChild(line);
+      var dx = X(Math.min(r.be.N, r.xEnd)), dy = Y(r.left);
+      var past = isFinite(r.be.M) && r.be.N > r.be.M;
+      var hit = sEl("circle", { cx: dx, cy: dy, r: 13, "class": "vz-hit" });
+      var mark = sEl("circle", { cx: dx, cy: dy, r: 4, "class": "vz-mark", fill: past ? NEG : POS });
+      (function (hitc, rr, col) {
+        var value = money(rr.left) + " left today";
+        var key = rr.u.desc;
+        var rowTxt = dayOfTxt(rr.be) + " · −$" + rr.b.toFixed(2) + "/day";
+        hitc.setAttribute("tabindex", "0");
+        hitc.setAttribute("role", "img");
+        hitc.setAttribute("aria-label", key + ": " + value + ", " + rowTxt);
+        hitc.addEventListener("pointerenter", function () { showTip(hitc, value, key, rowTxt, col); });
+        hitc.addEventListener("focus", function () { showTip(hitc, value, key, rowTxt, col); });
+        hitc.addEventListener("pointerleave", function () { hideTip(hitc); });
+        hitc.addEventListener("blur", function () { hideTip(hitc); });
+      })(hit, r, past ? NEG : POS);
+      svg.appendChild(hit);
+      svg.appendChild(mark);
+    }
+    plot.appendChild(svg);
+
+    /* table twin */
+    if (twin) {
+      twin.textContent = "";
+      var tbl = document.createElement("table");
+      var thead = document.createElement("thead"), htr = document.createElement("tr");
+      var cols = ["Unit", "Day", "Break-even day", "$/day", "Margin left today"], c;
+      for (c = 0; c < cols.length; c++) htr.appendChild(dEl("th", null, cols[c]));
+      thead.appendChild(htr); tbl.appendChild(thead);
+      var tbdy = document.createElement("tbody");
+      for (i = 0; i < rows.length; i++) {
+        var r2 = rows[i];
+        var tr = document.createElement("tr");
+        tr.appendChild(dEl("td", null, r2.u.desc + (isDemo(r2.u) ? " (demo)" : "")));
+        tr.appendChild(dEl("td", "n", String(r2.be.N)));
+        tr.appendChild(dEl("td", "n", isFinite(r2.be.M) ? String(r2.be.M) : "—"));
+        tr.appendChild(dEl("td", "n", "−$" + r2.b.toFixed(2)));
+        tr.appendChild(dEl("td", "n", money(r2.left)));
+        tbdy.appendChild(tr);
+      }
+      tbl.appendChild(tbdy);
+      twin.appendChild(tbl);
+    }
+
+    if (anim && !fig.getAttribute("data-fin-anim")) {
+      fig.setAttribute("data-fin-anim", "1");
+      try {
+        anime({ targets: svg, opacity: [0, 1], duration: 420, easing: "easeOutCubic" });
+      } catch (e) {}
+    }
+  }
+
+  /* ================= wiring ================= */
+  function renderFin() { renderStrip(); renderChart(); decorateCards(); decorateBook(); }
+
+  mountStrip(); bindStrip(); mountChart();
+  renderFin();
+  setTimeout(renderFin, 700);   /* after the other layers' first paint */
+
+  var plHost = $("pl-cards");
+  if (plHost) new MutationObserver(function () { decorateCards(); }).observe(plHost, { childList: true, subtree: true });
+  var bkHost = $("book-rows");
+  if (bkHost) new MutationObserver(function () { decorateBook(); }).observe(bkHost, { childList: true, subtree: true });
+
+  document.addEventListener("bidsheet:saved", function () { setTimeout(renderFin, 0); });
+  document.addEventListener("ops:change", function (e) {
+    var sc = e.detail && e.detail.scope;
+    if (sc === "fin") { renderStrip(); renderChart(); }
+  });
+  document.addEventListener("bs:theme", function () { setTimeout(renderChart, 80); });
+  var tabN = $("tab-numbers");
+  if (tabN) tabN.addEventListener("click", function () { setTimeout(renderChart, 60); });
+  var tabP = $("tab-pipeline");
+  if (tabP) tabP.addEventListener("click", function () { setTimeout(renderStrip, 60); });
 })();
 </script>

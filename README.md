@@ -3,7 +3,7 @@
 Working demo for a one-man operator who buys damaged rental vehicles at Copart
 on Mondays and Wednesdays, repairs them, and resells them.
 
-**Status: V1 demo, no client signed. Nothing here has been shown to Juan yet.**
+**Status: V2 demo, no client signed. Nothing here has been shown to Juan yet.**
 
 `hoja-de-puja.html` is **one file, no dependencies, no build**. Double click and
 it runs. All state lives in `localStorage` — nothing leaves the browser.
@@ -12,17 +12,19 @@ To serve locally if needed: `python3 -m http.server 8000`
 
 ---
 
-## The seven screens, in the order they get used
+## The nine screens, in the order they get used
 
 | Tab | What it solves |
 |---|---|
-| **00 Start here** | Onboarding panel and a guided tour of the other six |
+| **00 Start here** | Onboarding panel and a guided tour of the other eight |
 | **01 List** | Loads a sale and narrows it to a shortlist, showing which rule killed each lot |
 | **02 Filters** | His exclusion rules as editable code, with live counts and savable profiles |
-| **03 Bid** | Bid ceiling with Copart's fees **solved**, not estimated, plus the lot photo |
-| **04 Parts** | Damage map, parts checklist by damage type, learned price memory, tow by real distance |
-| **05 Ledger** | Projected against real, unit by unit |
-| **06 Your numbers** | Estimation bias, recalibrated formula, and six charts |
+| **03 Pre-bid** | The 8:00 morning: triage queue for his photo read and Carfax call, three-gate readiness, the noon bid board |
+| **04 Bid** | Bid ceiling with Copart's fees **solved**, not estimated, plus the lot photo |
+| **05 Parts** | Damage map, parts checklist by damage type, learned price memory, tow by real distance |
+| **06 Pipeline** | Every owned car staged won to sold: transport, shop sub-stages, parts orders, shelf inventory, the daily carry clock |
+| **07 Ledger** | Projected against real, unit by unit, financing interest included |
+| **08 Your numbers** | Estimation bias, recalibrated formula, and seven charts |
 
 Plus: dark mode, a command palette (`Ctrl`/`Cmd`+`K`), CSV export of the
 shortlist, and a lightbox for the lot photos.
@@ -46,9 +48,9 @@ This cannot be blurred when showing it. Stated without ambiguity:
 
 ### Invented
 
-- **The 800 demo lots.** Generated from a fixed seed. None exist. The
+- **The 400 demo lots** (a typical Monday; peak days run 800+). Generated from a fixed seed. None exist. The
   *distributions* are calibrated against the real data; the *lots* are not.
-- **The 6 Ledger units** and every calibration factor derived from them.
+- **The 6 sold Ledger units, the 7 active pipeline units, their parts orders and their loans** and every calibration factor derived from them. All financing values are labelled generated.
 - **The parts templates.** Copart does not publish which parts a car needs — its
   damage vocabulary is 22 words. The templates are trade knowledge, written by us.
 - **The base parts prices** and the severity factors.
@@ -102,23 +104,22 @@ before he asks.
 
 ---
 
-## Known defects
+## Known defects, now closed (V2)
 
-Carried openly rather than discovered in a demo:
+The three defects this section used to carry were fixed and re-verified in V2,
+plus one the adversarial review caught in the fix itself:
 
-- **`cpRepair` / `estRetail` are only ever set on the six seeded demo units.**
-  `openBuy()` does not write them, but `calibration()` and `templateFactor()`
-  filter on them — so a unit bought through the real flow never enters the
-  calibration, and the three factors that rank next Monday's list stay on
-  defaults forever. **Fix before any pilot: the compounding loop is what the
-  monthly fee is sold on.**
-- **The structural reserve (`cont`) never persists onto the unit.** It lowers the
-  ceiling at bid time but the ledger cannot distinguish a $0-reserve unit from a
-  $500 one.
-- **Segment table colouring compares group average margin against the first
-  unit's target** rather than the group's average target.
-
----
+- **The calibration loop closes correctly.** openBuy() now freezes the lot's
+  RAW Copart figures (cpRepair, estRetail) onto every purchased unit, so
+  calibration() and templateFactor() learn from real purchases. The first fix
+  stored the calibrated sheet values instead, which would have converged the
+  factors to 1.0 and quietly inflated future ceilings; review caught it, and
+  hand-entered units now stay out of the sample entirely.
+- **The structural reserve (cont) persists** onto the unit.
+- **Segment coloring compares the group average target**, not the first unit's.
+- **One financing truth.** The pipeline and financing layers briefly shipped
+  parallel formulas (/365 vs /360); the financing layer now exports the single
+  source and the pipeline delegates to it.
 
 ## Open — what blocks the next phase
 
@@ -139,6 +140,7 @@ Carried openly rather than discovered in a demo:
 ```bash
 node tests/solver-techo-puja.test.js     # ceiling accuracy vs brute force
 node tests/calibracion-piezas.test.js    # parts template against the ledger
+node tests/reseed-triage.test.js         # pins the demo story: 400 -> 81 -> 38 -> 30 -> 7 READY
 ```
 
 The solver has a trap: the fee function **is not monotonic** — at $4,999 the
