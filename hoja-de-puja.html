@@ -1049,6 +1049,57 @@
     .livebar { top: .5rem; padding: 1rem; }
   }
 
+  /* ---------- 03 pre-bid (additive layer) ---------- */
+  .pb-brief .ovc .v { font-size: 2.2rem; }
+  .pb-lot { display: grid; grid-template-columns: 240px 1fr 200px; gap: 0;
+    border-bottom: 1px solid var(--line); }
+  .pb-lot:last-child { border-bottom: none; }
+  .pb-id, .pb-gates, .pb-nums { padding: 1.25rem 1.35rem; }
+  .pb-gates { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+  .pb-run { font-size: .58rem; letter-spacing: .18em; color: var(--ink-3); }
+  .pb-veh { font-size: .98rem; font-weight: 600; letter-spacing: -.02em; margin: .3rem 0 .15rem; }
+  .pb-meta { font-size: .72rem; color: var(--ink-3); }
+  .pb-links { display: flex; align-items: center; gap: .4rem; margin-top: .8rem; }
+  .pb-links .btn { text-decoration: none; display: inline-flex; align-items: center; }
+  .pb-exnote { font-family: var(--mono); font-size: .5rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-3); }
+  .pb-struct { font-family: var(--mono); font-size: .55rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--warn); margin-top: .9rem; }
+  .pb-gate { margin-bottom: 1rem; }
+  .pb-gk { font-family: var(--mono); font-size: .55rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: .5rem; }
+  .pb-vwhy { margin-top: .6rem; }
+  .pb-hdone { font-size: .78rem; display: block; margin-bottom: .4rem; }
+  .pb-hflags { display: flex; flex-wrap: wrap; gap: .2rem 1rem; }
+  .pb-hflags label { font-size: .74rem; color: var(--ink-2); }
+  .pb-hflags label:has(input:checked) { color: var(--stop); }
+  .pb-notes { margin-top: .4rem; margin-bottom: 0; }
+  .pb-nums { display: flex; flex-direction: column; gap: .8rem; align-items: flex-start; }
+  .pb-nums .field { margin-bottom: 0; }
+  .pb-nums .field input { width: 130px; }
+  .pb-ceil .pb-ck { font-family: var(--mono); font-size: .55rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-3); display: block; }
+  .pb-ceil .pb-cv { font-size: 1.7rem; font-weight: 700; letter-spacing: -.045em; display: block; }
+  .pb-ceil .pb-cb { font-size: .66rem; color: var(--ink-3); }
+  .pb-lot[data-state="out"] .pb-cv { color: var(--ink-3); }
+  .pb-brow { display: grid; grid-template-columns: 90px 70px 1fr auto; align-items: center;
+    gap: 1rem; padding: 1.05rem 1.35rem; border-bottom: 1px solid var(--line); }
+  .pb-brow:last-child { border-bottom: none; }
+  .pb-brun, .pb-btime { font-size: .62rem; letter-spacing: .14em; color: var(--ink-3); }
+  .pb-bveh { font-size: .95rem; font-weight: 600; letter-spacing: -.02em; }
+  .pb-bveh i { font-style: normal; font-weight: 400; font-size: .7rem; color: var(--ink-3);
+    display: block; }
+  .pb-bceil { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; letter-spacing: -.05em; }
+  @media (max-width: 1000px) { .pb-lot { grid-template-columns: 1fr; }
+    .pb-gates { border-left: none; border-right: none;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); } }
+  /* print: the brief + board are the 8:00 sheet he can carry */
+  @media print {
+    body[data-print="prebid"] .side, body[data-print="prebid"] .topbar { display: none !important; }
+    body[data-print="prebid"] .main { margin-left: 0; }
+    body[data-print="prebid"] .panel { display: none; }
+    body[data-print="prebid"] #p-prebid { display: block; }
+  }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -1081,6 +1132,7 @@
       <div class="tabs" role="tablist" aria-label="Flow">
         <button class="tab" role="tab" id="tab-list"   aria-selected="true"  aria-controls="p-list"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h9"/></svg>List<span class="tno">01</span></button>
         <button class="tab" role="tab" id="tab-filters" aria-selected="false" aria-controls="p-filters"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5L10 21v-8L3 5z"/></svg>Filters<span class="tno">02</span></button>
+        <button class="tab" role="tab" id="tab-prebid" aria-selected="false" aria-controls="p-prebid"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>Pre-bid<span class="tno">03</span></button>
         <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">04</span></button>
         <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">05</span></button>
       </div>
@@ -1982,6 +2034,63 @@
               <tbody id="seg-rows"></tbody>
             </table>
           </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ PRE-BID (additive layer, tab 03) ============ -->
+    <div class="panel" id="p-prebid" role="tabpanel" aria-labelledby="tab-prebid">
+      <div class="pagehead">
+        <h2 class="pt">The <em>morning</em>.</h2>
+        <p class="ps">8:00 AM the list drops, 12:00 the bidding starts. Every survivor gets your eyes,
+        your Carfax read, and a ceiling — and nothing reaches the noon board without all three.</p>
+      </div>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Morning brief</h2>
+            <span class="eyebrow" id="pb-stamp" style="margin-left:auto"></span>
+            <button type="button" class="btn sm" id="pb-print">Print brief</button>
+          </div>
+          <div class="ovrow pb-brief" id="pb-brief">
+            <div class="ovc"><span class="eyebrow">Released</span><span class="v num" id="pb-n-rel">—</span><span class="d">lots published at 8:00</span></div>
+            <div class="ovc"><span class="eyebrow">Pass rules</span><span class="v num" id="pb-n-rules">—</span><span class="d">survive your filters</span></div>
+            <div class="ovc"><span class="eyebrow">Awaiting visual</span><span class="v num" id="pb-n-vis">—</span><span class="d">photos not read yet</span></div>
+            <div class="ovc"><span class="eyebrow">Awaiting history</span><span class="v num" id="pb-n-his">—</span><span class="d">Carfax not read yet</span></div>
+            <div class="ovc hero"><span class="eyebrow">Ready to bid</span><span class="v num" id="pb-n-ready">—</span><span class="d">all three gates passed</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Triage queue</h2>
+            <div class="seg" id="pb-qfilter" role="group" aria-label="Queue filter">
+              <button type="button" class="on" data-q="all">All</button>
+              <button type="button" data-q="review">Pending</button>
+              <button type="button" data-q="ready">Ready</button>
+              <button type="button" data-q="out">Out</button>
+            </div>
+            <span class="eyebrow" id="pb-qcount" style="margin-left:auto"></span>
+          </div>
+          <div id="pb-queue"></div>
+        </div>
+        <p class="prose" style="margin-top:.8rem">
+          <strong>Structural risk is not assessable from data.</strong> No source anyone sells carries
+          it — which is exactly why the photos and your eyes are a gate here and not a convenience.
+          Nothing on this screen returns a clean verdict.
+        </p>
+      </section>
+
+      <section>
+        <div class="card">
+          <div class="card-h">
+            <h2>Bid board · 12:00</h2>
+            <span class="eyebrow" id="pb-bcount" style="margin-left:auto"></span>
+          </div>
+          <div id="pb-board"></div>
         </div>
       </section>
     </div>
@@ -5791,10 +5900,11 @@
     { g: "Go to", n: "00", t: "Start here", k: "", run: function () { var b = $("tab-start"); b && b.click(); } },
     { g: "Go to", n: "01", t: "List", k: "", run: function () { $("tab-list").click(); } },
     { g: "Go to", n: "02", t: "Filters", k: "", run: function () { $("tab-filters").click(); } },
-    { g: "Go to", n: "03", t: "Bid ceiling", k: "", run: function () { $("tab-sheet").click(); } },
-    { g: "Go to", n: "04", t: "Parts and damage map", k: "", run: function () { $("tab-parts").click(); } },
-    { g: "Go to", n: "05", t: "Ledger", k: "", run: function () { $("tab-book").click(); } },
-    { g: "Go to", n: "06", t: "Your numbers", k: "", run: function () { $("tab-numbers").click(); } },
+    { g: "Go to", n: "03", t: "Pre-bid triage", k: "", run: function () { var b = $("tab-prebid"); b && b.click(); } },
+    { g: "Go to", n: "04", t: "Bid ceiling", k: "", run: function () { $("tab-sheet").click(); } },
+    { g: "Go to", n: "05", t: "Parts and damage map", k: "", run: function () { $("tab-parts").click(); } },
+    { g: "Go to", n: "07", t: "Ledger", k: "", run: function () { $("tab-book").click(); } },
+    { g: "Go to", n: "08", t: "Your numbers", k: "", run: function () { $("tab-numbers").click(); } },
     { g: "Actions", n: "→", t: "Take the guided tour", k: "", run: function () { var b = $("tab-start"); b && b.click(); setTimeout(function () { var g = $("tour-go"); g && g.click(); }, 250); } },
     { g: "Actions", n: "→", t: "Export shortlist as CSV", k: "", run: function () { var b = $("tb-export"); b && b.click(); } },
     { g: "Actions", n: "→", t: "Toggle dark mode", k: "", run: toggleTheme },
@@ -5951,5 +6061,454 @@
     e.preventDefault();
     z.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   Pre-bid triage panel — tab 03 (additive layer).
+   Reads the pipeline through window.__ops (the read-only bridge) and
+   records HIS verdicts in the hoja-triage-v1 store the seeder layer
+   above already owns — same record shape {v, c, cWhy, note, ts},
+   extended additively with vWhy (reason categories), cFlags (his five
+   exclusion booleans) and mmr45. Hard rails: nothing here bids, logs
+   in anywhere, fetches or stores report content, or keeps an MMR
+   history — mmr45 is ONE number, overwritten in place. Every card
+   carries the fixed caption "structural risk not assessable from
+   data"; no clean verdict exists on this screen.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = "hoja-triage-v1";
+  var anim = !!window.anime &&
+    !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var FLAGS = ["accidents", "severity", "hail", "structural", "recall"];
+  var FLAG_LABEL = { accidents: "multiple accidents", severity: "moderate/severe damage",
+                     hail: "hail repair", structural: "structural damage", recall: "open recall" };
+  var REASONS = ["structural", "rust", "interior", "airbags", "flood", "other"];
+  var REASON_LABEL = { structural: "structural suspicion", rust: "rust", interior: "interior",
+                       airbags: "airbags", flood: "flood", other: "other" };
+  var qf = "all";
+  var lastTotal = 0;
+  var timers = {};
+
+  /* ---------------- store (the seeder's shape; additive fields only) ---------------- */
+  function saleKey() { var e = $("list-src"); return e ? e.textContent : ""; }
+  function readStore() {
+    try { var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function writeStore(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+  function recOf(lotId) {
+    var s = readStore();
+    if (!s || s.saleKey !== saleKey() || !s.lots) return null;
+    return s.lots[lotId] || null;
+  }
+  function mutate(lotId, fn) {
+    var s = readStore(), sk = saleKey();
+    if (!s || s.saleKey !== sk || !s.lots) s = { saleKey: sk, seeded: false, lots: {} };
+    if (!s.lots[lotId]) s.lots[lotId] = { v: null, c: null, cWhy: "", note: "", ts: 0 };
+    fn(s.lots[lotId]);
+    s.lots[lotId].ts = Date.now();
+    writeStore(s);
+  }
+
+  function money(n) {
+    if (window.__ops && window.__ops.money) return window.__ops.money(n);
+    n = Math.round(n || 0);
+    return (n < 0 ? "−$" : "$") + Math.abs(n).toLocaleString("en-US");
+  }
+
+  /* ---------------- queue + derivation ---------------- */
+  function queueLots() {
+    return (window.__ops && window.__ops.shortlist) ? window.__ops.shortlist() : [];
+  }
+  function lotFor(lotId) {
+    var q = queueLots();
+    for (var i = 0; i < q.length; i++) if (q[i].lotId === lotId) return q[i];
+    return null;
+  }
+  function runKey(l) {
+    var m = 0, p = String(l.saleTime || "").split(":");
+    if (p.length === 2) m = parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+    return m * 1000 + (parseInt(l.lotId, 10) % 1000);
+  }
+  function runMap(q) {
+    var sorted = q.slice().sort(function (a, b) { return runKey(a) - runKey(b); });
+    var map = {};
+    sorted.forEach(function (l, i) { map[l.lotId] = i + 1; });
+    return map;
+  }
+  function runFmt(n) { return "RUN " + (n < 10 ? "0" + n : n); }
+  function flagsOf(r) {
+    // derived view of his five exclusions; falls back to the seeded cWhy category
+    var f = {}, i;
+    for (i = 0; i < FLAGS.length; i++) f[FLAGS[i]] = false;
+    if (r && r.cFlags) { for (i = 0; i < FLAGS.length; i++) f[FLAGS[i]] = !!r.cFlags[FLAGS[i]]; }
+    else if (r && r.cWhy && f.hasOwnProperty(r.cWhy)) f[r.cWhy] = true;
+    return f;
+  }
+
+  /* READINESS is three named gates, not a 1-100 score. A score invites
+     "the tool cleared it"; a named gate keeps the verdict his — and the
+     1-100 score was our idea in the meeting, not his ask. Nothing from a
+     Carfax report is stored here: no text, no accident rows, no derived
+     number. The five checkboxes are HIS recorded exclusions after HE read
+     the report under his own login — a business record of his decision,
+     not a copy of their data. mmr45 is one overwritten number, never a
+     history. Structural risk is never scored: it is not assessable from
+     any data source, and this module says so on every card. */
+  function statusFor(r) {
+    if (r && r.v === "fail") return { state: "OUT", gate: "VISUAL" };
+    if (r && r.c === "fail") return { state: "OUT", gate: "HISTORY" };
+    if (r && r.v === "pass" && r.c === "pass") return { state: "READY", gate: null };
+    return { state: "REVIEW", gate: null };
+  }
+  function ceilingFor(l, r) {
+    var ops = window.__ops;
+    var est = l._est || { sale: 0, parts: 0, labor: 0, tow: 0 };
+    var mmr = (r && typeof r.mmr45 === "number" && r.mmr45 > 0) ? r.mmr45 : 0;
+    var sale = mmr || est.sale;
+    var budget = sale - (ops ? ops.margin() : 6000) - est.tow - est.parts - est.labor;
+    var ceiling = (budget > 0 && ops) ? ops.solveCeiling(budget) : 0;
+    return { ceiling: ceiling, budget: budget, basis: mmr ? "mmr" : "est" };
+  }
+
+  /* ---------------- renders ---------------- */
+  function renderBrief() {
+    var q = queueLots();
+    var vis = 0, his = 0, ready = 0;
+    q.forEach(function (l) {
+      var r = recOf(l.lotId);
+      if (!r || !r.v) { vis++; return; }
+      if (r.v === "pass" && r.c !== "pass" && r.c !== "fail") his++;
+      if (statusFor(r).state === "READY") ready++;
+    });
+    var rel = lastTotal;
+    if (!rel) {
+      var m = saleKey().match(/([\d,]+)\s+lots/);
+      if (m) rel = parseInt(m[1].replace(/,/g, ""), 10);
+    }
+    if ($("pb-n-rel")) $("pb-n-rel").textContent = rel ? rel.toLocaleString("en-US") : "—";
+    if ($("pb-n-rules")) $("pb-n-rules").textContent =
+      (window.__ops ? window.__ops.afterHard() : 0).toLocaleString("en-US");
+    if ($("pb-n-vis")) $("pb-n-vis").textContent = vis;
+    if ($("pb-n-his")) $("pb-n-his").textContent = his;
+    if ($("pb-n-ready")) $("pb-n-ready").textContent = ready;
+    if ($("pb-stamp")) $("pb-stamp").textContent =
+      "MON · 8:00 → 12:00 · " + q.length + " in the queue";
+  }
+
+  function cardHtml(l, run) {
+    var desc = (l.year ? l.year + " " : "") + (l.make || "") + " " + (l.modelGroup || "");
+    var dmg = (l.damageDescription || "") + (l.secondaryDamage ? " + " + l.secondaryDamage : "");
+    var mi = l.mileage ? l.mileage.toLocaleString("en-US") + " mi" : "mileage n/a";
+    var chips = "", flags = "", i;
+    for (i = 0; i < REASONS.length; i++) {
+      chips += '<button type="button" class="chip" data-r="' + REASONS[i] +
+        '" aria-pressed="false">' + REASON_LABEL[REASONS[i]] + '</button>';
+    }
+    for (i = 0; i < FLAGS.length; i++) {
+      flags += '<label><input type="checkbox" data-h="' + FLAGS[i] + '"> ' + FLAG_LABEL[FLAGS[i]] + '</label>';
+    }
+    return '<div class="pb-id">' +
+      '<div class="pb-run num">' + runFmt(run) + ' · ' + (l.saleTime || "—") + '</div>' +
+      '<div class="pb-veh">' + desc + '</div>' +
+      '<div class="pb-meta">' + dmg + ' · ' + mi + ' · lot <span class="num">' + l.lotId + '</span></div>' +
+      '<div class="pb-links">' +
+        '<a class="btn sm" href="https://www.copart.com/lot/' + l.lotId + '" target="_blank" rel="noopener noreferrer" title="Example target — demo lot; opens under your own Copart session, never ours">Open lot ↗</a>' +
+        '<a class="btn sm" href="https://www.carfaxonline.com/vhr/' + (l.vin || "") + '" target="_blank" rel="noopener noreferrer" title="Example target — demo VIN; opens under your own Carfax dealer login, never ours">Open Carfax ↗</a>' +
+        '<span class="pb-exnote">example targets</span>' +
+      '</div>' +
+      '<div class="pb-struct">structural risk not assessable from data</div>' +
+    '</div>' +
+    '<div class="pb-gates">' +
+      '<div class="pb-gate">' +
+        '<span class="pb-gk">// Visual — your eyes on the photos</span>' +
+        '<div class="seg pb-vseg" role="group" aria-label="Visual verdict">' +
+          '<button type="button" data-v="pass">Pass</button>' +
+          '<button type="button" data-v="fail">Reject</button>' +
+        '</div>' +
+        '<div class="chips pb-vwhy" hidden>' + chips + '</div>' +
+      '</div>' +
+      '<div class="pb-gate">' +
+        '<span class="pb-gk">// History — your Carfax read, your call</span>' +
+        '<label class="pb-hdone"><input type="checkbox" data-h="done"> Report read</label>' +
+        '<div class="pb-hflags">' + flags + '</div>' +
+      '</div>' +
+      '<div class="field text pb-notes">' +
+        '<label>Notes</label>' +
+        '<input type="text" data-n="note" maxlength="240" placeholder="What you saw, in your words">' +
+      '</div>' +
+    '</div>' +
+    '<div class="pb-nums">' +
+      '<span class="pill idle" data-pill>REVIEW</span>' +
+      '<div class="field">' +
+        '<label>Manheim @ 4.5</label>' +
+        '<input type="number" inputmode="numeric" data-n="mmr45" placeholder="est. sale used">' +
+      '</div>' +
+      '<div class="pb-ceil">' +
+        '<span class="pb-ck">// Max bid</span>' +
+        '<span class="pb-cv num">—</span>' +
+        '<span class="pb-cb" data-basis>on estimated sale</span>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function syncCard(card, l, withValues) {
+    var r = recOf(l.lotId);
+    var st = statusFor(r);
+    var low = st.state.toLowerCase();
+    card.setAttribute("data-state", low);
+    card.setAttribute("data-triage", low);
+    var pill = card.querySelector("[data-pill]");
+    if (pill) {
+      pill.className = "pill " + (st.state === "READY" ? "go" : (st.state === "OUT" ? "stop" : "idle"));
+      pill.textContent = st.state === "OUT" ? "OUT · " + st.gate : st.state;
+    }
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-vseg [data-v]"), function (b) {
+      b.classList.toggle("on", !!r && r.v === b.getAttribute("data-v"));
+    });
+    var why = card.querySelector(".pb-vwhy");
+    if (why) why.hidden = !(r && r.v === "fail");
+    var vWhy = (r && r.vWhy) || [];
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-vwhy .chip"), function (c) {
+      c.setAttribute("aria-pressed", vWhy.indexOf(c.getAttribute("data-r")) >= 0 ? "true" : "false");
+    });
+    var read = !!r && (r.c === "pass" || r.c === "fail");
+    var dn = card.querySelector('[data-h="done"]');
+    if (dn) dn.checked = read;
+    var f = flagsOf(r);
+    Array.prototype.forEach.call(card.querySelectorAll(".pb-hflags [data-h]"), function (cb) {
+      cb.checked = !!f[cb.getAttribute("data-h")];
+    });
+    var c = ceilingFor(l, r);
+    card.querySelector(".pb-cv").textContent = money(c.ceiling);
+    card.querySelector("[data-basis]").textContent =
+      c.basis === "mmr" ? "on Manheim 4.5" : "on estimated sale";
+    // focus-sensitive values land only on a rebuild — a patch never rewrites
+    // a text/number input, so typing never loses the caret
+    if (withValues) {
+      card.querySelector('[data-n="note"]').value = (r && r.note) || "";
+      card.querySelector('[data-n="mmr45"]').value = (r && typeof r.mmr45 === "number") ? r.mmr45 : "";
+    }
+    card.style.display = (qf === "all" || qf === low) ? "" : "none";
+    return low;
+  }
+
+  function renderQueue() {
+    var host = $("pb-queue"); if (!host) return;
+    var q = queueLots();
+    var runs = runMap(q);
+    var ids = q.map(function (l) { return l.lotId; }).join(",");
+    var rebuild = host.getAttribute("data-ids") !== ids;
+    if (rebuild) {
+      // full rebuild only when the lot set itself changed; otherwise every
+      // re-render is an in-place patch so focus survives re-renders
+      host.innerHTML = "";
+      q.forEach(function (l) {
+        var card = document.createElement("article");
+        card.className = "pb-lot";
+        card.setAttribute("data-lot", l.lotId);
+        card.innerHTML = cardHtml(l, runs[l.lotId]);
+        host.appendChild(card);
+      });
+      host.setAttribute("data-ids", ids);
+    }
+    var shown = 0;
+    q.forEach(function (l) {
+      var card = host.querySelector('[data-lot="' + l.lotId + '"]');
+      if (!card) return;
+      var low = syncCard(card, l, rebuild);
+      if (qf === "all" || qf === low) shown++;
+    });
+    var qc = $("pb-qcount");
+    if (qc) qc.textContent = shown + " of " + q.length + " shown";
+  }
+
+  function renderBoard() {
+    var host = $("pb-board"); if (!host) return;
+    var q = queueLots();
+    var runs = runMap(q);
+    var ready = [];
+    q.forEach(function (l) { if (statusFor(recOf(l.lotId)).state === "READY") ready.push(l); });
+    ready.sort(function (a, b) { return runKey(a) - runKey(b); });
+    host.innerHTML = "";
+    if (!ready.length) {
+      var fl = document.createElement("div");
+      fl.className = "flag warn";
+      fl.innerHTML = '<span class="mark">!</span><span>Nothing is ready. The board fills itself as lots pass all three gates — it never fills on your behalf.</span>';
+      host.appendChild(fl);
+    } else {
+      ready.forEach(function (l) {
+        var row = document.createElement("div");
+        row.className = "pb-brow";
+        row.setAttribute("data-lot", l.lotId);
+        var c = ceilingFor(l, recOf(l.lotId));
+        row.innerHTML =
+          '<span class="pb-brun num">' + runFmt(runs[l.lotId]) + '</span>' +
+          '<span class="pb-btime num">' + (l.saleTime || "—") + '</span>' +
+          '<span class="pb-bveh">' + (l.year ? l.year + " " : "") + (l.make || "") + " " +
+            (l.modelGroup || "") + '<i>' + (l.damageDescription || "") + ' · lot ' + l.lotId + '</i></span>' +
+          '<span class="pb-bceil num">' + money(c.ceiling) + '</span>';
+        host.appendChild(row);
+      });
+    }
+    var bc = $("pb-bcount");
+    if (bc) bc.textContent = ready.length + " ready · run order";
+  }
+
+  var rafId = 0;
+  function renderAll() {
+    if (rafId) return;
+    var raf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+    rafId = raf(function () { rafId = 0; renderBrief(); renderQueue(); renderBoard(); });
+  }
+
+  /* ---------------- events ---------------- */
+  function bindEvents() {
+    var host = $("pb-queue"); if (!host) return;
+
+    host.addEventListener("click", function (e) {
+      var t = e.target;
+      if (!t || !t.getAttribute) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      if (t.hasAttribute("data-v")) {
+        var v = t.getAttribute("data-v");
+        mutate(lotId, function (r) {
+          r.v = (r.v === v) ? null : v;          // click the active verdict again to clear it
+          if (r.v !== "fail") r.vWhy = [];
+        });
+        renderAll();
+      } else if (t.classList.contains("chip") && t.hasAttribute("data-r")) {
+        var k = t.getAttribute("data-r");
+        mutate(lotId, function (r) {
+          r.vWhy = r.vWhy || [];
+          var i = r.vWhy.indexOf(k);
+          if (i >= 0) r.vWhy.splice(i, 1); else r.vWhy.push(k);
+        });
+        renderAll();
+      }
+    });
+
+    host.addEventListener("change", function (e) {
+      var t = e.target;
+      if (!t || !t.hasAttribute || !t.hasAttribute("data-h")) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      // his verdict, read off the card: any checked exclusion = fail; read + clean = pass
+      var done = card.querySelector('[data-h="done"]').checked;
+      var flags = {}, any = false, why = "";
+      Array.prototype.forEach.call(card.querySelectorAll(".pb-hflags [data-h]"), function (cb) {
+        var k = cb.getAttribute("data-h");
+        flags[k] = cb.checked;
+        if (cb.checked) { any = true; if (!why) why = k; }
+      });
+      if (any) done = true;                       // no exclusion without a read
+      mutate(lotId, function (r) {
+        r.cFlags = flags;
+        r.c = any ? "fail" : (done ? "pass" : null);
+        r.cWhy = why;
+      });
+      renderAll();
+    });
+
+    host.addEventListener("input", function (e) {
+      var t = e.target;
+      if (!t || !t.hasAttribute || !t.hasAttribute("data-n")) return;
+      var card = t.closest ? t.closest("[data-lot]") : null;
+      if (!card) return;
+      var lotId = card.getAttribute("data-lot");
+      var field = t.getAttribute("data-n");
+      var tk = lotId + "|" + field;
+      if (timers[tk]) clearTimeout(timers[tk]);
+      timers[tk] = setTimeout(function () {
+        delete timers[tk];
+        if (field === "note") {
+          mutate(lotId, function (r) { r.note = t.value; });
+          // no re-render: typing must never redraw the card under the cursor
+        } else {
+          var n = parseFloat(t.value);
+          mutate(lotId, function (r) { r.mmr45 = (isFinite(n) && n > 0) ? n : null; });
+          var l = lotFor(lotId);
+          if (l) {
+            var c = ceilingFor(l, recOf(lotId));
+            card.querySelector(".pb-cv").textContent = money(c.ceiling);
+            card.querySelector("[data-basis]").textContent =
+              c.basis === "mmr" ? "on Manheim 4.5" : "on estimated sale";
+          }
+          renderBoard(); renderBrief();           // neither holds a text input
+        }
+      }, 300);
+    });
+
+    var seg = $("pb-qfilter");
+    if (seg) seg.addEventListener("click", function (e) {
+      var b = e.target;
+      if (!b || !b.hasAttribute || !b.hasAttribute("data-q")) return;
+      qf = b.getAttribute("data-q");
+      Array.prototype.forEach.call(seg.querySelectorAll("button"), function (x) {
+        x.classList.toggle("on", x === b);
+      });
+      renderQueue();
+    });
+
+    var pr = $("pb-print");
+    if (pr) pr.addEventListener("click", function () {
+      document.body.setAttribute("data-print", "prebid");
+      var clear = function () {
+        document.body.removeAttribute("data-print");
+        window.removeEventListener("afterprint", clear);
+      };
+      window.addEventListener("afterprint", clear);
+      setTimeout(clear, 1000);
+      window.print();
+    });
+  }
+
+  /* ---------------- tab show/hide — the unmanaged-panel pattern ---------------- */
+  function bindTab() {
+    var tab = $("tab-prebid"), panel = $("p-prebid");
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".panel"), function (p) {
+        p.classList.remove("on");
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('.tab[role="tab"]'), function (b) {
+        b.setAttribute("aria-selected", "false");
+      });
+      panel.classList.add("on");
+      tab.setAttribute("aria-selected", "true");
+      window.scrollTo({ top: 0, behavior: "auto" });
+      renderAll();
+      if (anim) {
+        var kids = panel.querySelectorAll(":scope > *");
+        anime.remove(kids);
+        anime({ targets: kids, opacity: [0, 1], translateY: [10, 0],
+                delay: anime.stagger(60), duration: 420, easing: "easeOutCubic" });
+      }
+    });
+    // any other tab click hides this panel — go() only clears the original six
+    var nav = document.querySelector(".side-nav");
+    if (nav) nav.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest(".tab") : null;
+      if (t && t.id !== "tab-prebid") {
+        panel.classList.remove("on");
+        tab.setAttribute("aria-selected", "false");
+      }
+    });
+  }
+
+  bindTab();
+  bindEvents();
+  document.addEventListener("pipeline:done", function (ev) {
+    if (ev.detail && ev.detail.total) lastTotal = ev.detail.total;
+    renderAll();
+  });
+  document.addEventListener("bidsheet:saved", renderAll);
+  renderAll();
 })();
 </script>
