@@ -527,6 +527,12 @@
   .fstage.final .fhead .fn { color: var(--accent); }
   .fnote { font-size: .72rem; color: var(--ink-3); }
 
+  .fdivide { padding: 1rem 0 .4rem; font-family: var(--mono); font-size: .6rem; font-weight: 500;
+             letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3);
+             border-bottom: 1px solid var(--line); }
+  .fdivide b { color: var(--accent); font-weight: 600; }
+  .fstage.manual .fbar i { background: var(--ink-3); }
+  .fstage.manual.final .fbar i { background: var(--accent); }
   .rank { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
 
   /* ---------- filters ---------- */
@@ -1075,13 +1081,13 @@
       <div class="tabs" role="tablist" aria-label="Flow">
         <button class="tab" role="tab" id="tab-list"   aria-selected="true"  aria-controls="p-list"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h9"/></svg>List<span class="tno">01</span></button>
         <button class="tab" role="tab" id="tab-filters" aria-selected="false" aria-controls="p-filters"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5.5L10 21v-8L3 5z"/></svg>Filters<span class="tno">02</span></button>
-        <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">03</span></button>
-        <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">04</span></button>
+        <button class="tab" role="tab" id="tab-sheet"  aria-selected="false" aria-controls="p-sheet"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/></svg>Bid<span class="tno">04</span></button>
+        <button class="tab" role="tab" id="tab-parts"  aria-selected="false" aria-controls="p-parts"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.3 7.3a5 5 0 0 1-6.6 6.6L7 20.6 3.4 17l6.7-6.7a5 5 0 0 1 6.6-6.6L13.5 7l3.5 3.5 3.3-3.2z"/></svg>Parts<span class="tno">05</span></button>
       </div>
       <div class="nav-group">Memory</div>
       <div class="tabs" role="tablist" aria-label="Memory">
-        <button class="tab" role="tab" id="tab-book"   aria-selected="false" aria-controls="p-book"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4h15v16h-15z"/><path d="M9 4v16"/></svg>Ledger<span class="tno">05</span></button>
-        <button class="tab" role="tab" id="tab-numbers"aria-selected="false" aria-controls="p-numbers"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-6M11 20V8M17 20v-9M3 20h18"/></svg>Your numbers<span class="tno">06</span></button>
+        <button class="tab" role="tab" id="tab-book"   aria-selected="false" aria-controls="p-book"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4h15v16h-15z"/><path d="M9 4v16"/></svg>Ledger<span class="tno">07</span></button>
+        <button class="tab" role="tab" id="tab-numbers"aria-selected="false" aria-controls="p-numbers"><svg class="ic" stroke="currentColor" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M5 20v-6M11 20V8M17 20v-9M3 20h18"/></svg>Your numbers<span class="tno">08</span></button>
       </div>
     </nav>
     <div class="side-foot">
@@ -1093,7 +1099,7 @@
   <div class="main">
   <div class="topbar">
     <span class="ent">Azuaje Group LLC</span>
-    <span class="stamp"><b>Copart</b> · Rental Vehicles · Mon · Wed · 12:00</span>
+    <span class="stamp"><b>Copart</b> · Rental Vehicles · Mon · Wed · pre-bid 8:00 · live 12:00</span>
     <button type="button" class="tbact kbd" id="tb-cmdk" aria-label="Open command menu">Ctrl K</button>
     <button type="button" class="tbact icon" id="tb-theme" aria-label="Toggle dark mode" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
@@ -1115,14 +1121,14 @@
     <div class="panel" id="p-start" role="tabpanel" aria-labelledby="tab-start">
       <div class="pagehead">
         <h2 class="pt">Start <em>here</em>.</h2>
-        <p class="ps">Six screens, in the order you already work. Everything stays in this browser.</p>
+        <p class="ps">Eight screens, in the order you already work. Everything stays in this browser.</p>
       </div>
 
       <section>
         <div class="tourbar">
           <div>
             <span class="eyebrow">Guided tour</span>
-            <p class="tb-t">Two minutes, six screens. It walks you through a real Monday.</p>
+            <p class="tb-t">Two minutes, eight screens. It walks you through a real Monday, from the 8:00 pre-bid to sold.</p>
           </div>
           <button type="button" class="btn primary" id="tour-go">Take the tour</button>
         </div>
@@ -1133,8 +1139,8 @@
           <button type="button" class="stepc" data-go="tab-list">
             <span class="sn">01</span>
             <span class="sh">List</span>
-            <span class="sk">Monday, 8:45</span>
-            <span class="sb">Drop in the sale export. 800 published lots become the ones worth opening, and every lot that falls out shows the rule that removed it.</span>
+            <span class="sk">Monday, 8:05</span>
+            <span class="sb">Drop in the sale export. Some 400 published lots — 800 and more on a peak day — become the ones worth opening, and every lot that falls out shows the rule that removed it.</span>
             <span class="sgo">Open List</span>
           </button>
           <button type="button" class="stepc" data-go="tab-filters">
@@ -1144,29 +1150,43 @@
             <span class="sb">Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays.</span>
             <span class="sgo">Open Filters</span>
           </button>
-          <button type="button" class="stepc" data-go="tab-sheet">
+          <button type="button" class="stepc" data-go="tab-prebid">
             <span class="sn">03</span>
+            <span class="sh">Pre-bid</span>
+            <span class="sk">Your eyes, on the record</span>
+            <span class="sb">The survivors, ordered by margin so you open the best first. Your visual call and your Carfax verdict, recorded per lot — never the report, never a clean verdict.</span>
+            <span class="sgo">Open Pre-bid</span>
+          </button>
+          <button type="button" class="stepc" data-go="tab-sheet">
+            <span class="sn">04</span>
             <span class="sh">Bid</span>
             <span class="sk">The ceiling</span>
             <span class="sb">Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon.</span>
             <span class="sgo">Open Bid</span>
           </button>
           <button type="button" class="stepc" data-go="tab-parts">
-            <span class="sn">04</span>
+            <span class="sn">05</span>
             <span class="sh">Parts</span>
             <span class="sk">What broke</span>
             <span class="sb">A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos.</span>
             <span class="sgo">Open Parts</span>
           </button>
+          <button type="button" class="stepc" data-go="tab-pipeline">
+            <span class="sn">06</span>
+            <span class="sh">Pipeline</span>
+            <span class="sk">After the hammer</span>
+            <span class="sb">Bought to sold, stage by stage, with parts status per car and the daily loan interest counted against each unit's projected margin.</span>
+            <span class="sgo">Open Pipeline</span>
+          </button>
           <button type="button" class="stepc" data-go="tab-book">
-            <span class="sn">05</span>
+            <span class="sn">07</span>
             <span class="sh">Ledger</span>
             <span class="sk">Projected against real</span>
             <span class="sb">Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested.</span>
             <span class="sgo">Open Ledger</span>
           </button>
           <button type="button" class="stepc" data-go="tab-numbers">
-            <span class="sn">06</span>
+            <span class="sn">08</span>
             <span class="sh">Your numbers</span>
             <span class="sk">The correction</span>
             <span class="sb">How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for.</span>
@@ -1186,7 +1206,7 @@
             <p class="prose" style="margin-bottom:.9rem"><strong>It never bids for you</strong>, never signs
             into Copart, Manheim, Carfax or eBay on your behalf, and never copies their photographs. Those
             lines protect your auction access, which is the one thing here you could not rebuild.</p>
-            <p class="prose"><strong>The demo data is invented.</strong> The 800 lots and the six Ledger
+            <p class="prose"><strong>The demo data is invented.</strong> The 400 lots and the six Ledger
             units exist to show the shape of the thing with history inside it. The Copart fee table is a
             starting point until one of your real invoices replaces it.</p>
           </div>
@@ -1194,7 +1214,7 @@
       </section>
     </div>
     <div class="panel on" id="p-list" role="tabpanel" aria-labelledby="tab-list">
-      <div class="pagehead"><h2 class="pt">Today's <em>sale</em>.</h2><p class="ps">From 800 published lots down to the ones worth your time, every discard explained.</p></div>
+      <div class="pagehead"><h2 class="pt">Today's <em>sale</em>.</h2><p class="ps">From 400 published lots down to the ones worth your time, every discard explained.</p></div>
 
       <section id="ov-strip" style="display:none">
         <div class="card">
@@ -1229,7 +1249,7 @@
         <div class="card">
           <div class="card-h">
             <h2>From the list to the shortlist</h2>
-            <span class="eyebrow" style="margin-left:auto">3 passes</span>
+            <span class="eyebrow" style="margin-left:auto">4 passes</span>
           </div>
           <div class="card-b">
             <div class="funnel" id="funnel"></div>
@@ -2852,13 +2872,13 @@
         saleTitleType: ttl, saleTitleState: yard[1].slice(0, 2),
         estRetailValue: estRetail,
         repairCost: noRepair ? 0 : cpRepair, _noRepair: noRepair,
-        // Screening happens 9:00–12:00, before bidding opens, so most lots
+        // Pre-bid opens 8:00; screening happens 8:00–12:00, before live bidding, so most lots
         // carry only a low pre-bid at this hour.
         highBid: Math.round(Math.max(150, estRetail * (0.06 + r() * 0.26) - cpRepair * 0.55) / 25) * 25,
         runsDrives: r() < 0.72, hasKeys: r() < 0.81,
         rental: r() < 0.88,
         locationZip: yard[2],
-        saleTime: (9 + Math.floor(r() * 7)) + ":" + (r() < .5 ? "00" : "30")
+        saleTime: (12 + Math.floor(r() * 4)) + ":" + (r() < .5 ? "00" : "30")
       });
     }
     return out;
@@ -3225,7 +3245,6 @@
 
     var afterHard = cur.length;
     var afterHardLots = cur.slice();
-    var afterHardLots = cur.slice();
 
     // Without a repair estimate or a retail value there is nothing to compute a
     // ceiling from. Copart omits repair cost on 30% of lots. These are not bad
@@ -3304,7 +3323,7 @@
     mark.style.marginTop = ".9rem";
     mark.innerHTML = "<span class=\"mark\">→</span><span>Your hard filters alone leave <strong class=\"num\">" +
       pipeline.afterHard.toLocaleString("en-US") + "</strong> of " + pipeline.total.toLocaleString("en-US") +
-      ". <strong>This is the number to compare against the 200 you review today.</strong> " +
+      ". <strong>This is the number to compare against the ~80 you open in browser tabs today.</strong> " +
       "If they match, you are already seeing everything that qualifies and the value is in the ordering, not the coverage. " +
       "If it is much higher, cars are going unopened every Monday.</span>";
     f.appendChild(mark);
@@ -3476,8 +3495,8 @@
 
   function bindList() {
     $("btn-gen").addEventListener("click", function () {
-      saleList = generateSale(800, 20260803);
-      $("list-src").textContent = "sample sale · 800 lots";
+      saleList = generateSale(400, 20260803);
+      $("list-src").textContent = "sample sale · 400 lots · typical Monday";
       $("csv-msg").textContent = "";
       ensureFacets(); renderFilters(); runPipeline();
     });
@@ -4737,9 +4756,18 @@
   var anim = !!window.anime &&
     !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   var SEEN = "bidsheet-start-seen";
-  var TABS = ["tab-list", "tab-filters", "tab-sheet", "tab-parts", "tab-book", "tab-numbers"];
-  var PANES = ["p-list", "p-filters", "p-sheet", "p-parts", "p-book", "p-numbers"];
-  var STEPS = [{"no":"01","name":"List","tab":"tab-list","kicker":"Monday, 8:45","body":"Drop in the sale export. 800 published lots become the ones worth opening, and every lot that falls out shows the rule that removed it."},{"no":"02","name":"Filters","tab":"tab-filters","kicker":"Your rules, as code","body":"Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays."},{"no":"03","name":"Bid","tab":"tab-sheet","kicker":"The ceiling","body":"Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon."},{"no":"04","name":"Parts","tab":"tab-parts","kicker":"What broke","body":"A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos."},{"no":"05","name":"Ledger","tab":"tab-book","kicker":"Projected against real","body":"Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested."},{"no":"06","name":"Your numbers","tab":"tab-numbers","kicker":"The correction","body":"How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for."}];
+  var TABS = ["tab-list", "tab-filters", "tab-prebid", "tab-sheet", "tab-parts", "tab-pipeline", "tab-book", "tab-numbers"];
+  var PANES = ["p-list", "p-filters", "p-prebid", "p-sheet", "p-parts", "p-pipeline", "p-book", "p-numbers"];
+  var STEPS = [
+    {"no":"01","name":"List","tab":"tab-list","kicker":"Monday, 8:05","body":"Drop in the sale export. Some 400 published lots — 800 and more on a peak day — become the ones worth opening, and every lot that falls out shows the rule that removed it."},
+    {"no":"02","name":"Filters","tab":"tab-filters","kicker":"Your rules, as code","body":"Mileage, title codes, brands, damage types. The count moves as you change them. Save one profile for Mondays and another for Wednesdays."},
+    {"no":"03","name":"Pre-bid","tab":"tab-prebid","kicker":"Your eyes, on the record","body":"The 80 survivors, ordered by margin so you open the best ones first. Record what your eyes and your Carfax account say — pass, fail, and why. It stores your call, never the report, and it never calls a car clean."},
+    {"no":"04","name":"Bid","tab":"tab-sheet","kicker":"The ceiling","body":"Your formula, with Copart's fees solved exactly instead of guessed with a round number. This is the figure you do not cross at noon."},
+    {"no":"05","name":"Parts","tab":"tab-parts","kicker":"What broke","body":"A checklist built from the damage type and priced from what you have already paid. Click a panel on the car to add damage you can see in the photos."},
+    {"no":"06","name":"Pipeline","tab":"tab-pipeline","kicker":"After the hammer","body":"Bought, in transit, arrived, in the shop, ready, listed, sold. Each unit shows its days in stage and the loan interest it accrues every day, so you see the break-even day coming instead of finding it in the rear-view."},
+    {"no":"07","name":"Ledger","tab":"tab-book","kicker":"Projected against real","body":"Every unit you buy, with its projection frozen at the moment of purchase. This is where the $6,000 finally gets tested."},
+    {"no":"08","name":"Your numbers","tab":"tab-numbers","kicker":"The correction","body":"How far your estimates sit from your outcomes, measured on your own closed sales, and the margin the arithmetic is actually asking you for."}
+  ];
 
   function hideStart() {
     var p = $("p-start"), t = $("tab-start");
@@ -4816,7 +4844,7 @@
     litOff();
     if (btn) { btn.classList.add("tourlit"); lit = btn; }
 
-    $("tc-n").textContent = "Step " + s.no + " of 06";
+    $("tc-n").textContent = "Step " + s.no + " of " + ("0" + STEPS.length).slice(-2);
     $("tc-h").textContent = s.name + " · " + s.kicker;
     $("tc-b").textContent = s.body;
     $("tc-back").disabled = i === 0;
@@ -4833,6 +4861,7 @@
   }
 
   function start() {
+    STEPS = STEPS.filter(function (s) { return $(s.tab); });
     if (!card) buildCard();
     card.hidden = false;
     step(0);
@@ -4866,6 +4895,167 @@
       try { localStorage.setItem(SEEN, "1"); } catch (e) {}
     }, 260);
   }
+})();
+</script>
+<script>
+/* ---------------------------------------------------------------
+   Pre-bid triage store (hoja-triage-v1) — demo seeder + funnel act.
+   Additive layer: reads pipeline results via the "pipeline:done"
+   CustomEvent and never calls into the app. The store records HIS
+   verdicts only — the visual call and the Carfax call are the
+   operator's own business record. No report content is ever fetched,
+   parsed or stored, and nothing here calls a car clean: a passing
+   visual still reads "structural risk not assessable from data".
+   Listener order matters: the seeder registers before the funnel
+   augmenter (document listeners fire in registration order), so a
+   fresh seed is visible to the same event's funnel render.
+   --------------------------------------------------------------- */
+(function () {
+  "use strict";
+  var KEY = "hoja-triage-v1";
+  var SALE_KEY = "sample sale · 400 lots · typical Monday";
+
+  /* Local ES5 copy of the app's deterministic PRNG (it is IIFE-private). */
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function readTriage() {
+    try { var raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function writeTriage(store) {
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  function seedTriage(detail) {
+    var store = { saleKey: detail.saleKey, seeded: true, lots: {} };
+    var TRIAGE_SEED = 20260813;                       // partner-message date
+    // pass probabilities: lots the machine sees margin in are likelier to survive his review
+    var P_VIS = { room: 0.85, other: 0.42 };
+    var P_CFX = { room: 0.90, other: 0.72 };
+    var rt = rng(TRIAGE_SEED);
+    // Draw discipline: ONE draw on a visual fail, TWO on a visual pass.
+    // Changing this changes every downstream verdict; tests/reseed-triage.test.js pins it.
+    detail.afterHardLots.forEach(function (l) {       // generation order — do not sort first
+      var hasRoom = l._room > 0;
+      var v = rt() < (hasRoom ? P_VIS.room : P_VIS.other);               // draw 1
+      var c = v ? (rt() < (hasRoom ? P_CFX.room : P_CFX.other)) : null;  // draw 2 only when v passed
+      store.lots[l.lotId] = { v: v ? "pass" : "fail",
+                              c: c === null ? null : (c ? "pass" : "fail"),
+                              cWhy: "", note: "", ts: Date.now() };
+    });
+    // Seeded shorthand — his words, applied AFTER the stream; annotation only,
+    // the verdicts above already match. The stream's best beat: the machine's
+    // #1 and #2 picks both die at his visual gate (structural suspicion is in
+    // no data source), and his Carfax account kills a near-new Accord the
+    // machine could not even rank. Lot ids verified against the live pipeline
+    // (seed 20260803, n=400, default rules) — tests/reseed-triage.test.js pins them.
+    var SEED_NOTES = {
+      "58524793": { note: "photo 6 — kink in the rear rail, trunk floor ripples. structural suspicion — out" },
+      "58988847": { note: "photo 4 — quarter panel buckled to the wheel arch. parts alone eat the margin — out" },
+      "58683366": { cWhy: "accidents", note: "cfx: 2 accidents on record, second one moderate — out" },
+      "58335067": { note: "paint + glass only, no impact. gaps look straight" }
+    };
+    Object.keys(SEED_NOTES).forEach(function (id) {
+      if (store.lots[id]) {
+        store.lots[id].cWhy = SEED_NOTES[id].cWhy || store.lots[id].cWhy;
+        store.lots[id].note = SEED_NOTES[id].note;
+      }
+    });
+    writeTriage(store);
+    return store;
+  }
+
+  /* ------- seeder: first listener on pipeline:done ------- */
+  document.addEventListener("pipeline:done", function (ev) {
+    var d = ev.detail || {};
+    if (d.saleKey === SALE_KEY && readTriage() === null) seedTriage(d);
+  });
+
+  /* ------- funnel act: his recorded review, appended after the machine ------- */
+  function counts(lots, store) {
+    var vis = 0, cfx = 0, ready = 0;
+    lots.forEach(function (l) {
+      var t = store.lots[l.lotId]; if (!t) return;
+      if (t.v === "pass") vis++;
+      if (t.v === "pass" && t.c === "pass") { cfx++; if (l._room > 0) ready++; }
+    });
+    return { vis: vis, cfx: cfx, ready: ready };
+  }
+
+  function fstage(cls, name, drop, n, total, note) {
+    var d = document.createElement("div"); d.className = cls;
+    var h = document.createElement("div"); h.className = "fhead";
+    var nm = document.createElement("span"); nm.className = "fname"; nm.textContent = name;
+    h.appendChild(nm);
+    if (drop > 0) {
+      var fd = document.createElement("span"); fd.className = "fdrop";
+      fd.textContent = "−" + drop.toLocaleString("en-US");
+      h.appendChild(fd);
+    }
+    var fn = document.createElement("span"); fn.className = "fn";
+    fn.textContent = n.toLocaleString("en-US");
+    h.appendChild(fn);
+    d.appendChild(h);
+    var bar = document.createElement("div"); bar.className = "fbar";
+    var fill = document.createElement("i");
+    fill.style.width = (total ? (n / total * 100) : 0) + "%";
+    bar.appendChild(fill);
+    d.appendChild(bar);
+    var no = document.createElement("div"); no.className = "fnote"; no.textContent = note;
+    d.appendChild(no);
+    return d;
+  }
+
+  document.addEventListener("pipeline:done", function (ev) {
+    var f = document.getElementById("funnel"); if (!f) return;
+    var old = f.querySelectorAll(".fdivide, .fstage.manual");
+    Array.prototype.forEach.call(old, function (n) { n.parentNode.removeChild(n); });
+    var store = readTriage();
+    if (!store || store.saleKey !== ev.detail.saleKey) return;
+    var c = counts(ev.detail.afterHardLots, store);
+    if (!c.vis && !c.cfx) return;                   // nothing recorded yet — funnel stays stock
+    var last = f.querySelector(".fstage.final");
+    if (last) last.classList.remove("final");       // single accent moves to "Ready to bid"
+    var total = ev.detail.total || 0;
+    var div = document.createElement("div"); div.className = "fdivide";
+    div.innerHTML = "<b>//</b> HIS REVIEW · RECORDED IN PRE-BID";
+    var rows = [
+      div,
+      fstage("fstage manual", "Visual inspection", ev.detail.afterHard - c.vis, c.vis, total,
+        "Your pass/fail from the photos, one lot at a time. Never a clean verdict — structural risk is not assessable from data."),
+      fstage("fstage manual", "Carfax gate", c.vis - c.cfx, c.cfx, total,
+        "Your own verdict after reading your Carfax account. The sheet stores your call, never the report."),
+      fstage("fstage manual final", "Ready to bid", 0, c.ready, total,
+        "Passed your eyes, passed your Carfax, and still shows margin over the pre-bid.")
+    ];
+    var before = f.querySelector(".flag");          // renderPipeline appends its flags last
+    rows.forEach(function (n) { if (before) f.insertBefore(n, before); else f.appendChild(n); });
+  });
+
+  /* The app auto-loads the sample sale during its own script block, which runs
+     before this layer registered its listeners. Replay once so the seeder and
+     the funnel act see a pipeline:done for the initial load — generation is
+     seeded, so the replay is byte-identical. */
+  function replay() {
+    var ls = document.getElementById("list-src");
+    var g = document.getElementById("btn-gen");
+    if (ls && g && ls.textContent === SALE_KEY) g.click();
+  }
+  replay();
+
+  /* Restore-demo must also restore the recorded review to its seeded state. */
+  var br = document.getElementById("btn-reset");
+  if (br) br.addEventListener("click", function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    replay();
+  });
 })();
 </script>
 <script>
