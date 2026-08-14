@@ -1029,6 +1029,51 @@
   }
   .readout .beam.hot { opacity: .9; }
   @keyframes beamspin { to { --beam: 360deg; } }
+  
+  /* ---- V3 · awareness: status strip, noticed card, week row ---- */
+  .aware { display:flex; gap:8px; align-items:center; padding:8px 26px;
+           background:var(--surface); border-bottom:1px solid var(--line); overflow-x:auto; }
+  .aware[hidden] { display:none; }
+  .aware .alab { font-family:var(--mono); font-size:10px; letter-spacing:.14em;
+                 text-transform:uppercase; color:var(--ink-3); flex:none; }
+  .achip { display:inline-flex; align-items:center; gap:7px; min-height:32px; padding:4px 12px;
+           background:var(--surface); border:1px solid var(--line); color:var(--ink-2);
+           font-family:var(--mono); font-size:11px; letter-spacing:.06em; cursor:pointer; white-space:nowrap; }
+  .achip:hover { border-color:var(--ink-3); color:var(--ink); }
+  .achip:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .achip i { width:6px; height:6px; background:var(--accent); flex:none; }
+  .achip.warn { color:var(--warn); border-color:var(--warn); background:var(--warn-soft); }
+  .achip.warn i { background:var(--warn); }
+  .achip.stop { color:var(--stop); border-color:var(--stop); background:var(--stop-soft); }
+  .achip.stop i { background:var(--stop); }
+  .noticed { border:1px solid var(--line); background:var(--surface); padding:14px 16px; }
+  .noticed .nkick { font-family:var(--mono); font-size:10px; letter-spacing:.16em;
+                    text-transform:uppercase; color:var(--ink-3); font-weight:500; margin:0 0 6px; }
+  .noticed .nkick::before { content:"// "; color:var(--accent); }
+  .noticed .nt { display:flex; align-items:baseline; gap:10px; padding:7px 0;
+                 border-top:1px solid var(--line-soft); font-size:13.5px; color:var(--ink-2); }
+  .noticed .nt:first-of-type { border-top:0; }
+  .noticed .nt b { color:var(--ink); font-weight:600; }
+  .noticed .go { margin-left:auto; flex:none; background:none; border:0; color:var(--accent);
+                 font-family:var(--mono); font-size:11px; letter-spacing:.1em; cursor:pointer; padding:2px 4px; }
+  .noticed .go:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .noticed .empty { color:var(--ink-3); }
+  .wkrow { display:grid; grid-template-columns:1.3fr 1fr 1fr; border:1px solid var(--line); background:var(--surface); }
+  .wk { padding:12px 14px; border-left:1px solid var(--line); min-width:0; }
+  .wk:first-child { border-left:0; }
+  @media (max-width:900px) {
+    .wkrow { grid-template-columns:1fr; }
+    .wk { border-left:0; border-top:1px solid var(--line); }
+    .wk:first-child { border-top:0; }
+  }
+  .wk h4 { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+           color:var(--ink-3); font-weight:500; margin:0 0 8px; }
+  .wk h4::before { content:"// "; color:var(--accent); }
+  .wk .wi { display:flex; gap:8px; align-items:baseline; padding:4px 0; font-size:12.5px; color:var(--ink-2); }
+  .wk .wi .num { font-family:var(--mono); color:var(--ink-3); margin-left:auto; flex:none; }
+  .wk .wi.warn { color:var(--warn); }
+  .wk .empty { font-size:12.5px; color:var(--ink-3); }
+
   @media (prefers-reduced-motion: reduce) { .readout .beam { display: none; } }
 
   /* ---------- mobile ---------- */
@@ -2226,7 +2271,7 @@
   </div>
 
   <div class="demo-banner" id="demo-banner">
-    <span class="db-t"><strong>V0 demo.</strong> The Ledger units are invented to show the system with history inside.</span>
+    <span class="db-t"><strong>Demo data.</strong> The Ledger units are invented to show the system with history inside.</span>
     <button type="button" class="db-btn" id="db-reset">Restore demo data</button>
     <button type="button" class="db-x" id="db-x" aria-label="Dismiss">×</button>
   </div>
@@ -4242,7 +4287,7 @@
 
   function renderFoot() {
     $("foot").innerHTML =
-      "<strong>V0 · demonstration.</strong> The six Ledger units are <strong>invented to show what the system looks like</strong> " +
+      "<strong>Demonstration data.</strong> The six Ledger units are <strong>invented to show what the system looks like</strong> " +
       "with history inside. They are nobody's data and describe no real business. " +
       "Copart's fees are unconfirmed public values: their official pages are not readable and third-party " +
       "calculators contradict each other, so they get replaced with a real invoice and locked. " +
@@ -8603,5 +8648,265 @@
   if (tabN) tabN.addEventListener("click", function () { setTimeout(renderChart, 60); });
   var tabP = $("tab-pipeline");
   if (tabP) tabP.addEventListener("click", function () { setTimeout(renderStrip, 60); });
+})();
+</script>
+
+<script>
+/* ============================================================
+   Script V3 — awareness layer. Additive; reads through the sanctioned
+   bridges (__ops, __fin, BidSheet) and the triage store, writes nothing.
+   Composition is rule-based and client-side: no external calls, and no
+   sentence ever stores or scores anything (the Carfax boundary holds). */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function money(n) { return "$" + String(Math.round(n || 0)).replace(/B(?=(d{3})+(?!d))/g, ","); }
+  function units() { try { return window.BidSheet.units() || []; } catch (e) { return []; } }
+  function isOpen(u) { return u.status !== "sold" && u.stage !== "sold"; }
+  function triage() {
+    try { var raw = localStorage.getItem("hoja-triage-v1"); var s = raw ? JSON.parse(raw) : null; return (s && s.lots) || {}; }
+    catch (e) { return {}; }
+  }
+  function shortlist() { try { return (window.__ops && window.__ops.shortlist()) || []; } catch (e) { return []; } }
+  function stateFor(r) {
+    if (r && r.v === "fail") return "OUT-VISUAL";
+    if (r && r.c === "fail") return "OUT-HISTORY";
+    if (r && r.v === "pass" && r.c === "pass") return "READY";
+    return "REVIEW";
+  }
+  function today0() { var t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()).getTime(); }
+  function mid(iso) { var p = (iso || "").split("-"); return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]).getTime() : NaN; }
+  function daysSince(iso) { var m = mid(iso); return isNaN(m) ? 0 : Math.max(0, Math.round((today0() - m) / 864e5)); }
+  function niceDate(iso) {
+    var m = mid(iso); if (isNaN(m)) return iso || "";
+    var d = new Date(m);
+    return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()] + " " + d.getDate();
+  }
+  function shortName(u) { return (u.desc || "").replace(/^\d{4}\s+/, ""); }
+  var AGE = { won: 2, transit: 4, arrived: 2, shop: 14, ready: 3, listed: 7 };
+  var STAGE_LBL = { won: "won", transit: "in transit", arrived: "arrived", shop: "in shop", ready: "ready", listed: "listed", sold: "sold" };
+
+  function lastStamp(u) { var log = u.stageLog || []; var e = log[log.length - 1]; return (e && e.at) || u.boughtAt || ""; }
+  function agingUnits() {
+    var out = [];
+    units().forEach(function (u) {
+      if (!isOpen(u) || !u.stage) return;
+      var th = AGE[u.stage]; if (!th) return;
+      var d = daysSince(lastStamp(u));
+      if (d > th) out.push({ u: u, days: d });
+    });
+    return out;
+  }
+  function partsLate() {
+    var out = [];
+    units().forEach(function (u) {
+      if (!isOpen(u)) return;
+      (u.parts || []).forEach(function (p) {
+        if (p.status === "received" || p.status === "installed") return;
+        if (p.eta && mid(p.eta) < today0()) out.push({ u: u, p: p });
+      });
+    });
+    return out;
+  }
+  function nearestBE() {
+    var fin = window.__fin; if (!fin) return null;
+    var best = null;
+    units().forEach(function (u) {
+      if (!isOpen(u) || !fin.finOn(u)) return;
+      var b = fin.breakEven(u); if (!b || !isFinite(b.M) || b.M <= 0) return;
+      if (!best || b.ratio > best.b.ratio) best = { u: u, b: b };
+    });
+    return best;
+  }
+  function readyLots() {
+    var t = triage();
+    return shortlist().filter(function (l) { return stateFor(t[l.lotId]) === "READY"; });
+  }
+
+  /* ---- A · the global strip: the app saying what needs attention ---- */
+  var strip = document.createElement("div");
+  strip.className = "aware"; strip.id = "aware"; strip.hidden = true;
+  var topbar = document.querySelector(".topbar");
+  if (topbar && topbar.parentNode) topbar.parentNode.insertBefore(strip, topbar.nextSibling);
+  function chip(kind, cls, txt, tab) {
+    return '<button type="button" class="achip ' + cls + '" data-chip="' + kind + '" data-go="' + tab + '"><i></i>' + txt + '</button>';
+  }
+  function renderStrip() {
+    var h = [], be = nearestBE(), late = partsLate(), age = agingUnits(), ready = readyLots();
+    if (be && be.b.state === "over")
+      h.push(chip("breakeven", "stop", shortName(be.u) + " · day " + be.b.N + " of " + be.b.M + " · past break-even", "tab-pipeline"));
+    else if (be && be.b.state === "amber")
+      h.push(chip("breakeven", "warn", shortName(be.u) + " · day " + be.b.N + " of " + be.b.M, "tab-pipeline"));
+    if (late.length) h.push(chip("parts", "warn", late.length + (late.length === 1 ? " part past ETA" : " parts past ETA"), "tab-pipeline"));
+    if (age.length) h.push(chip("aging", "warn", age.length + (age.length === 1 ? " unit sitting long" : " units sitting long"), "tab-pipeline"));
+    if (ready.length) h.push(chip("ready", "", ready.length + " ready to bid", "tab-prebid"));
+    strip.hidden = !h.length;
+    strip.innerHTML = h.length ? '<span class="alab">// Needs attention</span>' + h.join("") : "";
+  }
+
+  /* ---- B · "what the sheet noticed" on Pre-bid ---- */
+  var mountedN = false;
+  function mountNoticed() {
+    if (mountedN) return;
+    var brief = $("pb-brief"); if (!brief) return;
+    var s0 = brief.closest ? brief.closest("section") : null; if (!s0 || !s0.parentNode) return;
+    var sec = document.createElement("section");
+    sec.innerHTML = '<div class="noticed" id="pb-noticed">' +
+      '<p class="nkick">What the sheet noticed</p>' +
+      '<div id="pb-noticed-rows"></div></div>';
+    s0.parentNode.insertBefore(sec, s0.nextSibling);
+    mountedN = true;
+  }
+  function noticedRows() {
+    var rows = [], t = triage(), q = shortlist();
+    var ready = q.filter(function (l) { return stateFor(t[l.lotId]) === "READY"; });
+    if (ready.length) {
+      var top = ready[0];
+      rows.push({ html: '<b>Lot ' + top.lotId + '</b> (' + top.year + ' ' + top.make + ' ' + top.modelGroup + ') leads the board with <b class="num">' + money(top._room || 0) + '</b> of room.', tab: "tab-prebid", lab: "BOARD" });
+    }
+    if (q.length) {
+      var first = q[0], st = stateFor(t[first.lotId]);
+      if (st === "OUT-VISUAL" || st === "OUT-HISTORY")
+        rows.push({ html: 'The best margin in the sale (lot ' + first.lotId + ') died at your <b>' + (st === "OUT-VISUAL" ? "visual" : "history") + ' gate</b>. The machine ranks; you decide.', tab: "tab-prebid", lab: "QUEUE" });
+    }
+    var be = nearestBE();
+    if (be) rows.push({ html: 'The <b>' + shortName(be.u) + '</b> stops making money after day <b class="num">' + be.b.M + '</b>. It is day <b class="num">' + be.b.N + '</b>.', tab: "tab-pipeline", lab: "PIPELINE" });
+    var late = partsLate(), soon = 0, needed = 0;
+    units().forEach(function (u) {
+      if (!isOpen(u)) return;
+      (u.parts || []).forEach(function (p) {
+        if (p.status === "received" || p.status === "installed") return;
+        if (p.status === "needed") needed++;
+        if (p.eta && mid(p.eta) >= today0() && mid(p.eta) <= today0() + 2 * 864e5) soon++;
+      });
+    });
+    if (late.length || soon || needed) {
+      var bits = [];
+      if (late.length) bits.push(late.length + " past ETA");
+      if (soon) bits.push(soon + " landing within 2 days");
+      if (needed) bits.push(needed + " still unordered");
+      rows.push({ html: 'Parts: ' + bits.join(", ") + '.', tab: "tab-pipeline", lab: "PARTS" });
+    }
+    return rows.slice(0, 4);
+  }
+  function renderNoticed() {
+    mountNoticed();
+    var host = $("pb-noticed-rows"); if (!host) return;
+    var rows = noticedRows();
+    host.innerHTML = rows.length
+      ? rows.map(function (r) {
+          return '<div class="nt">' + r.html + '<button type="button" class="go" data-go="' + r.tab + '">' + r.lab + '</button></div>';
+        }).join("")
+      : '<div class="nt empty">Nothing worth flagging right now.</div>';
+  }
+
+  /* ---- C · the week row on Pipeline ---- */
+  var mountedW = false;
+  function mountWeek() {
+    if (mountedW) return;
+    var host = $("p-pipeline"); if (!host) return;
+    var sec = document.createElement("section");
+    sec.innerHTML = '<div class="wkrow" id="pl-week">' +
+      '<div class="wk"><h4>Activity</h4><div id="wk-act"></div></div>' +
+      '<div class="wk"><h4>Coming up</h4><div id="wk-next"></div></div>' +
+      '<div class="wk"><h4>Sitting long</h4><div id="wk-age"></div></div></div>';
+    var fs = $("fin-strip");
+    if (fs && fs.parentNode) fs.parentNode.insertBefore(sec, fs.nextSibling);
+    else {
+      var stages = $("pl-stages");
+      var s0 = stages && stages.closest ? stages.closest("section") : null;
+      if (s0 && s0.parentNode) s0.parentNode.insertBefore(sec, s0.nextSibling);
+      else host.appendChild(sec);
+    }
+    mountedW = true;
+  }
+  function wi(txt, dateTxt, warn) {
+    return '<div class="wi' + (warn ? " warn" : "") + '"><span>' + txt + '</span><span class="num">' + dateTxt + '</span></div>';
+  }
+  function renderWeek() {
+    mountWeek();
+    var act = $("wk-act"), nx = $("wk-next"), ag = $("wk-age");
+    if (!act) return;
+    var ev = [];
+    units().forEach(function (u) {
+      (u.stageLog || []).forEach(function (e) {
+        if (e && e.at) ev.push({ at: e.at, txt: shortName(u) + " · " + (e.sub ? "shop / " + e.sub : (STAGE_LBL[e.s] || e.s)) });
+      });
+      (u.parts || []).forEach(function (p) {
+        if (p.orderedAt) ev.push({ at: p.orderedAt, txt: shortName(u) + " · ordered " + (p.name || "part") });
+      });
+    });
+    ev.sort(function (a, b) { return a.at < b.at ? 1 : -1; });
+    act.innerHTML = ev.length
+      ? ev.slice(0, 6).map(function (e) { return wi(e.txt, niceDate(e.at), false); }).join("")
+      : '<div class="empty">No recorded activity yet.</div>';
+
+    var up = [];
+    units().forEach(function (u) {
+      if (!isOpen(u)) return;
+      (u.parts || []).forEach(function (p) {
+        if (p.status === "received" || p.status === "installed" || !p.eta) return;
+        up.push({ at: p.eta, txt: (p.name || "part") + " lands · " + shortName(u), warn: mid(p.eta) < today0() });
+      });
+    });
+    var fin = window.__fin;
+    if (fin) units().forEach(function (u) {
+      if (!isOpen(u) || !fin.finOn(u)) return;
+      var b = fin.breakEven(u); if (!b || !isFinite(b.M) || b.M <= 0 || b.state !== "ok") return;
+      var start = (u.fin && (u.fin.startedAt || u.fin.start)) || u.boughtAt; var m = mid(start);
+      if (isNaN(m)) return;
+      var d = new Date(m + Math.floor(b.M * 0.7) * 864e5);
+      var iso = d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+      up.push({ at: iso, txt: shortName(u) + " turns amber", warn: false });
+    });
+    up.sort(function (a, b) { return a.at < b.at ? -1 : 1; });
+    nx.innerHTML = up.length
+      ? up.slice(0, 5).map(function (e) { return wi(e.txt, niceDate(e.at), e.warn); }).join("")
+      : '<div class="empty">Nothing scheduled.</div>';
+
+    var age = agingUnits();
+    ag.innerHTML = age.length
+      ? age.map(function (a) { return wi(shortName(a.u) + " · " + (STAGE_LBL[a.u.stage] || a.u.stage), a.days + "d", true); }).join("")
+      : '<div class="empty">Nothing sitting long.</div>';
+  }
+
+  /* ---- D · one primary action on Pipeline ---- */
+  function mountPrimary() {
+    if ($("pl-log")) return;
+    var seg = $("pl-seg"); if (!seg || !seg.parentNode) return;
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "btn primary sm"; b.id = "pl-log";
+    b.textContent = "Log a purchase";
+    seg.parentNode.insertBefore(b, seg);
+    b.addEventListener("click", function () {
+      var t = $("tab-sheet"); if (t) t.click();
+      var w = document.querySelector(".toasts");
+      if (w) {
+        var d = document.createElement("div"); d.className = "toast";
+        var i = document.createElement("i"); var s = document.createElement("span");
+        s.textContent = "Price the lot, then Log purchase files it in the pipeline.";
+        d.appendChild(i); d.appendChild(s); w.appendChild(d);
+        setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 3800);
+      }
+    });
+  }
+
+  /* ---- wiring ---- */
+  var raf = null;
+  function renderAll() { renderStrip(); renderNoticed(); renderWeek(); mountPrimary(); }
+  function queue() {
+    if (raf) return;
+    raf = (window.requestAnimationFrame || function (f) { return setTimeout(f, 40); })(function () { raf = null; renderAll(); });
+  }
+  document.addEventListener("pipeline:done", queue);
+  document.addEventListener("bidsheet:saved", queue);
+  document.addEventListener("ops:change", queue);
+  document.addEventListener("bs:theme", queue);
+  document.addEventListener("click", function (e) {
+    var el = e.target;
+    var g = el && el.closest ? el.closest("[data-go]") : null;
+    if (g) { var t = $(g.getAttribute("data-go")); if (t) t.click(); return; }
+    if (el && el.closest && (el.closest(".tab") || el.closest("#pb-queue"))) queue();
+  });
+  queue();
 })();
 </script>
